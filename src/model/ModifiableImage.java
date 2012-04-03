@@ -1,3 +1,5 @@
+package model;
+
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Color;
