@@ -1,10 +1,22 @@
 package model;
 
+import java.util.LinkedList;
+
+import java.io.File;
+
 public class ResourceManager {
     private String dir;
 
     public ResourceManager(String directory) {
         this.dir = directory;
+    }
+
+    public LinkedList<String> getAllMaps() {
+        File mapsDir = new File(dir + "/maps/");
+        LinkedList<String> l = new LinkedList<String>();
+        for (File mapDir : mapsDir.listFiles())
+            l.add(mapDir.getName());
+        return l;
     }
 
     public Map getMap(String name) {

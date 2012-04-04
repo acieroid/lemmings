@@ -4,27 +4,40 @@ import view.View;
 
 import java.util.Observable;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.LinkedList;
 
 public class Model extends Observable {
-    private Timer timer;
     private View view;
     private Map map;
     private ArrayList<Character> characters;
     private ResourceManager manager;
+    private boolean running;
 
     public Model() {
         characters = new ArrayList<Character>();
-        this.manager = new ResourceManager("../data/");
+        manager = new ResourceManager("../data/");
+        running = false;
     }
 
+    /**
+     * Get the current map
+     */
     public Map getMap() {
         return map;
     }
 
+    /**
+     * Get all the characters
+     */
     public ArrayList<Character> getCharacters() {
         return characters;
+    }
+
+    /**
+     * Return a list of all the maps' names
+     */
+    public LinkedList<String> getAllMaps() {
+        return manager.getAllMaps();
     }
 
     /**
@@ -36,19 +49,25 @@ public class Model extends Observable {
     }
 
     /**
-     * Start the game
+     * Start the game with a certain map
      */
-    public void start() {
-        timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-                public void run() {
-                    update();
-                }   
-            }, 300, 100);
+    public void start(String map) {
+        running = true;
+        this.map = manager.getMap(map);
     }
 
-    public void init() {
-        map = manager.getMap("test");
+    /**
+     * Pause/unpause the game
+     */
+    public void pause() {
+        running = !running;
+    }
+
+    /**
+     * Stop the game
+     */
+    public void stop() {
+        running = false;
     }
 
     /**

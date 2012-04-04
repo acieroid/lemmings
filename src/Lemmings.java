@@ -9,8 +9,7 @@ public class Lemmings {
         model.setView(view);
         view.setModel(model);
 
-        model.start();
-        view.start(); /* TODO: can we launch view before model ? */
+        view.start();
     }
 }
                 
