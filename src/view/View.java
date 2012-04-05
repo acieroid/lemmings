@@ -117,6 +117,8 @@ public class View extends BasicGame implements Observer, InputListener {
     }
 
     public void keyPressed(int key, char c) {
+        if (key == Input.KEY_F1)
+            log.toggle();
         if (inMenu) {
             if (key == Input.KEY_LEFT) {
                 if (menuItem.hasPrevious())

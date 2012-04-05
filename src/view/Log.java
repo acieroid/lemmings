@@ -12,6 +12,7 @@ class Log implements Renderable {
     private TrueTypeFont font;
     private int maxMessages;
     private int width, height;
+    private boolean activated;
 
     private static int offset = 1;
 
@@ -21,6 +22,7 @@ class Log implements Renderable {
         this.height = height;
         lines = new Vector<String>();
         maxMessages = height/(font.getHeight() + 2*offset);
+        activated = false;
     }
 
     public void add(String message) {
@@ -29,12 +31,18 @@ class Log implements Renderable {
     }
 
     public void draw(float x, float y) {
-        Graphics g = new Graphics();
-        g.drawRect(x, y, width, height);
-        int curY = (int) y + height - offset - font.getHeight();
-        for (String str : lines) {
-            font.drawString(x + 1, curY, str, Color.white);
-            curY -= font.getHeight() + offset;
+        if (activated) {
+            Graphics g = new Graphics();
+            g.drawRect(x, y, width, height);
+            int curY = (int) y + height - offset - font.getHeight();
+            for (String str : lines) {
+                font.drawString(x + 1, curY, str, Color.white);
+                curY -= font.getHeight() + offset;
+            }
         }
+    }
+
+    public void toggle() {
+        activated = !activated;
     }
 }
