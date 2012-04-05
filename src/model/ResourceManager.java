@@ -1,8 +1,11 @@
 package model;
 
-import java.util.LinkedList;
+import util.LemmingsException;
 
+import java.util.LinkedList;
 import java.io.File;
+
+import org.newdawn.slick.SlickException;
 
 public class ResourceManager {
     private String dir;
@@ -19,26 +22,28 @@ public class ResourceManager {
         return l;
     }
 
-    public Map getMap(String name) {
+    public Map getMap(String name)
+        throws LemmingsException {
         try {
             return new Map(dir + "/maps/" + name + "/image.png",
                            dir + "/maps/" + name + "/collision.png");
-        } catch (Exception e) {
-            System.out.println("Error when loading map '" + name + "': " +
-                               e.toString());
-            return null;
+        } catch (SlickException e) {
+            throw new LemmingsException("resourcemanager",
+                                        "Error when loading map '" + name + "': " +
+                                        e.toString());
         }
     }
 
-    public Character getCharacter(String name) {
+    public Character getCharacter(String name)
+        throws LemmingsException {
         try {
             return new Character(0, 0,
                                  dir + "/characters/" + name + "/image.png",
                                  dir + "/characters/" + name + "/collision.png");
-        } catch (Exception e) {
-            System.out.println("Error when loading character '" + name + "': " +
-                               e.toString());
-            return null;
+        } catch (SlickException e) {
+            throw new LemmingsException("resourcemanager",
+                                        "Error when loading map '" + name + "': " +
+                                        e.toString());
         }
     }
 }                        

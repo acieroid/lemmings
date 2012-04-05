@@ -1,5 +1,7 @@
 package parser;
 
+import util.LemmingsException;
+
 class NumberValue extends Value {
     private int value;
 
@@ -8,7 +10,7 @@ class NumberValue extends Value {
     }
 
     public int toNumber()
-        throws java.io.IOException {
+        throws LemmingsException {
         return value;
     }
 }

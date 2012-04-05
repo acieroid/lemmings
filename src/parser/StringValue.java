@@ -1,5 +1,7 @@
 package parser;
 
+import util.LemmingsException;
+
 class StringValue extends Value {
     private String value;
 
@@ -8,7 +10,7 @@ class StringValue extends Value {
     }
 
     public String toStr()
-        throws java.io.IOException {
+        throws LemmingsException {
         return value;
     }
 }

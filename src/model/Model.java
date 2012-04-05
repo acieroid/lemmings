@@ -1,6 +1,8 @@
 package model;
 
 import view.View;
+import parser.SpriteFile;
+import util.LemmingsException;
 
 import java.util.Observable;
 import java.util.ArrayList;
@@ -51,9 +53,12 @@ public class Model extends Observable {
     /**
      * Start the game with a certain map
      */
-    public void start(String map) {
+    public void start(String map)
+        throws LemmingsException {
         running = true;
         this.map = manager.getMap(map);
+        System.out.println("Loading walker");
+        new SpriteFile("../data/characters/walker/left.sprite");
     }
 
     /**

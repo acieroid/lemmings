@@ -2,6 +2,7 @@ package view;
 
 import model.Model;
 import model.Map;
+import util.LemmingsException;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -30,12 +31,16 @@ public class View extends BasicGame implements Observer, InputListener {
     private ListIterator<String> menuItem;
     private TrueTypeFont font;
 
+    private String log;
+    private TrueTypeFont logFont;
+
     public View() {
         super("Lemmings");
         scrollX = 0;
         scrollY = 0;
         scrollingDir = 0;
         inMenu = true;
+        log = "";
     }
 
     public void setModel(Model m) {
@@ -47,6 +52,8 @@ public class View extends BasicGame implements Observer, InputListener {
         menuItem = model.getAllMaps().listIterator();
         font = new TrueTypeFont(new Font("../data/font.ttf", Font.BOLD, 20),
                                 true);
+        logFont = new TrueTypeFont(new Font("../data/font.ttf", Font.PLAIN, 12),
+                                   true);
         container.getInput().addPrimaryListener(this);
     }
 
@@ -83,6 +90,7 @@ public class View extends BasicGame implements Observer, InputListener {
         else {
             model.getMap().draw(-scrollX, -scrollY);
         }
+        logFont.drawString(10, height - 100, log, Color.white);
     }
 
     public void start() {
@@ -108,10 +116,18 @@ public class View extends BasicGame implements Observer, InputListener {
             }
             else if (key == Input.KEY_ENTER) {
                 inMenu = false;
-                model.start(menuItem.next());
+                try {
+                    model.start(menuItem.next());
+                } catch (LemmingsException e) {
+                    inMenu = true;
+                    addToLog(e.toString());
+                }
                 menuItem.previous();
             }
         }
     }
-                
+
+    public void addToLog(String str) {
+        log += str + "\n";
+    }
 }

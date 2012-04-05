@@ -1,5 +1,7 @@
 package parser;
 
+import util.LemmingsException;
+
 import java.util.ArrayList;
 
 class ListValue extends Value {
@@ -10,22 +12,23 @@ class ListValue extends Value {
     }
 
     public ArrayList<Value> toList()
-        throws java.io.IOException {
+        throws LemmingsException {
         return values;
     }
 
     public void add(Value value)
-        throws java.io.IOException {
+        throws LemmingsException {
         values.add(value);
     }
 
     public Value get(int index)
-        throws java.io.IOException {
+        throws LemmingsException {
         try {
             return values.get(index);
-        } catch (Exception e) {
-            throw new java.io.IOException("Not enough elements in the list: " +
-                                      e.toString());
+        } catch (IndexOutOfBoundsException e) {
+            throw new LemmingsException("parser",
+                                        "not enough elements in the list: " +
+                                        e.toString());
         }
     }
 }

@@ -1,16 +1,20 @@
 package parser;
 
+import util.LemmingsException;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.FileInputStream;
 
 public class SpriteFile {
     private Value content;
-    public SpriteFile(String file) {
+    public SpriteFile(String file)
+        throws LemmingsException {
         parse(file);
     }
 
-    private void parse(String file) {
+    private void parse(String file)
+        throws LemmingsException {
         try {
             int c;
             BufferedReader input =
@@ -20,14 +24,15 @@ public class SpriteFile {
                     content = parseList(input);
             }
             
-        } catch (Exception e) {
-            System.out.println("Error when parsing the file '" + file + "': " +
-                               e.toString());
+        } catch (java.io.IOException e) {
+            throw new LemmingsException("parser",
+                                    "can't open the file '" + file + "': " +
+                                    e.toString());
         }
     }
 
     private Value parseList(BufferedReader input)
-        throws java.io.IOException {
+        throws LemmingsException, java.io.IOException {
         int c;
         ListValue value = new ListValue();
         while ((c = input.read()) != -1) {
@@ -46,7 +51,7 @@ public class SpriteFile {
     }
 
     private Value parseAtom(BufferedReader input, int first)
-        throws java.io.IOException {
+        throws LemmingsException, java.io.IOException {
         String atom = "" + (char) first;
         int c;
         while ((c = input.read()) != -1) {
@@ -55,11 +60,13 @@ public class SpriteFile {
             else
                 return new StringValue(atom);
         }
-        throw new java.io.IOException("EOF too early");
+        throw new LemmingsException("parser",
+                                    "Caught EOF when parsing atom " +
+                                    "(atom was: " + atom + ")");
     }
 
     private Value parseNumber(BufferedReader input, int first)
-        throws java.io.IOException {
+        throws LemmingsException, java.io.IOException {
         int number = first - '0';
         int c;
         while ((c = input.read()) != -1) {
@@ -68,11 +75,13 @@ public class SpriteFile {
             else
                 return new NumberValue(number);
         }
-        throw new java.io.IOException("EOF too early");
+        throw new LemmingsException("parser",
+                                    "Caught EOF when parsing number " +
+                                    "(number was: " + number + ")");
     }
 
     private Value parseString(BufferedReader input)
-        throws java.io.IOException {
+        throws LemmingsException, java.io.IOException {
         String str = "";
         int c;
         while ((c = input.read()) != -1) {
@@ -82,6 +91,8 @@ public class SpriteFile {
             }
             str += (char) c;
         }
-        throw new java.io.IOException("EOF too early");
+        throw new LemmingsException("parser",
+                                    "Caught EOF when parsing string " +
+                                    "(string was: \"" + str + "\")");
     }
 }
