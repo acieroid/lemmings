@@ -118,7 +118,7 @@ public class View extends BasicGame implements Observer, InputListener {
                 inMenu = false;
                 try {
                     model.start(menuItem.next());
-                } catch (LemmingsException e) {
+                } catch (Exception e) {
                     inMenu = true;
                     addToLog(e.toString());
                 }
@@ -128,6 +128,8 @@ public class View extends BasicGame implements Observer, InputListener {
     }
 
     public void addToLog(String str) {
+        /* TODO: newlines aren't handled, so we should keep the log as
+         * a list of strings */
         log += str + "\n";
     }
 }
