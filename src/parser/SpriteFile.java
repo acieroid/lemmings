@@ -27,7 +27,7 @@ public class SpriteFile {
         } catch (java.io.IOException e) {
             throw new LemmingsException("parser",
                                     "can't open the file '" + file + "': " +
-                                    e.toString());
+                                    e.getMessage());
         }
     }
 

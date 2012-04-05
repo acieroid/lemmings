@@ -17,7 +17,7 @@ public class Model extends Observable {
 
     public Model() {
         characters = new ArrayList<Character>();
-        manager = new ResourceManager("../data/");
+        manager = new ResourceManager("../data");
         running = false;
     }
 

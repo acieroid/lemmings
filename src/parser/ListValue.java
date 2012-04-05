@@ -28,7 +28,7 @@ class ListValue extends Value {
         } catch (IndexOutOfBoundsException e) {
             throw new LemmingsException("parser",
                                         "not enough elements in the list: " +
-                                        e.toString());
+                                        e.getMessage());
         }
     }
 }

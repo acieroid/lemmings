@@ -21,7 +21,7 @@ class ResourceManager {
         } catch (SlickException e) {
             throw new LemmingsException("view/rm",
                                         "Can't load map '" + name + "': " +
-                                        e.toString());
+                                        e.getMessage());
         }
     }
 

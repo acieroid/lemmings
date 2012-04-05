@@ -20,7 +20,7 @@ public class Collidable {
         } catch (java.io.IOException e) {
             throw new LemmingsException("model/rm",
                                         "Can't load image '" + colPath + "': " +
-                                        e.toString());
+                                        e.getMessage());
         }
     }
 

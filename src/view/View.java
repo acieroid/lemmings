@@ -33,8 +33,7 @@ public class View extends BasicGame implements Observer, InputListener {
     private boolean inMenu; /* TODO: use strategy pattern ? */
     private ListIterator<String> menuItem;
 
-    private String log;
-    private TrueTypeFont logFont;
+    private Log log;
 
     private ResourceManager manager;
     private Map map;
@@ -46,7 +45,6 @@ public class View extends BasicGame implements Observer, InputListener {
         scrollY = 0;
         scrollingDir = 0;
         inMenu = true;
-        log = "";
         manager = new ResourceManager("../data");
     }
 
@@ -62,7 +60,8 @@ public class View extends BasicGame implements Observer, InputListener {
         throws SlickException {
         menuItem = model.getAllMaps().listIterator();
         font = manager.getTTF("font.ttf", Font.BOLD, 20);
-        logFont = manager.getTTF("font.ttf", Font.PLAIN, 12);
+        log = new Log(width - 20, 200,
+                      manager.getTTF("font.ttf", Font.PLAIN, 12));
         container.getInput().addPrimaryListener(this);
     }
 
@@ -99,7 +98,7 @@ public class View extends BasicGame implements Observer, InputListener {
             if (model.isPaused())
                 drawCenteredText("Pause");
         }
-        logFont.drawString(10, height - 100, log, Color.white);
+        log.draw(10, height - 210);
     }
 
     private void drawCenteredText(String text) {
@@ -113,7 +112,7 @@ public class View extends BasicGame implements Observer, InputListener {
             AppGameContainer container = new AppGameContainer(this, width, height, false);
             container.start();
         } catch (Exception e) {
-            System.out.println("Can't launch the view: " + e.toString());
+            System.out.println("Can't launch the view: " + e.getMessage());
         }
     }
 
@@ -134,11 +133,13 @@ public class View extends BasicGame implements Observer, InputListener {
                 String mapName = menuItem.next();
                 menuItem.previous();
                 try {
+                    log.add("Loading map: '" + mapName + "'");
                     model.start(mapName);
                     map = manager.getMap(mapName);
+                    log.add("Map loaded.");
                 } catch (Exception e) {
                     inMenu = true;
-                    addToLog(e.toString());
+                    log.add(e.getMessage());
                 }
             }
         }
@@ -157,11 +158,5 @@ public class View extends BasicGame implements Observer, InputListener {
         if (!inMenu) {
             controller.mouseClicked(x, y);
         }
-    }
-
-    public void addToLog(String str) {
-        /* TODO: newlines aren't handled, so we should keep the log as
-         * a list of strings */
-        log += str + "\n";
     }
 }
