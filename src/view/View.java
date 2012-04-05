@@ -1,7 +1,7 @@
 package view;
 
 import model.Model;
-//import model.Map;
+import controller.Controller;
 import util.LemmingsException;
 
 import java.util.Observable;
@@ -21,21 +21,24 @@ import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.Color;
 
 public class View extends BasicGame implements Observer, InputListener {
+    private static int width = 800, height = 600;
+
     private Model model;
+    private Controller controller;
+
     private int scrollX, scrollY;
     private int scrollingDir;
     private static int scrollSpeed = 1;
-    private static int width = 800, height = 600;
 
     private boolean inMenu; /* TODO: use strategy pattern ? */
     private ListIterator<String> menuItem;
-    private TrueTypeFont font;
 
     private String log;
     private TrueTypeFont logFont;
 
     private ResourceManager manager;
     private Map map;
+    private TrueTypeFont font;
 
     public View() {
         super("Lemmings");
@@ -49,6 +52,10 @@ public class View extends BasicGame implements Observer, InputListener {
 
     public void setModel(Model m) {
         model = m;
+    }
+
+    public void setController(Controller c) {
+        controller = c;
     }
 
     public void init(GameContainer container)
@@ -101,7 +108,6 @@ public class View extends BasicGame implements Observer, InputListener {
                         text, Color.white);
     }
         
-
     public void start() {
         try {
             AppGameContainer container = new AppGameContainer(this, width, height, false);
@@ -144,6 +150,12 @@ public class View extends BasicGame implements Observer, InputListener {
             else if (key == Input.KEY_P || key == Input.KEY_PAUSE) {
                 model.pause();
             }
+        }
+    }
+
+    public void mouseClicked(int button, int x, int y, int clickCount) {
+        if (!inMenu) {
+            controller.mouseClicked(x, y);
         }
     }
 
