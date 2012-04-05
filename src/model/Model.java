@@ -81,5 +81,12 @@ public class Model extends Observable {
     public void update() {
         /* TODO */
     }
+
+    /**
+     * @return the pause state of the model
+     */
+    public boolean isPaused() {
+        return !running;
+    }
 }
     

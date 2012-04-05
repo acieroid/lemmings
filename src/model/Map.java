@@ -1,10 +1,10 @@
 package model;
 
-import org.newdawn.slick.SlickException;
+import util.LemmingsException;
 
 public class Map extends Collidable {
-    public Map(String img, String col)
-        throws SlickException {
-        super(0, 0, img, col);
+    public Map(String col)
+        throws LemmingsException {
+        super(0, 0, col);
     }
 }

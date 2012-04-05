@@ -1,7 +1,7 @@
 package view;
 
 import model.Model;
-import model.Map;
+//import model.Map;
 import util.LemmingsException;
 
 import java.util.Observable;
@@ -34,6 +34,9 @@ public class View extends BasicGame implements Observer, InputListener {
     private String log;
     private TrueTypeFont logFont;
 
+    private ResourceManager manager;
+    private Map map;
+
     public View() {
         super("Lemmings");
         scrollX = 0;
@@ -41,6 +44,7 @@ public class View extends BasicGame implements Observer, InputListener {
         scrollingDir = 0;
         inMenu = true;
         log = "";
+        manager = new ResourceManager("../data");
     }
 
     public void setModel(Model m) {
@@ -50,10 +54,8 @@ public class View extends BasicGame implements Observer, InputListener {
     public void init(GameContainer container)
         throws SlickException {
         menuItem = model.getAllMaps().listIterator();
-        font = new TrueTypeFont(new Font("../data/font.ttf", Font.BOLD, 20),
-                                true);
-        logFont = new TrueTypeFont(new Font("../data/font.ttf", Font.PLAIN, 12),
-                                   true);
+        font = manager.getTTF("font.ttf", Font.BOLD, 20);
+        logFont = manager.getTTF("font.ttf", Font.PLAIN, 12);
         container.getInput().addPrimaryListener(this);
     }
 
@@ -81,17 +83,24 @@ public class View extends BasicGame implements Observer, InputListener {
 
     public void render(GameContainer container, Graphics g) {
         if (inMenu) {
-            String str = "< " + menuItem.next() + " >";
+            drawCenteredText("< " + menuItem.next() + " >");
             menuItem.previous();
-            font.drawString(width/2 - font.getWidth(str)/2,
-                            height/2 - font.getHeight()/2,
-                            str, Color.white);
         }
         else {
-            model.getMap().draw(-scrollX, -scrollY);
+            map.draw(-scrollX, -scrollY);
+
+            if (model.isPaused())
+                drawCenteredText("Pause");
         }
         logFont.drawString(10, height - 100, log, Color.white);
     }
+
+    private void drawCenteredText(String text) {
+        font.drawString(width/2 - font.getWidth(text)/2,
+                        height/2 - font.getHeight()/2,
+                        text, Color.white);
+    }
+        
 
     public void start() {
         try {
@@ -116,13 +125,24 @@ public class View extends BasicGame implements Observer, InputListener {
             }
             else if (key == Input.KEY_ENTER) {
                 inMenu = false;
+                String mapName = menuItem.next();
+                menuItem.previous();
                 try {
-                    model.start(menuItem.next());
+                    model.start(mapName);
+                    map = manager.getMap(mapName);
                 } catch (Exception e) {
                     inMenu = true;
                     addToLog(e.toString());
                 }
-                menuItem.previous();
+            }
+        }
+        else {
+            if (key == Input.KEY_ESCAPE) {
+                inMenu = true;
+                model.stop();
+            }
+            else if (key == Input.KEY_P || key == Input.KEY_PAUSE) {
+                model.pause();
             }
         }
     }

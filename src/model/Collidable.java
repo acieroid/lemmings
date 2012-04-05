@@ -1,19 +1,27 @@
 package model;
 
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Image;
+import util.LemmingsException;
 
-public class Collidable extends ModifiableImage {
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.File;
+
+public class Collidable {
     private int x;
     private int y;
-    private CollisionImage colImage;
+    private BufferedImage colImage;
 
-    public Collidable(int x, int y, String imgPath, String colPath)
-        throws SlickException {
-        super(imgPath);
+    public Collidable(int x, int y, String colPath)
+        throws LemmingsException {
         this.x = x;
         this.y = y;
-        this.colImage = new CollisionImage(colPath);
+        try {
+            this.colImage = ImageIO.read(new File(colPath));
+        } catch (java.io.IOException e) {
+            throw new LemmingsException("model/rm",
+                                        "Can't load image '" + colPath + "': " +
+                                        e.toString());
+        }
     }
 
     public void setPosition(int x, int y) {
@@ -29,33 +37,13 @@ public class Collidable extends ModifiableImage {
         return y;
     }
 
-    public CollisionImage getCollisionImage() {
-        return colImage;
+    public int getWidth() {
+        return colImage.getWidth();
     }
 
-    /**
-     * Does this object collides with another one ?
-     * @param col: the other object
-     */
-    public boolean collidesWith(Collidable col) {
-        return getCollisionImage().collidesWith(col.getCollisionImage(),
-                                                col.getX() - getX(),
-                                                col.getY() - getY());
+    public int getHeight() {
+        return colImage.getHeight();
     }
 
-    /**
-     * Is the pixel at (x, y) collision free ?
-     */
-    public boolean isCollisionFree(int x, int y) {
-        return getCollisionImage().isCollisionFree(x, y);
-    }
-
-    /**
-     * Destroy the pixel at the given position.
-     * It will be destroyed from the collision image and from the image
-     */
-    public void destroyAt(int x, int y) {
-        //setColor(x, y, new Color(0, 0, 0, 1));
-        getCollisionImage().destroyAt(x, y);
-    }
+    /* TODO: implement the collision stuff */
 }
