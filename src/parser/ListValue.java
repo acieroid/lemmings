@@ -11,6 +11,14 @@ class ListValue extends Value {
         values = new ArrayList<Value>();
     }
 
+    public String toString() {
+        String res = "(";
+        for (Value v : values)
+            res += v.toString() + " ";
+        res += ")";
+        return res;
+    }
+
     public ArrayList<Value> toList()
         throws LemmingsException {
         return values;

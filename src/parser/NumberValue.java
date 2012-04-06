@@ -9,6 +9,10 @@ class NumberValue extends Value {
         this.value = value;
     }
 
+    public String toString() {
+        return ("" + value);
+    }
+
     public int toNumber()
         throws LemmingsException {
         return value;

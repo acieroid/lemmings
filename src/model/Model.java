@@ -1,7 +1,6 @@
 package model;
 
 import view.View;
-import parser.SpriteFile;
 import util.LemmingsException;
 
 import java.util.Observable;
@@ -57,8 +56,6 @@ public class Model extends Observable {
         throws LemmingsException {
         running = true;
         this.map = manager.getMap(map);
-        System.out.println("Loading walker");
-        new SpriteFile("../data/characters/walker/left.sprite");
     }
 
     /**
@@ -87,6 +84,11 @@ public class Model extends Observable {
      */
     public boolean isPaused() {
         return !running;
+    }
+
+    public void addWalker(int x, int y)
+        throws LemmingsException {
+        characters.add(manager.getCharacter(x, y, "walker"));
     }
 }
     

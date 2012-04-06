@@ -9,6 +9,10 @@ class StringValue extends Value {
         this.value = value;
     }
 
+    public String toString() {
+        return value;
+    }
+
     public String toStr()
         throws LemmingsException {
         return value;

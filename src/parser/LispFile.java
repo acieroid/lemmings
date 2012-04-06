@@ -6,11 +6,58 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.FileInputStream;
 
-public class SpriteFile {
+/**
+ * TODO: peek the characters before reading it (avoid the need of
+ * putting a space before the closing paren)
+ */
+public class LispFile {
     private Value content;
-    public SpriteFile(String file)
+    public LispFile(String file)
         throws LemmingsException {
         parse(file);
+    }
+
+    public String getType()
+        throws LemmingsException {
+        return content.get(0).toStr();
+    }
+
+    public String getStringProperty(String name)
+        throws LemmingsException {
+        return getProperty(name).toStr();
+    }
+
+    public String getStringProperty(String name, int elem)
+        throws LemmingsException {
+        return getProperty(name).get(elem+1).toStr();
+    }
+
+    public int getNumberProperty(String name)
+        throws LemmingsException {
+        return getProperty(name).toNumber();
+    }
+
+    public int getNumberProperty(String name, int elem)
+        throws LemmingsException {
+        return getProperty(name).get(elem+1).toNumber();
+    }
+
+    private Value getProperty(String name)
+        throws LemmingsException {
+        boolean first = true;
+        for (Value v : content.toList()) {
+            if (first) {
+                first = false;
+                continue;
+            }
+
+            if (v.get(0).toStr().equals(name)) {
+                return v;
+            }
+        }
+        throw new LemmingsException("parser",
+                                    "no such property: " +
+                                    name);
     }
 
     private void parse(String file)
@@ -33,12 +80,13 @@ public class SpriteFile {
 
     private Value parseList(BufferedReader input)
         throws LemmingsException, java.io.IOException {
-        int c;
+        int c, n;
         ListValue value = new ListValue();
+        
         while ((c = input.read()) != -1) {
             if (c == ')')
                 return value;
-            if (c == '(')
+            else if (c == '(')
                 value.add(parseList(input));
             else if (c >= 'A' && c <= 'z')
                 value.add(parseAtom(input, c));

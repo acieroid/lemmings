@@ -95,6 +95,9 @@ public class View extends BasicGame implements Observer, InputListener {
         else {
             map.draw(-scrollX, -scrollY);
 
+            for (model.Character c : model.getCharacters())
+                g.drawRect(c.getX()-scrollX, c.getY()-scrollY, c.getWidth(), c.getHeight());
+
             if (model.isPaused())
                 drawCenteredText("Pause");
         }
@@ -158,7 +161,11 @@ public class View extends BasicGame implements Observer, InputListener {
 
     public void mouseClicked(int button, int x, int y, int clickCount) {
         if (!inMenu) {
-            controller.mouseClicked(x, y);
+            try {
+                controller.mouseClicked(x + scrollX, y + scrollY);
+            } catch (Exception e) {
+                log.add(e.getMessage());
+            }
         }
     }
 }

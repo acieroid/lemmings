@@ -25,9 +25,10 @@ class ResourceManager {
         return new Map(dir + "/maps/" + name + "/collision.png");
     }
 
-    public Character getCharacter(String name)
+    public Character getCharacter(int x, int y, String name)
         throws LemmingsException {
-        return new Character(0, 0,
-                             dir + "/characters/" + name + "/collision.png");
+        return new Character(x, y,
+                             dir + "/characters/" + name + "/" +
+                             name + ".character");
     }
 }                        
