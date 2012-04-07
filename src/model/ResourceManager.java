@@ -3,6 +3,7 @@ package model;
 import util.LemmingsException;
 
 import java.util.LinkedList;
+import java.util.Collections;
 import java.io.File;
 
 class ResourceManager {
@@ -17,7 +18,7 @@ class ResourceManager {
         LinkedList<String> l = new LinkedList<String>();
         for (File mapDir : mapsDir.listFiles())
             l.add(mapDir.getName());
-        //l.sort(); /* TODO */
+        Collections.sort(l, String.CASE_INSENSITIVE_ORDER);
         return l;
     }
 

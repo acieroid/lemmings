@@ -16,7 +16,8 @@ public class Collidable {
         this.x = x;
         this.y = y;
         try {
-            this.colImage = ImageIO.read(new File(colPath));
+            /* Note that colImage type is TYPE_4BYTE_ABGR */
+            colImage = ImageIO.read(new File(colPath));
         } catch (java.io.IOException e) {
             throw new LemmingsException("model/rm",
                                         "Can't load image '" + colPath + "': " +
@@ -47,10 +48,11 @@ public class Collidable {
 
     public boolean isCollisionFree(int x, int y, int w, int h) {
         /* TODO: is there something more efficient ? */
-        int[] argb = colImage.getRGB(x, y, w, h, null, 0, 0);
+        int[] argb = new int[x*y];
+        colImage.getRGB(x, y, w, h, argb, 0, 0);
         for (int pixel : argb) {
             int alpha = pixel >> 24;
-            if (alpha != 255)
+            if (alpha != 0) /* alpha seems to have 0 or -1 as value */
                 return false;
         }
         return true;
