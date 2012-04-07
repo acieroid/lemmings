@@ -96,7 +96,8 @@ public class View extends BasicGame implements Observer, InputListener {
             map.draw(-scrollX, -scrollY);
 
             for (model.Character c : model.getCharacters())
-                g.drawRect(c.getX()-scrollX, c.getY()-scrollY, c.getWidth(), c.getHeight());
+                g.drawRect(c.getX()-scrollX, c.getY()-scrollY,
+                           c.getWidth(), c.getHeight());
 
             if (model.isPaused())
                 drawCenteredText("Pause");

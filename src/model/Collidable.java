@@ -45,5 +45,14 @@ public class Collidable {
         return colImage.getHeight();
     }
 
-    /* TODO: implement the collision stuff */
+    public boolean isCollisionFree(int x, int y, int w, int h) {
+        /* TODO: is there something more efficient ? */
+        int[] argb = colImage.getRGB(x, y, w, h, null, 0, 0);
+        for (int pixel : argb) {
+            int alpha = pixel >> 24;
+            if (alpha != 255)
+                return false;
+        }
+        return true;
+    }
 }

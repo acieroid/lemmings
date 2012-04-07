@@ -72,11 +72,10 @@ public class Model extends Observable {
         running = false;
     }
 
-    /**
-     * Update the game
-     */
     public void update() {
-        /* TODO */
+        if (running)
+            for (Character c : characters)
+                c.update(map);
     }
 
     /**
@@ -88,7 +87,7 @@ public class Model extends Observable {
 
     public void addWalker(int x, int y)
         throws LemmingsException {
-        characters.add(manager.getCharacter(x, y, "walker"));
+        characters.add(manager.getCharacter(x, y,
+                                            new model.behaviors.WalkerBehavior()));
     }
 }
-    
