@@ -99,7 +99,7 @@ public class View extends BasicGame implements Observer, InputListener {
                 g.drawRect(c.getX()-scrollX, c.getY()-scrollY,
                            c.getWidth(), c.getHeight());
 
-            if (model.isPaused())
+            if (controller.isPaused())
                 drawCenteredText("Pause");
         }
         log.draw(10, height - 210);
@@ -140,7 +140,7 @@ public class View extends BasicGame implements Observer, InputListener {
                 menuItem.previous();
                 try {
                     log.add("Loading map: '" + mapName + "'");
-                    model.start(mapName);
+                    controller.start(mapName);
                     map = manager.getMap(mapName);
                     log.add("Map loaded.");
                 } catch (Exception e) {
@@ -152,10 +152,10 @@ public class View extends BasicGame implements Observer, InputListener {
         else {
             if (key == Input.KEY_ESCAPE) {
                 inMenu = true;
-                model.stop();
+                controller.stop();
             }
             else if (key == Input.KEY_P || key == Input.KEY_PAUSE) {
-                model.pause();
+                controller.pause();
             }
         }
     }

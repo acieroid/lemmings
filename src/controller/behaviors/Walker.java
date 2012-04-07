@@ -1,17 +1,19 @@
-package model.behaviors;
+package controller.behaviors;
 
-import model.CharacterBehavior;
+import controller.Behavior;
+import controller.CollisionMap;
 import model.Character;
-import model.Map;
 
-public class WalkerBehavior implements CharacterBehavior {
+public class Walker implements Behavior {
     private static int LEFT = -1;
     private static int RIGHT = 1;
 
+    private Character character;
     private int direction;
     private boolean isFalling;
     
-    public WalkerBehavior() {
+    public Walker(Character character) {
+        this.character = character;
         direction = RIGHT;
         isFalling = false;
     }
@@ -20,14 +22,14 @@ public class WalkerBehavior implements CharacterBehavior {
         return "walker";
     }
 
-    public void update(Character c, Map map) {
-        int x = c.getX();
-        int y = c.getY();
-        int width = c.getWidth();
-        int height = c.getHeight();
+    public void update(CollisionMap map) {
+        int x = character.getX();
+        int y = character.getY();
+        int width = character.getWidth();
+        int height = character.getHeight();
 
         if (map.isCollisionFree(x, y+1, width, height)) {
-            c.setPosition(x, y+1);
+            character.setY(y+1);
             isFalling = true;
         }
         else if (isFalling) {
@@ -38,10 +40,9 @@ public class WalkerBehavior implements CharacterBehavior {
             int dx = direction;
 
             if (map.isCollisionFree(x+dx, y, width, height))
-                c.setPosition(x+dx, y);
+                character.setX(x+dx);
             else
                 direction *= -1;
         }
     }
 }
-        

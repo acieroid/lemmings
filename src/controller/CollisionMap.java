@@ -1,4 +1,4 @@
-package model;
+package controller;
 
 import util.LemmingsException;
 
@@ -6,36 +6,20 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.File;
 
-public class Collidable {
-    private int x;
-    private int y;
+public class CollisionMap {
     private BufferedImage colImage;
 
-    public Collidable(int x, int y, String colPath)
+    public CollisionMap(String collisionImagePath)
         throws LemmingsException {
-        this.x = x;
-        this.y = y;
         try {
             /* Note that colImage type is TYPE_4BYTE_ABGR */
-            colImage = ImageIO.read(new File(colPath));
+            colImage = ImageIO.read(new File(collisionImagePath));
         } catch (java.io.IOException e) {
-            throw new LemmingsException("model/rm",
-                                        "Can't load image '" + colPath + "': " +
-                                        e.getMessage());
+            throw new LemmingsException("controller",
+                                        "Can't load image '" +
+                                        collisionImagePath +
+                                        "': " + e.getMessage());
         }
-    }
-
-    public void setPosition(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
     }
 
     public int getWidth() {

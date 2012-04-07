@@ -12,12 +12,10 @@ public class Model extends Observable {
     private Map map;
     private ArrayList<Character> characters;
     private ResourceManager manager;
-    private boolean running;
 
     public Model() {
         characters = new ArrayList<Character>();
         manager = new ResourceManager("../data");
-        running = false;
     }
 
     /**
@@ -25,6 +23,14 @@ public class Model extends Observable {
      */
     public Map getMap() {
         return map;
+    }
+
+    /**
+     * Set the current map
+     */
+    public void setMap(String map)
+        throws LemmingsException {
+        this.map = manager.getMap(map);
     }
 
     /**
@@ -49,45 +55,10 @@ public class Model extends Observable {
         addObserver(v);
     }
 
-    /**
-     * Start the game with a certain map
-     */
-    public void start(String map)
+    public Character addCharacter(int x, int y, String name)
         throws LemmingsException {
-        running = true;
-        this.map = manager.getMap(map);
-    }
-
-    /**
-     * Pause/unpause the game
-     */
-    public void pause() {
-        running = !running;
-    }
-
-    /**
-     * Stop the game
-     */
-    public void stop() {
-        running = false;
-    }
-
-    public void update() {
-        if (running)
-            for (Character c : characters)
-                c.update(map);
-    }
-
-    /**
-     * @return the pause state of the model
-     */
-    public boolean isPaused() {
-        return !running;
-    }
-
-    public void addWalker(int x, int y)
-        throws LemmingsException {
-        characters.add(manager.getCharacter(x, y,
-                                            new model.behaviors.WalkerBehavior()));
+        Character c = manager.getCharacter(x, y, name);
+        characters.add(c);
+        return c;
     }
 }
