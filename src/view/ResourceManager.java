@@ -5,7 +5,7 @@ import util.LemmingsException;
 import java.awt.Font;
 
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.UnicodeFont;
 
 class ResourceManager {
     private String dir;
@@ -25,7 +25,8 @@ class ResourceManager {
         }
     }
 
-    public TrueTypeFont getTTF(String fontName, int spec, int size) {
-        return new TrueTypeFont(new Font(dir + "/" + fontName, spec, size), true);
+    public UnicodeFont getTTF(String fontName, int size, boolean bold)
+        throws SlickException {
+        return new UnicodeFont(dir + "/" + fontName, size, bold, false);
     }
 }

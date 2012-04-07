@@ -17,7 +17,7 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.InputListener;
-import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.Color;
 
 public class View extends BasicGame implements Observer, InputListener {
@@ -37,7 +37,7 @@ public class View extends BasicGame implements Observer, InputListener {
 
     private ResourceManager manager;
     private Map map;
-    private TrueTypeFont font;
+    private UnicodeFont font;
 
     public View() {
         super("Lemmings");
@@ -59,9 +59,9 @@ public class View extends BasicGame implements Observer, InputListener {
     public void init(GameContainer container)
         throws SlickException {
         menuItem = model.getAllMaps().listIterator();
-        font = manager.getTTF("font.ttf", Font.BOLD, 20);
+        font = manager.getTTF("font.ttf", 20, true);
         log = new Log(width - 20, 200,
-                      manager.getTTF("font.ttf", Font.PLAIN, 12));
+                      manager.getTTF("font.ttf", 12, false));
         container.getInput().addPrimaryListener(this);
     }
 
@@ -107,8 +107,8 @@ public class View extends BasicGame implements Observer, InputListener {
 
     private void drawCenteredText(String text) {
         font.drawString(width/2 - font.getWidth(text)/2,
-                        height/2 - font.getHeight()/2,
-                        text, Color.white);
+                        height/2 - font.getLineHeight()/2,
+                        text, Color.green);
     }
         
     public void start() {
