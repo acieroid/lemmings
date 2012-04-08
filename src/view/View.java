@@ -36,8 +36,10 @@ public class View extends BasicGame implements Observer, InputListener {
     private Log log;
 
     private ResourceManager manager;
-    private Map map;
     private TrueTypeFont font;
+
+    private MapImage map;
+    private ArrayList<CharacterAnimation> characters;
 
     public View() {
         super("Lemmings");
@@ -46,6 +48,7 @@ public class View extends BasicGame implements Observer, InputListener {
         scrollingDir = 0;
         inMenu = true;
         manager = new ResourceManager("../data");
+        characters = new ArrayList<CharacterAnimation>();
     }
 
     public void setModel(Model m) {
@@ -161,9 +164,11 @@ public class View extends BasicGame implements Observer, InputListener {
             }
             else if (key == Input.KEY_F2) {
                 controller.decreaseSpeed();
+                log.add("Speed set to " + controller.getSpeed());
             }
             else if (key == Input.KEY_F3) {
                 controller.increaseSpeed();
+                log.add("Speed set to " + controller.getSpeed());
             }
         }
     }
