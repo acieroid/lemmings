@@ -3,9 +3,11 @@ package view;
 import util.LemmingsException;
 
 import java.awt.Font;
+import java.awt.Color;
 
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.font.effects.ColorEffect;
 
 class ResourceManager {
     private String dir;
@@ -27,6 +29,10 @@ class ResourceManager {
 
     public UnicodeFont getTTF(String fontName, int size, boolean bold)
         throws SlickException {
-        return new UnicodeFont(dir + "/" + fontName, size, bold, false);
+        UnicodeFont font = new UnicodeFont(dir + "/" + fontName, size, bold, false);
+        font.addAsciiGlyphs();
+        font.getEffects().add(new ColorEffect(java.awt.Color.white)); /* font is green ?! */
+        font.loadGlyphs();
+        return font;
     }
 }
