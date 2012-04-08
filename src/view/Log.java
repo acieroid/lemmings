@@ -3,20 +3,20 @@ package view;
 import java.util.Vector;
 
 import org.newdawn.slick.Renderable;
-import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Color;
 
 class Log implements Renderable {
     private Vector<String> lines;
-    private UnicodeFont font;
+    private Font font;
     private int maxMessages;
     private int width, height;
     private boolean activated;
 
     private static int offset = 1;
 
-    public Log(int width, int height, UnicodeFont font) {
+    public Log(int width, int height, Font font) {
         this.font = font;
         this.width = width;
         this.height = height;

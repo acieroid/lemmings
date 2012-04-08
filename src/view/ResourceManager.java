@@ -2,12 +2,11 @@ package view;
 
 import util.LemmingsException;
 
-import java.awt.Font;
 import java.awt.Color;
 
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.UnicodeFont;
-import org.newdawn.slick.font.effects.ColorEffect;
+import org.newdawn.slick.Font;
+import org.newdawn.slick.AngelCodeFont;
 
 class ResourceManager {
     private String dir;
@@ -27,12 +26,9 @@ class ResourceManager {
         }
     }
 
-    public UnicodeFont getTTF(String fontName, int size, boolean bold)
+    public Font getFont(String fontName)
         throws SlickException {
-        UnicodeFont font = new UnicodeFont(dir + "/" + fontName, size, bold, false);
-        font.addAsciiGlyphs();
-        font.getEffects().add(new ColorEffect(java.awt.Color.white)); /* font is green ?! */
-        font.loadGlyphs();
-        return font;
+        return new AngelCodeFont(dir + "/" + fontName + ".fnt",
+                                 dir + "/" + fontName + ".tga");
     }
 }
