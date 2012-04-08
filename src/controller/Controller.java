@@ -15,17 +15,20 @@ public class Controller {
     private ArrayList<Behavior> behaviors;
     private CollisionMap colMap;
     private ResourceManager manager;
+    private int speed;
 
     public Controller() {
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
                 public void run() {
+                    /* TODO: delta */
                     if (!isPaused())
                         update();
                 }
             }, 300, 100);
         behaviors = new ArrayList<Behavior>();
         manager = new ResourceManager("../data");
+        speed = 5;
     }
 
     public void setModel(Model m) {
@@ -59,7 +62,7 @@ public class Controller {
     public void update() {
         if (running) {
             for (Behavior b : behaviors)
-                b.update(colMap);
+                b.update(colMap, speed);
         }
     }
 
@@ -68,6 +71,22 @@ public class Controller {
      */
     public boolean isPaused() {
         return !running;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public void increaseSpeed() {
+        setSpeed(getSpeed() + 1);
+    }
+
+    public void decreaseSpeed() {
+        setSpeed(Math.max(getSpeed() - 1, 0));
     }
 
     public void mouseClicked(int x, int y)

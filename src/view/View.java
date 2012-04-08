@@ -59,6 +59,8 @@ public class View extends BasicGame implements Observer, InputListener {
     public void init(GameContainer container)
         throws SlickException {
         menuItem = model.getAllMaps().listIterator();
+        /* This step makes the loading *really* slow, see the 'font'
+         * branch for a possible fix */
         font = manager.getTTF("font.ttf", Font.BOLD, 20);
         log = new Log(width - 20, 200,
                       manager.getTTF("font.ttf", Font.PLAIN, 12));
@@ -156,6 +158,12 @@ public class View extends BasicGame implements Observer, InputListener {
             }
             else if (key == Input.KEY_P || key == Input.KEY_PAUSE) {
                 controller.pause();
+            }
+            else if (key == Input.KEY_F2) {
+                controller.decreaseSpeed();
+            }
+            else if (key == Input.KEY_F3) {
+                controller.increaseSpeed();
             }
         }
     }

@@ -22,27 +22,34 @@ public class Walker implements Behavior {
         return "walker";
     }
 
-    public void update(CollisionMap map) {
+    public void update(CollisionMap map, int step) {
         int x = character.getX();
         int y = character.getY();
         int width = character.getWidth();
         int height = character.getHeight();
 
-        if (map.isCollisionFree(x, y+1, width, height)) {
-            character.setY(y+1);
+        if (map.isCollisionFree(x, y+step, width, height)) {
+            character.setY(y+step);
             isFalling = true;
         }
-        else if (isFalling) {
+        else if (step == 1 && isFalling) {
             isFalling = false;
+        }
+        else if (step != 1) {
+            for (int i = 0; i < step; i++)
+                update(map, 1);
         }
 
         if (!isFalling) {
-            int dx = direction;
+            int dx = step*direction;
 
             if (map.isCollisionFree(x+dx, y, width, height))
                 character.setX(x+dx);
-            else
+            else if (step == 1)
                 direction *= -1;
+            else if (step != 1)
+                for (int i = 0; i < step; i++)
+                    update(map, 1);
         }
     }
 }
