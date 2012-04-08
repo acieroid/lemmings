@@ -18,6 +18,12 @@ class Value {
                                     toString());
     }
 
+    public boolean toBoolean()
+        throws LemmingsException {
+        throw new LemmingsException("parser", "value is not a boolean: " +
+                                     toString());
+    }
+
     public String toStr()
         throws LemmingsException {
         throw new LemmingsException("parser", "value is not a string: " +

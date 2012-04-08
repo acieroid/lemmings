@@ -58,6 +58,12 @@ public class LispFile {
         }
     }
 
+    public boolean getBooleanProperty(String name)
+        throws LemmingsException {
+        return getProperty(name).get(1).toBoolean();
+    }
+        
+
     private Value getProperty(String name)
         throws LemmingsException {
         boolean first = true;
@@ -110,6 +116,8 @@ public class LispFile {
                 value.add(parseNumber(input, c));
             else if (c == '"')
                 value.add(parseString(input));
+            else if (c == '#')
+                value.add(parseBoolean(input));
         }
         return value;
     }
@@ -158,5 +166,21 @@ public class LispFile {
         throw new LemmingsException("parser",
                                     "Caught EOF when parsing string " +
                                     "(string was: \"" + str + "\")");
+    }
+
+    private Value parseBoolean(BufferedReader input)
+        throws LemmingsException, java.io.IOException {
+        int c = input.read();
+        if (c == 't')
+            return new BooleanValue(true);
+        else if (c == 'f')
+            return new BooleanValue(false);
+        else if (c == -1)
+            throw new LemmingsException("parser",
+                                        "Caught EOF when parsing boolean");
+        else
+            throw new LemmingsException("parser",
+                                        "Invalid character after a '#': " +
+                                        (char) c + " (a boolean should be #f or #t)");
     }
 }

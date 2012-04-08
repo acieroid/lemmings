@@ -20,9 +20,6 @@ public class CharacterAnimation extends Animation {
         definition = new LispFile(directory + "/" +
                                   c.getName() + ".character");
 
-        /* TODO: put direction in model.Character instead of
-         * behavior and use it to determine sprite */
-
         String direction = c.getDirection() == Character.RIGHT ?
             "right-sprite" : "left-sprite";
         sprite = new LispFile(directory + "/" +
@@ -46,6 +43,7 @@ public class CharacterAnimation extends Animation {
             addFrame(sheet.getSprite(i, positionYoffset/sizeY),
                      sprite.getNumberProperty("speed"));
         }
+        setLooping(sprite.getBooleanProperty("loop"));
         setAutoUpdate(true);
     }
 
