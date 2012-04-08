@@ -23,8 +23,11 @@ public class CharacterAnimation extends Animation {
         /* TODO: put direction in model.Character instead of
          * behavior and use it to determine sprite */
 
+        String direction = c.getDirection() == Character.RIGHT ?
+            "right-sprite" : "left-sprite";
         sprite = new LispFile(directory + "/" +
-                              definition.getStringProperty("right-sprite"));
+                              definition.getStringProperty(direction));
+
 
         try {
             sheet = new SpriteSheet(directory + "/" +
@@ -36,9 +39,11 @@ public class CharacterAnimation extends Animation {
                                         "Can't load spritesheet for character '" +
                                         c.getName() + ": " + e.getMessage());
         }
-        
+
+        int sizeY = sprite.getNumberProperty("size", 1);
+        int positionYoffset = sprite.getNumberProperty("position", 1, 0);
         for (int i = 0; i < sprite.getNumberProperty("array", 0); i++) {
-            addFrame(sheet.getSprite(i, 0), /* TODO: position */
+            addFrame(sheet.getSprite(i, positionYoffset/sizeY),
                      sprite.getNumberProperty("speed"));
         }
         setAutoUpdate(true);
