@@ -30,13 +30,11 @@ public class View extends BasicGame implements Observer, InputListener {
     private int scrollingDir;
     private static int scrollSpeed = 1;
 
-    private boolean inMenu; /* TODO: use strategy pattern ? Or just a menu class */
-    private ListIterator<String> menuItem;
-
+    private Font font;
+    private Menu menu;
     private Log log;
 
     private ResourceManager manager;
-    private Font font;
 
     private MapImage map;
     private ArrayList<CharacterAnimation> characters;
@@ -46,7 +44,6 @@ public class View extends BasicGame implements Observer, InputListener {
         scrollX = 0;
         scrollY = 0;
         scrollingDir = 0;
-        inMenu = true;
         manager = new ResourceManager("../data");
         characters = new ArrayList<CharacterAnimation>();
     }
@@ -62,10 +59,11 @@ public class View extends BasicGame implements Observer, InputListener {
     public void init(GameContainer container)
         throws SlickException {
         try {
-            menuItem = model.getAllMaps().listIterator();
             font = manager.getFont("font");
-            log = new Log(width - 20, 200,
-                          manager.getFont("font"));
+            menu = new Menu(width, height, font,
+                            model.getAllMaps());
+            menu.activate();
+            log = new Log(width - 20, 200, font);
             container.getInput().addPrimaryListener(this);
         } catch (LemmingsException e) {
             throw new SlickException(e.toString());
@@ -76,7 +74,8 @@ public class View extends BasicGame implements Observer, InputListener {
         /* Do nothing related to the model here */
         Input input = container.getInput();
 
-        if (!inMenu) {
+        if (!menu.isActivated()) {
+            /* Handle scrolling */
             if (input.isKeyDown(Input.KEY_LEFT))
                 scrollX = Math.max(scrollX - (scrollSpeed * delta), 0);
             if (input.isKeyDown(Input.KEY_RIGHT))
@@ -110,9 +109,8 @@ public class View extends BasicGame implements Observer, InputListener {
         
 
     public void render(GameContainer container, Graphics g) {
-        if (inMenu) {
-            drawCenteredText("< " + menuItem.next() + " >");
-            menuItem.previous();
+        if (menu.isActivated()) {
+            menu.draw();
         }
         else {
             map.draw(-scrollX, -scrollY);
@@ -146,35 +144,23 @@ public class View extends BasicGame implements Observer, InputListener {
     public void keyPressed(int key, char c) {
         if (key == Input.KEY_F1)
             log.toggle();
-        if (inMenu) {
-            if (key == Input.KEY_LEFT) {
-                if (menuItem.hasPrevious())
-                    menuItem.previous();
-            }
-            else if (key == Input.KEY_RIGHT) {
-                menuItem.next();
-                if (!menuItem.hasNext())
-                    /* We're on the last element, so we go back from one */
-                    menuItem.previous();
-            }
-            else if (key == Input.KEY_ENTER) {
-                inMenu = false;
-                String mapName = menuItem.next();
-                menuItem.previous();
+        if (menu.isActivated()) {
+            if (menu.keyPressed(key)) {
+                String mapName = menu.getMapName();
                 try {
                     log.add("Loading map: '" + mapName + "'");
                     controller.start(mapName);
                     map = manager.getMap(mapName);
                     log.add("Map loaded.");
                 } catch (Exception e) {
-                    inMenu = true;
+                    menu.activate();
                     log.add(e.getMessage());
                 }
             }
         }
         else {
             if (key == Input.KEY_ESCAPE) {
-                inMenu = true;
+                menu.activate();
                 controller.stop();
             }
             else if (key == Input.KEY_P || key == Input.KEY_PAUSE) {
@@ -192,7 +178,7 @@ public class View extends BasicGame implements Observer, InputListener {
     }
 
     public void mouseClicked(int button, int x, int y, int clickCount) {
-        if (!inMenu) {
+        if (!menu.isActivated()) {
             try {
                 controller.mouseClicked(x + scrollX, y + scrollY);
             } catch (Exception e) {
