@@ -1,12 +1,14 @@
 package view;
 
 import model.Model;
+import model.Character;
 import controller.Controller;
 import util.LemmingsException;
 
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ListIterator;
+import java.util.ArrayList;
 
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.SlickException;
@@ -28,13 +30,12 @@ public class View extends BasicGame implements Observer, InputListener {
     private int scrollingDir;
     private static int scrollSpeed = 1;
 
-    private boolean inMenu; /* TODO: use strategy pattern ? */
+    private boolean inMenu; /* TODO: use strategy pattern ? Or just a menu class */
     private ListIterator<String> menuItem;
 
     private Log log;
 
     private ResourceManager manager;
-    private Map map;
     private Font font;
 
     private MapImage map;
@@ -60,11 +61,15 @@ public class View extends BasicGame implements Observer, InputListener {
 
     public void init(GameContainer container)
         throws SlickException {
-        menuItem = model.getAllMaps().listIterator();
-        font = manager.getFont("font");
-        log = new Log(width - 20, 200,
-                      manager.getFont("font"));
-        container.getInput().addPrimaryListener(this);
+        try {
+            menuItem = model.getAllMaps().listIterator();
+            font = manager.getFont("font");
+            log = new Log(width - 20, 200,
+                          manager.getFont("font"));
+            container.getInput().addPrimaryListener(this);
+        } catch (LemmingsException e) {
+            throw new SlickException(e.toString());
+        }
     }
 
     public void update(GameContainer container, int delta) {
@@ -86,8 +91,23 @@ public class View extends BasicGame implements Observer, InputListener {
     }
 
     public void update(Observable observable, Object nothing) {
-        /* TODO: Call render ? */
+        update(observable, (Character) nothing); /* TODO: this *really* sucks */
     }
+
+    /**
+     * This method is called when a new character is added to the model
+     * @param observable: the model
+     * @param character: the new character
+     */
+    public void update(Observable observable, Character character) {
+        log.add("Character added");
+        try {
+            characters.add(manager.getAnimation(character));
+        } catch (LemmingsException e) {
+            log.add(e.getMessage());
+        }
+    }
+        
 
     public void render(GameContainer container, Graphics g) {
         if (inMenu) {
@@ -97,9 +117,10 @@ public class View extends BasicGame implements Observer, InputListener {
         else {
             map.draw(-scrollX, -scrollY);
 
-            for (model.Character c : model.getCharacters())
-                g.drawRect(c.getX()-scrollX, c.getY()-scrollY,
-                           c.getWidth(), c.getHeight());
+            for (CharacterAnimation a : characters)
+                g.drawAnimation(a,
+                                a.getX()-scrollX, a
+                                .getY()-scrollY);
 
             if (controller.isPaused())
                 drawCenteredText("Pause");

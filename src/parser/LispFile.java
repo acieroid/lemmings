@@ -24,7 +24,7 @@ public class LispFile {
 
     public String getStringProperty(String name)
         throws LemmingsException {
-        return getProperty(name).toStr();
+        return getProperty(name).get(1).toStr();
     }
 
     public String getStringProperty(String name, int elem)
@@ -34,7 +34,7 @@ public class LispFile {
 
     public int getNumberProperty(String name)
         throws LemmingsException {
-        return getProperty(name).toNumber();
+        return getProperty(name).get(1).toNumber();
     }
 
     public int getNumberProperty(String name, int elem)

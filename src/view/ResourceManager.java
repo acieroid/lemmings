@@ -1,6 +1,7 @@
 package view;
 
 import util.LemmingsException;
+import model.Character;
 
 import java.awt.Color;
 
@@ -15,10 +16,10 @@ class ResourceManager {
         this.dir = directory;
     }
 
-    public Map getMap(String name)
+    public MapImage getMap(String name)
         throws LemmingsException {
         try {
-            return new Map(dir + "/maps/" + name + "/image.png");
+            return new MapImage(dir + "/maps/" + name + "/image.png");
         } catch (SlickException e) {
             throw new LemmingsException("view/rm",
                                         "Can't load map '" + name + "': " +
@@ -27,8 +28,19 @@ class ResourceManager {
     }
 
     public Font getFont(String fontName)
-        throws SlickException {
-        return new AngelCodeFont(dir + "/" + fontName + ".fnt",
-                                 dir + "/" + fontName + ".tga");
+        throws LemmingsException {
+        try {
+            return new AngelCodeFont(dir + "/" + fontName + ".fnt",
+                                     dir + "/" + fontName + ".tga");
+        } catch (SlickException e) {
+            throw new LemmingsException("view/rm",
+                                        "Can't load font '" + fontName + "': " +
+                                        e.getMessage());
+        }
+    }
+
+    public CharacterAnimation getAnimation(Character c)
+        throws LemmingsException {
+        return new CharacterAnimation(c, dir + "/characters/" + c.getName());
     }
 }

@@ -59,6 +59,8 @@ public class Model extends Observable {
         throws LemmingsException {
         Character c = manager.getCharacter(x, y, name);
         characters.add(c);
+        setChanged();
+        notifyObservers(c);
         return c;
     }
 }
