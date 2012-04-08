@@ -2,10 +2,11 @@ package view;
 
 import util.LemmingsException;
 
-import java.awt.Font;
+import java.awt.Color;
 
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.Font;
+import org.newdawn.slick.AngelCodeFont;
 
 class ResourceManager {
     private String dir;
@@ -25,7 +26,9 @@ class ResourceManager {
         }
     }
 
-    public TrueTypeFont getTTF(String fontName, int spec, int size) {
-        return new TrueTypeFont(new Font(dir + "/" + fontName, spec, size), true);
+    public Font getFont(String fontName)
+        throws SlickException {
+        return new AngelCodeFont(dir + "/" + fontName + ".fnt",
+                                 dir + "/" + fontName + ".tga");
     }
 }

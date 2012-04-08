@@ -8,8 +8,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.ListIterator;
 
-import java.awt.Font;
-
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.GameContainer;
@@ -17,7 +15,7 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.InputListener;
-import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.Color;
 
 public class View extends BasicGame implements Observer, InputListener {
@@ -36,7 +34,8 @@ public class View extends BasicGame implements Observer, InputListener {
     private Log log;
 
     private ResourceManager manager;
-    private TrueTypeFont font;
+    private Map map;
+    private Font font;
 
     private MapImage map;
     private ArrayList<CharacterAnimation> characters;
@@ -62,11 +61,9 @@ public class View extends BasicGame implements Observer, InputListener {
     public void init(GameContainer container)
         throws SlickException {
         menuItem = model.getAllMaps().listIterator();
-        /* This step makes the loading *really* slow, see the 'font'
-         * branch for a possible fix */
-        font = manager.getTTF("font.ttf", Font.BOLD, 20);
+        font = manager.getFont("font");
         log = new Log(width - 20, 200,
-                      manager.getTTF("font.ttf", Font.PLAIN, 12));
+                      manager.getFont("font"));
         container.getInput().addPrimaryListener(this);
     }
 
@@ -112,7 +109,7 @@ public class View extends BasicGame implements Observer, InputListener {
 
     private void drawCenteredText(String text) {
         font.drawString(width/2 - font.getWidth(text)/2,
-                        height/2 - font.getHeight()/2,
+                        height/2 - font.getLineHeight()/2,
                         text, Color.white);
     }
         
