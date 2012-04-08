@@ -15,8 +15,7 @@ public class Menu {
     private Font font;
 
     private LinkedList<String> maps;
-    private ListIterator<String> item;
-
+    private ListIterator<String> mapItem;
 
     public Menu(int w, int h,
                 Font font,
@@ -25,7 +24,7 @@ public class Menu {
         this.font = font;
         width = w;
         height = h;
-        item = maps.listIterator();
+        mapItem = maps.listIterator();
     }
 
     private void drawCenteredText(String text) {
@@ -35,8 +34,8 @@ public class Menu {
     }
 
     public void draw() {
-        drawCenteredText("< " + item.next() + " >");
-        item.previous();
+        drawCenteredText("< " + mapItem.next() + " >");
+        mapItem.previous();
     }
 
     /**
@@ -45,14 +44,14 @@ public class Menu {
      */
     public boolean keyPressed(int key) {
         if (key == Input.KEY_LEFT) {
-            if (item.hasPrevious())
-                item.previous();
+            if (mapItem.hasPrevious())
+                mapItem.previous();
         }
         else if (key == Input.KEY_RIGHT) {
-            item.next();
-            if (!item.hasNext())
+            mapItem.next();
+            if (!mapItem.hasNext())
                 /* We're on the last element, so we go back from one */
-                item.previous();
+                mapItem.previous();
         }
         else if (key == Input.KEY_ENTER) {
             activated = false;
@@ -79,8 +78,8 @@ public class Menu {
      * Return the name of the current selected map
      */
     public String getMapName() {
-        String mapName = item.next();
-        item.previous(); /* srsly java ?! */
+        String mapName = mapItem.next();
+        mapItem.previous(); /* srsly java ?! */
         return mapName;
     }
 }
