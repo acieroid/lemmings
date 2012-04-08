@@ -21,7 +21,7 @@ import org.newdawn.slick.Font;
 import org.newdawn.slick.Color;
 
 public class View extends BasicGame implements Observer, InputListener {
-    private static int width = 800, height = 600;
+    private static int width = 640, height = 480;
 
     private Model model;
     private Controller controller;
@@ -135,6 +135,8 @@ public class View extends BasicGame implements Observer, InputListener {
     public void start() {
         try {
             AppGameContainer container = new AppGameContainer(this, width, height, false);
+            container.setShowFPS(true);
+            container.setTargetFrameRate(60);
             container.start();
         } catch (Exception e) {
             System.out.println("Can't launch the view: " + e.getMessage());
@@ -165,6 +167,12 @@ public class View extends BasicGame implements Observer, InputListener {
             }
             else if (key == Input.KEY_P || key == Input.KEY_PAUSE) {
                 controller.pause();
+                for (CharacterAnimation animation : characters) {
+                    if (controller.isPaused())
+                        animation.stop();
+                    else
+                        animation.start();
+                }
             }
             else if (key == Input.KEY_F2) {
                 controller.decreaseSpeed();
