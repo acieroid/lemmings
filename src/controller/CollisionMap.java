@@ -40,12 +40,16 @@ public class CollisionMap {
     public boolean isCollisionFree(int x, int y, int w, int h) {
         /* This is the bottleneck function */
         int pixel, i, j;
+        /* Only check the border of the rectangle */
         for (i = 0; i < w; i++) {
-            for (j = 0; j < h; j++) {
-                if (map[x+i][y+j] != 0)
-                    /* alpha seems to have 0 or -1 as value */
-                    return false;
-            }
+            if (map[x+i][y] != 0 ||
+                map[x+i][y+h-1] != 0)
+                return false;
+        }
+        for (j = 0; j < h; j++) {
+            if (map[x][y+j] != 0 ||
+                map[x+w][y+j] != 0)
+                return false;
         }
         return true;
     }

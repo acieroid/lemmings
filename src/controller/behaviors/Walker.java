@@ -23,7 +23,7 @@ public class Walker implements Behavior {
 
         if (map.isCollisionFree(x, y+1, width, height)) {
             character.setY(y+1);
-            if (!character.isFalling())
+            if (!character.isFalling() && map.isCollisionFree(x, y+2, width, height))
                 character.setFalling(true);
         }
         else if (character.isFalling()) {
