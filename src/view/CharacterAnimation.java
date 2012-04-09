@@ -8,23 +8,45 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.SpriteSheet;
 
-public class CharacterAnimation extends Animation {
+public class CharacterAnimation {
+    private Animation animation;
     private Character character;
     private LispFile definition;
     private LispFile sprite;
     private SpriteSheet sheet;
+    private String resourceDirectory, directory;
+    private boolean changed;
 
-    public CharacterAnimation(Character c, String directory)
+    public CharacterAnimation(Character c, String directory, String animation)
         throws LemmingsException {
         character = c;
-        definition = new LispFile(directory + "/" +
-                                  c.getName() + ".character");
+        resourceDirectory = directory;
+        setAnimation(animation);
+        loadFromDefinition();
+    }
 
-        String direction = c.getDirection() == Character.RIGHT ?
+    public void setAnimation(String animation)
+        throws LemmingsException {
+        directory = resourceDirectory + "/characters/" + animation;
+        definition = new LispFile(directory + "/" +
+                                  character.getName() + ".character");
+
+        changed = true;
+    }
+
+    public void changeDirection()
+        throws LemmingsException {
+        changed = true;
+    }
+
+    private void loadFromDefinition()
+        throws LemmingsException {
+        animation = new Animation();
+
+        String direction = character.getDirection() == Character.RIGHT ?
             "right-sprite" : "left-sprite";
         sprite = new LispFile(directory + "/" +
                               definition.getStringProperty(direction));
-
 
         try {
             sheet = new SpriteSheet(directory + "/" +
@@ -34,17 +56,25 @@ public class CharacterAnimation extends Animation {
         } catch (SlickException e) {
             throw new LemmingsException("view",
                                         "Can't load spritesheet for character '" +
-                                        c.getName() + ": " + e.getMessage());
+                                        character.getName() +
+                                        ": " + e.getMessage());
         }
 
         int sizeY = sprite.getNumberProperty("size", 1);
         int positionYoffset = sprite.getNumberProperty("position", 1, 0);
         for (int i = 0; i < sprite.getNumberProperty("array", 0); i++) {
-            addFrame(sheet.getSprite(i, positionYoffset/sizeY),
-                     sprite.getNumberProperty("speed"));
+            animation.addFrame(sheet.getSprite(i, positionYoffset/sizeY),
+                               sprite.getNumberProperty("speed"));
         }
-        setLooping(sprite.getBooleanProperty("loop"));
-        setAutoUpdate(true);
+        animation.setLooping(sprite.getBooleanProperty("loop"));
+        animation.setAutoUpdate(true);
+        changed = false;
+    }
+
+    public void checkIfChanged()
+        throws LemmingsException {
+        if (changed)
+            loadFromDefinition();
     }
 
     public int getX() {
@@ -53,5 +83,21 @@ public class CharacterAnimation extends Animation {
 
     public int getY() {
         return character.getY();
+    }
+
+    public Character getCharacter() {
+        return character;
+    }
+
+    public Animation getAnimation() {
+        return animation;
+    }
+
+    public void stop() {
+        animation.stop();
+    }
+
+    public void start() {
+        animation.start();
     }
 }

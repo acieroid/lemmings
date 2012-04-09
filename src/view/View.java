@@ -17,6 +17,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.InputListener;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Animation;
 
 public class View extends BasicGame implements InputListener {
     private static int width = 640, height = 480;
@@ -107,7 +108,20 @@ public class View extends BasicGame implements InputListener {
      * @param change: the change (@see Character.CHANGE*)
      */
     public void characterChanged(Character character, int change) {
-        log.add("Character changed its state: " + change);
+        try {
+            for (CharacterAnimation a : characters) {
+                if (a.getCharacter() == character) {
+                    if (change == Character.CHANGE_FALLING)
+                        a.setAnimation(character.getName());
+                    else if (change == Character.CHANGE_DIRECTION)
+                        a.changeDirection();
+
+                    break;
+                }
+            }
+        } catch (LemmingsException e) {
+            log.add(e.getMessage());
+        }
     }
 
     public void render(GameContainer container, Graphics g) {
@@ -117,10 +131,16 @@ public class View extends BasicGame implements InputListener {
         else {
             map.draw(-scrollX, -scrollY);
 
-            for (CharacterAnimation a : characters)
-                g.drawAnimation(a,
-                                a.getX()-scrollX, a
-                                .getY()-scrollY);
+            for (CharacterAnimation a : characters) {
+                try {
+                    a.checkIfChanged();
+                    g.drawAnimation(a.getAnimation(),
+                                    a.getX()-scrollX, a
+                                    .getY()-scrollY);
+                } catch (LemmingsException e) {
+                    log.add(e.getMessage());
+                }
+            }
 
             if (controller.isPaused())
                 drawCenteredText("Pause");

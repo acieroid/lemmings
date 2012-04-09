@@ -41,6 +41,6 @@ class ResourceManager {
 
     public CharacterAnimation getAnimation(Character c)
         throws LemmingsException {
-        return new CharacterAnimation(c, dir + "/characters/" + c.getName());
+        return new CharacterAnimation(c, dir, c.getName());
     }
 }

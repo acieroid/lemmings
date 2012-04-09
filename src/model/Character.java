@@ -4,6 +4,7 @@ public class Character extends Entity {
     public static int LEFT = -1;
     public static int RIGHT = 1;
 
+    public static int CHANGE_NONE = 0;
     public static int CHANGE_DIRECTION = 1;
     public static int CHANGE_FALLING = 2;
     public static int CHANGE_BEHAVIOR = 3;
@@ -33,6 +34,13 @@ public class Character extends Entity {
     public void changeDirection() {
         direction *= -1;
         getView().characterChanged(this, CHANGE_DIRECTION);
+    }
+
+    public String getName() {
+        if (falling)
+            return "faller";
+        else
+            return super.getName();
     }
 
     public void setName(String name) {

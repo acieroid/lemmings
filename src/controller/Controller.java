@@ -99,6 +99,7 @@ public class Controller {
     public void mouseClicked(int x, int y)
         throws LemmingsException {
         Character c = model.addCharacter(x, y, "walker");
+        c.setFalling(true);
         synchronized (behaviors) {
             behaviors.add(new controller.behaviors.Walker(c));
         }
