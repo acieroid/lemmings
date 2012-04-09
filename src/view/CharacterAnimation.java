@@ -17,6 +17,8 @@ public class CharacterAnimation {
     private String resourceDirectory, directory;
     private boolean changed;
 
+    private String anim;
+
     public CharacterAnimation(Character c, String directory, String animation)
         throws LemmingsException {
         character = c;
@@ -25,11 +27,15 @@ public class CharacterAnimation {
         loadFromDefinition();
     }
 
-    public void setAnimation(String animation)
+    /* TODO: take the spritesheet as argument (will improve
+     * performance and memory consumption) */
+    public synchronized void setAnimation(String animation)
         throws LemmingsException {
+        anim = animation;
         directory = resourceDirectory + "/characters/" + animation;
+        System.out.println("Setting animation: " + animation + ", directory: " + directory);
         definition = new LispFile(directory + "/" +
-                                  character.getName() + ".character");
+                                  animation + ".character");
 
         changed = true;
     }
@@ -39,7 +45,7 @@ public class CharacterAnimation {
         changed = true;
     }
 
-    private void loadFromDefinition()
+    private synchronized void loadFromDefinition()
         throws LemmingsException {
         animation = new Animation();
 
