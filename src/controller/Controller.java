@@ -63,7 +63,8 @@ public class Controller {
         if (running) {
             synchronized (behaviors) {
                 for (Behavior b : behaviors)
-                    b.update(colMap, speed);
+                    for (int i = 0; i < speed; i++)
+                        b.update(colMap);
             }
         }
     }
