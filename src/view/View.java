@@ -57,16 +57,13 @@ public class View extends BasicGame implements InputListener {
 
     public void init(GameContainer container)
         throws SlickException {
-        try {
-            font = manager.getFont("font");
-            menu = new Menu(width, height, font,
-                            model.getAllMaps());
-            menu.activate();
-            log = new Log(width - 20, 200, font);
-            container.getInput().addPrimaryListener(this);
-        } catch (LemmingsException e) {
-            throw new SlickException(e.toString());
-        }
+        //font = manager.getFont("font");
+        font = container.getGraphics().getFont();
+        menu = new Menu(width, height, font,
+                        model.getAllMaps());
+        menu.activate();
+        log = new Log(width - 20, 200, font);
+        container.getInput().addPrimaryListener(this);
     }
 
     public void update(GameContainer container, int delta) {
