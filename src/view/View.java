@@ -106,6 +106,10 @@ public class View extends BasicGame implements InputListener {
      */
     public void characterChanged(Character character, int change) {
         try {
+            if (change == Character.CHANGE_DELETED) {
+                /* TODO */
+                return;
+            }
             for (CharacterAnimation a : characters) {
                 if (a.getCharacter() == character) {
                     if (change == Character.CHANGE_FALLING)
@@ -168,7 +172,7 @@ public class View extends BasicGame implements InputListener {
                         height/2 - font.getLineHeight()/2,
                         text, Color.white);
     }
-        
+
     public void start() {
         try {
             AppGameContainer container = new AppGameContainer(this, width, height, false);

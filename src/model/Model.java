@@ -69,6 +69,11 @@ public class Model {
         return c;
     }
 
+    public void removeCharacter(Character c) {
+        characters.remove(characters.indexOf(c));
+        view.characterChanged(c, Character.CHANGE_DELETED);
+    }
+
     /**
      * Delete all the characters from the model
      */

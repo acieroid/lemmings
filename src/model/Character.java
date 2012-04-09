@@ -8,6 +8,7 @@ public class Character extends Entity {
     public static int CHANGE_DIRECTION = 1;
     public static int CHANGE_FALLING = 2;
     public static int CHANGE_BEHAVIOR = 3;
+    public static int CHANGE_DELETED = 4;
 
     private int direction;
     private boolean falling;
