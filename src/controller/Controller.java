@@ -57,6 +57,10 @@ public class Controller {
      */
     public void stop() {
         running = false;
+        synchronized (behaviors) {
+            behaviors.clear();
+        }
+        model.clearCharacters();
     }
 
     public void update() {

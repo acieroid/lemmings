@@ -55,6 +55,13 @@ public class Model extends Observable {
         addObserver(v);
     }
 
+    /**
+     * Add a character at a certain position
+     * @param x: the x value of the character position
+     * @param y: the y value of the character position
+     * @param name: the name of the type of character
+     * @return the character that has been added
+     */
     public Character addCharacter(int x, int y, String name)
         throws LemmingsException {
         Character c = manager.getCharacter(x, y, name);
@@ -62,5 +69,12 @@ public class Model extends Observable {
         setChanged();
         notifyObservers(c);
         return c;
+    }
+
+    /**
+     * Delete all the characters from the model
+     */
+    public void clearCharacters() {
+        characters.clear();
     }
 }
