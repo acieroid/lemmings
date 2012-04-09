@@ -124,6 +124,13 @@ public class View extends BasicGame implements InputListener {
         }
     }
 
+    /**
+     * Called when all the characters are deleted
+     */
+    public void charactersCleared() {
+        characters.clear();
+    }
+
     public void render(GameContainer container, Graphics g) {
         if (menu.isActivated()) {
             menu.draw();

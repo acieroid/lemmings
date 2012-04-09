@@ -74,5 +74,6 @@ public class Model {
      */
     public void clearCharacters() {
         characters.clear();
+        view.charactersCleared();
     }
 }
