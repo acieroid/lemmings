@@ -61,8 +61,10 @@ public class Controller {
 
     public void update() {
         if (running) {
-            for (Behavior b : behaviors)
-                b.update(colMap, speed);
+            synchronized (behaviors) {
+                for (Behavior b : behaviors)
+                    b.update(colMap, speed);
+            }
         }
     }
 
@@ -91,8 +93,9 @@ public class Controller {
 
     public void mouseClicked(int x, int y)
         throws LemmingsException {
-        System.out.println("Mouse clicked");
         Character c = model.addCharacter(x, y, "walker");
-        behaviors.add(new controller.behaviors.Walker(c));
+        synchronized (behaviors) {
+            behaviors.add(new controller.behaviors.Walker(c));
+        }
     }
 }
