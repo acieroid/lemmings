@@ -37,6 +37,7 @@ public class View extends BasicGame implements InputListener {
 
     private MapImage map;
     private ArrayList<CharacterAnimation> characters;
+    private CharacterAnimation selected;
 
     public View() {
         super("Lemmings");
@@ -134,6 +135,7 @@ public class View extends BasicGame implements InputListener {
         }
         else {
             map.draw(-scrollX, -scrollY);
+            selected = null;
 
             for (CharacterAnimation a : characters) {
                 try {
@@ -143,18 +145,17 @@ public class View extends BasicGame implements InputListener {
                                     .getY()-scrollY);
                     int x = input.getMouseX() + scrollX;
                     int y = input.getMouseY() + scrollY;
-                    if (x >= a.getX() &&
-                        x <= a.getX() + a.getWidth() &&
-                        y >= a.getY() &&
-                        y <= a.getY() + a.getHeight()) {
-                        g.drawRect(a.getX()-scrollX, a.getY()-scrollY,
-                                   a.getWidth(), a.getHeight());
-
-                    }
+                    if (x >= a.getX() && x <= a.getX() + a.getWidth() &&
+                        y >= a.getY() && y <= a.getY() + a.getHeight())
+                        selected = a;
                 } catch (LemmingsException e) {
                     log.add(e.getMessage());
                 }
             }
+            if (selected != null)
+                g.drawRect(selected.getX()-scrollX, selected.getY()-scrollY,
+                           selected.getWidth(), selected.getHeight());
+
 
             if (controller.isPaused())
                 drawCenteredText("Pause");
@@ -224,7 +225,10 @@ public class View extends BasicGame implements InputListener {
     public void mouseClicked(int button, int x, int y, int clickCount) {
         if (!menu.isActivated()) {
             try {
-                controller.mouseClicked(x + scrollX, y + scrollY);
+                if (selected != null)
+                    controller.characterSelected(selected.getCharacter());
+                else
+                    controller.mouseClicked(x + scrollX, y + scrollY);
             } catch (Exception e) {
                 log.add(e.getMessage());
             }

@@ -110,4 +110,8 @@ public class Controller {
             behaviors.add(new controller.behaviors.Walker(c));
         }
     }
+
+    public void characterSelected(Character c) {
+        System.out.println("Character selected");
+    }
 }
