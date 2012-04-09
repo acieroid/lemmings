@@ -33,10 +33,17 @@ public class Walker implements Behavior {
         if (!character.isFalling()) {
             int dx = character.getDirection();
 
-            if (map.isCollisionFree(x+dx, y, width, height))
+            if (map.isCollisionFree(x+dx, y, width, height)) {
                 character.setX(x+dx);
-            else
+            }
+            else if (map.isCollisionFree(x+dx, y-1, width, height)) {
+                /* Can climb one pixel */
+                character.setX(x+dx);
+                character.setY(y-1);
+            }
+            else {
                 character.changeDirection();
+            }
         }
     }
 }
