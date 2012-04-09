@@ -65,11 +65,16 @@ public class Controller {
 
     public void update() {
         if (running) {
+            ArrayList<Behavior> bs;
             synchronized (behaviors) {
-                for (Behavior b : behaviors)
-                    for (int i = 0; i < speed; i++)
-                        b.update(colMap);
+                /* Avoid having behaviors locked during all the calls
+                 * to update. But maybe it isn't the best solution
+                 * (TODO) */
+                bs = new ArrayList<Behavior>(behaviors);
             }
+            for (Behavior b : bs)
+                for (int i = 0; i < speed; i++)
+                    b.update(colMap);
         }
     }
 
@@ -98,6 +103,7 @@ public class Controller {
 
     public void mouseClicked(int x, int y)
         throws LemmingsException {
+
         Character c = model.addCharacter(x, y, "walker");
         c.setFalling(true);
         synchronized (behaviors) {

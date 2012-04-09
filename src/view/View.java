@@ -93,7 +93,6 @@ public class View extends BasicGame implements InputListener {
      * @param character: the new character
      */
     public void characterAdded(Character character) {
-        log.add("Character added");
         try {
             characters.add(manager.getAnimation(character));
         } catch (LemmingsException e) {
