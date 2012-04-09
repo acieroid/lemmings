@@ -128,6 +128,7 @@ public class View extends BasicGame implements InputListener {
     }
 
     public void render(GameContainer container, Graphics g) {
+        Input input = container.getInput();
         if (menu.isActivated()) {
             menu.draw();
         }
@@ -140,6 +141,16 @@ public class View extends BasicGame implements InputListener {
                     g.drawAnimation(a.getAnimation(),
                                     a.getX()-scrollX, a
                                     .getY()-scrollY);
+                    int x = input.getMouseX() + scrollX;
+                    int y = input.getMouseY() + scrollY;
+                    if (x >= a.getX() &&
+                        x <= a.getX() + a.getWidth() &&
+                        y >= a.getY() &&
+                        y <= a.getY() + a.getHeight()) {
+                        g.drawRect(a.getX()-scrollX, a.getY()-scrollY,
+                                   a.getWidth(), a.getHeight());
+
+                    }
                 } catch (LemmingsException e) {
                     log.add(e.getMessage());
                 }

@@ -90,6 +90,14 @@ public class CharacterAnimation {
         return character.getY();
     }
 
+    public int getWidth() {
+        return character.getWidth();
+    }
+
+    public int getHeight() {
+        return character.getHeight();
+    }
+
     public Character getCharacter() {
         return character;
     }
