@@ -1,8 +1,11 @@
 package model;
 
+import view.View;
+
 public class Entity {
     private int x, y, width, height;
     private String name;
+    private View view;
 
     public Entity(int x, int y, int width, int height, String name) {
         this.x = x;
@@ -51,5 +54,12 @@ public class Entity {
     public void setName(String name) {
         this.name = name;
     }
+
+    public View getView() {
+        return view;
+    }
+
+    public void setView(View view) {
+        this.view = view;
+    }
 }
-        

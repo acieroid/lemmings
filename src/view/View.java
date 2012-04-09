@@ -5,8 +5,6 @@ import model.Character;
 import controller.Controller;
 import util.LemmingsException;
 
-import java.util.Observable;
-import java.util.Observer;
 import java.util.ListIterator;
 import java.util.ArrayList;
 
@@ -20,7 +18,7 @@ import org.newdawn.slick.InputListener;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Color;
 
-public class View extends BasicGame implements Observer, InputListener {
+public class View extends BasicGame implements InputListener {
     private static int width = 640, height = 480;
 
     private Model model;
@@ -89,16 +87,11 @@ public class View extends BasicGame implements Observer, InputListener {
         }
     }
 
-    public void update(Observable observable, Object nothing) {
-        update(observable, (Character) nothing); /* TODO: this *really* sucks */
-    }
-
     /**
      * This method is called when a new character is added to the model
-     * @param observable: the model
      * @param character: the new character
      */
-    public void update(Observable observable, Character character) {
+    public void characterAdded(Character character) {
         log.add("Character added");
         try {
             characters.add(manager.getAnimation(character));
@@ -106,7 +99,16 @@ public class View extends BasicGame implements Observer, InputListener {
             log.add(e.getMessage());
         }
     }
-        
+
+    /**
+     * This method is called when a character changed its state
+     * (direction, or behavior)
+     * @param character: the character
+     * @param change: the change (@see Character.CHANGE*)
+     */
+    public void characterChanged(Character character, int change) {
+        log.add("Character changed its state: " + change);
+    }
 
     public void render(GameContainer container, Graphics g) {
         if (menu.isActivated()) {

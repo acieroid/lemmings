@@ -3,11 +3,10 @@ package model;
 import view.View;
 import util.LemmingsException;
 
-import java.util.Observable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class Model extends Observable {
+public class Model {
     private View view;
     private Map map;
     private ArrayList<Character> characters;
@@ -52,7 +51,6 @@ public class Model extends Observable {
      */
     public void setView(View v) {
         view = v;
-        addObserver(v);
     }
 
     /**
@@ -66,8 +64,8 @@ public class Model extends Observable {
         throws LemmingsException {
         Character c = manager.getCharacter(x, y, name);
         characters.add(c);
-        setChanged();
-        notifyObservers(c);
+        c.setView(view);
+        view.characterAdded(c);
         return c;
     }
 

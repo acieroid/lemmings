@@ -4,6 +4,10 @@ public class Character extends Entity {
     public static int LEFT = -1;
     public static int RIGHT = 1;
 
+    public static int CHANGE_DIRECTION = 1;
+    public static int CHANGE_FALLING = 2;
+    public static int CHANGE_BEHAVIOR = 3;
+
     private int direction;
     private boolean falling;
 
@@ -19,6 +23,7 @@ public class Character extends Entity {
 
     public void setFalling(boolean falling) {
         this.falling = falling;
+        getView().characterChanged(this, CHANGE_FALLING);
     }
 
     public int getDirection() {
@@ -27,5 +32,11 @@ public class Character extends Entity {
 
     public void changeDirection() {
         direction *= -1;
+        getView().characterChanged(this, CHANGE_DIRECTION);
+    }
+
+    public void setName(String name) {
+        super.setName(name);
+        getView().characterChanged(this, CHANGE_BEHAVIOR);
     }
 }
