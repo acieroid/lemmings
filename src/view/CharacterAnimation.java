@@ -33,7 +33,6 @@ public class CharacterAnimation {
         throws LemmingsException {
         anim = animation;
         directory = resourceDirectory + "/characters/" + animation;
-        System.out.println("Setting animation: " + animation + ", directory: " + directory);
         definition = new LispFile(directory + "/" +
                                   animation + ".character");
 
