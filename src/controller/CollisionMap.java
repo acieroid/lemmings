@@ -8,7 +8,7 @@ import java.io.File;
 
 public class CollisionMap {
     private BufferedImage colImage;
-    private int[][] map;
+    private int[] map;
     private int entranceX, entranceY;
     private int exitX, exitY;
 
@@ -18,12 +18,11 @@ public class CollisionMap {
             /* Load the collison map */
             /* Note that colImage type is TYPE_4BYTE_ABGR */
             colImage = ImageIO.read(new File(directory + "/collision.png"));
-            map = new int[getWidth()][getHeight()];
-            //colImage.getRGB(0, 0, getWidth(), getHeight(), map, 0, 0);
-            /* TODO: get the RGB of a region, which is faster */
-            for (int x = 0; x < getWidth(); x++)
-                for (int y = 0; y < getHeight(); y++)
-                    map[x][y] = (colImage.getRGB(x, y) >> 24);
+            map = new int[getWidth()*getHeight()];
+            /* If there are still performance issues with this, maybe
+             * we should use getData */
+            colImage.getRGB(0, 0, getWidth(), getHeight(), map, 0, getWidth());
+
             /* Load the entrance and exit position */
             BufferedImage objects = ImageIO.read(new File(directory + "/objects.png"));
             boolean entranceFound = false, exitFound = false;
@@ -71,13 +70,13 @@ public class CollisionMap {
         int pixel, i, j;
         /* Only check the border of the rectangle */
         for (i = 0; i < w; i++) {
-            if (map[x+i][y] != 0 ||
-                map[x+i][y+h-1] != 0)
+            if (map[y*getWidth() + x+i] != 0 ||
+                map[(y+h-1)*getWidth() + x+i] != 0)
                 return false;
         }
         for (j = 0; j < h; j++) {
-            if (map[x][y+j] != 0 ||
-                map[x+w][y+j] != 0)
+            if (map[(y+j)*getWidth() + x] != 0 ||
+                map[(y+j)*getWidth() + x+w] != 0)
                 return false;
         }
         return true;
