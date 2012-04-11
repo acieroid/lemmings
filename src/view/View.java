@@ -103,7 +103,7 @@ public class View extends BasicGameState implements InputListener {
         if (map == null)
             return;
 
-        map.draw(-scrollX, -scrollY);
+        map.drawBackground(-scrollX, -scrollY);
         selected = null;
 
         for (CharacterAnimation a : characters) {
@@ -124,6 +124,8 @@ public class View extends BasicGameState implements InputListener {
         if (selected != null)
             g.drawRect(selected.getX()-scrollX, selected.getY()-scrollY,
                        selected.getWidth(), selected.getHeight());
+
+        map.drawForeground(-scrollX, -scrollY);
 
         if (controller.isPaused())
             drawCenteredText(container, "Pause");

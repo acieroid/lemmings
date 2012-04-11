@@ -19,7 +19,7 @@ class ResourceManager {
     public MapImage getMap(String name)
         throws LemmingsException {
         try {
-            return new MapImage(dir + "/maps/" + name + "/image.png");
+            return new MapImage(dir + "/maps/" + name + "/");
         } catch (SlickException e) {
             throw new LemmingsException("view/rm",
                                         "Can't load map '" + name + "': " +

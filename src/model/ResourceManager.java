@@ -28,7 +28,7 @@ class ResourceManager {
     public Map getMap(String name)
         throws LemmingsException {
         try {
-            BufferedImage image = ImageIO.read(new File(dir + "/maps/" + name + "/image.png"));
+            BufferedImage image = ImageIO.read(new File(dir + "/maps/" + name + "/background.png"));
             return new Map(image.getWidth(), image.getHeight(), name);
         } catch (java.io.IOException e) {
             throw new LemmingsException("model",
