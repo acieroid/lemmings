@@ -16,4 +16,3 @@ public class Lemmings {
         view.start();
     }
 }
-                

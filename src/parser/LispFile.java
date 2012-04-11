@@ -58,7 +58,6 @@ public class LispFile {
         throws LemmingsException {
         return getProperty(name).get(1).toBoolean();
     }
-        
 
     private Value getProperty(String name)
         throws LemmingsException {
@@ -88,7 +87,6 @@ public class LispFile {
                 if (c == '(')
                     content = parseList(input);
             }
-            
         } catch (java.io.IOException e) {
             throw new LemmingsException("parser",
                                     "can't open the file '" + file + "': " +
@@ -100,7 +98,7 @@ public class LispFile {
         throws LemmingsException, java.io.IOException {
         int c;
         ListValue value = new ListValue();
-        
+
         while ((c = input.read()) != -1) {
             if (c == ')')
                 return value;

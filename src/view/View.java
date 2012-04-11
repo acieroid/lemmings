@@ -25,7 +25,7 @@ public class View extends BasicGameState implements InputListener {
     public static final int ID = 2;
     private StateBasedGame game;
 
-    private static int width = 640, height = 480;
+    private static int width = 1024, height = 768;
 
     private Model model;
     private Controller controller;
@@ -100,6 +100,9 @@ public class View extends BasicGameState implements InputListener {
 
     public void render(GameContainer container, StateBasedGame game, Graphics g) {
         Input input = container.getInput();
+        if (map == null)
+            return;
+
         map.draw(-scrollX, -scrollY);
         selected = null;
 
@@ -181,7 +184,7 @@ public class View extends BasicGameState implements InputListener {
     public void leave(GameContainer container, StateBasedGame game) {
         controller.stop();
     }
-        
+
     /**
      * This method is called when a new character is added to the model
      * @param character: the new character

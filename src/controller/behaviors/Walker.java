@@ -6,7 +6,7 @@ import model.Character;
 
 public class Walker implements Behavior {
     private Character character;
-    
+
     public Walker(Character character) {
         this.character = character;
     }
