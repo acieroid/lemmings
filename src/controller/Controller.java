@@ -104,7 +104,9 @@ public class Controller {
     public void mouseClicked(int x, int y)
         throws LemmingsException {
 
-        Character c = model.addCharacter(x, y, "walker");
+        Character c = model.addCharacter(colMap.getEntranceX(),
+                                         colMap.getEntranceY(),
+                                         "walker");
         c.setFalling(true);
         synchronized (behaviors) {
             behaviors.add(new controller.behaviors.Walker(c));

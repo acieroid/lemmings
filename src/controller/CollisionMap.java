@@ -67,6 +67,22 @@ public class CollisionMap {
         return colImage.getHeight();
     }
 
+    public int getEntranceX() {
+        return entranceX;
+    }
+
+    public int getEntranceY() {
+        return entranceY;
+    }
+
+    public int getExitX() {
+        return exitX;
+    }
+
+    public int getExitY() {
+        return exitY;
+    }
+
     public boolean isCollisionFree(int x, int y, int w, int h) {
         /* This is the bottleneck function */
         int pixel, i, j;
