@@ -25,10 +25,10 @@ public class Controller {
                     if (!isPaused())
                         update();
                 }
-            }, 300, 100);
+            }, 20, 20);
         behaviors = new ArrayList<Behavior>();
         manager = new ResourceManager("../data");
-        speed = 5;
+        speed = 1;
     }
 
     public void setModel(Model m) {
