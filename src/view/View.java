@@ -43,12 +43,17 @@ public class View extends BasicGameState implements InputListener {
     private ArrayList<CharacterAnimation> characters;
     private CharacterAnimation selected;
 
+    private boolean initialized;
+    private ArrayList<Character> toAdd;
+
     public View() {
         super();
         scrollX = 0;
         scrollY = 0;
         manager = new ResourceManager("../data");
         characters = new ArrayList<CharacterAnimation>();
+        initialized = false;
+        toAdd = new ArrayList<Character>();
     }
 
     public int getID() {
@@ -78,6 +83,18 @@ public class View extends BasicGameState implements InputListener {
     public void update(GameContainer container, StateBasedGame game, int delta) {
         /* Do nothing related to the model here */
         Input input = container.getInput();
+
+        if (toAdd.size() != 0) {
+            for (Character c : toAdd) {
+                try {
+                    characters.add(manager.getAnimation(c));
+                } catch (LemmingsException e) {
+                    log.add(e.getMessage());
+                }
+            }
+            toAdd.clear();
+        }
+
 
         /* Handle scrolling */
         if (input.isKeyDown(Input.KEY_LEFT))
@@ -192,11 +209,7 @@ public class View extends BasicGameState implements InputListener {
      * @param character: the new character
      */
     public void characterAdded(Character character) {
-        try {
-            characters.add(manager.getAnimation(character));
-        } catch (LemmingsException e) {
-            log.add(e.getMessage());
-        }
+        toAdd.add(character);
     }
 
     /**

@@ -10,22 +10,23 @@ import java.util.ArrayList;
 
 public class Controller {
     private Model model;
-    private Timer timer;
+    private Timer timer, lemmingsTimer;
     private boolean running;
     private ArrayList<Behavior> behaviors;
     private CollisionMap colMap;
     private ResourceManager manager;
     private int speed;
+    private int lemmingsToRelease; /* TODO: put that in the map definition file ? */
 
     public Controller() {
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
                 public void run() {
-                    /* TODO: delta */
                     if (!isPaused())
                         update();
                 }
             }, 20, 20);
+        lemmingsTimer = new Timer();
         behaviors = new ArrayList<Behavior>();
         manager = new ResourceManager("../data");
         speed = 1;
@@ -43,6 +44,22 @@ public class Controller {
         running = true;
         colMap = manager.getCollisionMap(map);
         model.setMap(map);
+        lemmingsToRelease = 20;
+        /* release a lemming each 2 seconds */
+        /* TODO: provide an interactive way to change the release interval */
+        lemmingsTimer.scheduleAtFixedRate(new TimerTask() {
+                public void run() {
+                    if (!isPaused() && lemmingsToRelease > 0) {
+                        try {
+                            releaseLemming();
+                        } catch (LemmingsException e) {
+                            System.out.println("Error when releasing a lemming: " +
+                                               e.getMessage());
+                        }
+                        lemmingsToRelease--;
+                    }
+                }
+            }, 2000, 2000);
     }
 
     /**
@@ -101,9 +118,14 @@ public class Controller {
         setSpeed(Math.max(getSpeed() - 1, 0));
     }
 
-    public void mouseClicked(int x, int y)
-        throws LemmingsException {
+    public void mouseClicked(int x, int y) {
+    }
 
+    /**
+     * Release a lemming at the entrance
+     */
+    public void releaseLemming()
+        throws LemmingsException {
         Character c = model.addCharacter(colMap.getEntranceX(),
                                          colMap.getEntranceY(),
                                          "walker");
