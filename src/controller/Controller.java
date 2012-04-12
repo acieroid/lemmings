@@ -109,11 +109,20 @@ public class Controller {
                                          "walker");
         c.setFalling(true);
         synchronized (behaviors) {
-            behaviors.add(new controller.behaviors.Walker(c));
+            behaviors.add(new controller.behaviors.Walker(this, c));
         }
     }
 
     public void characterSelected(Character c) {
         System.out.println("Character selected");
+    }
+
+    /**
+     * Change the behavior of the character behaving as a to behave as
+     * b
+     */
+    public void changeBehavior(Behavior a, Behavior b) {
+        behaviors.remove(behaviors.indexOf(a));
+        behaviors.add(b);
     }
 }

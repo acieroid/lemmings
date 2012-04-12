@@ -1,0 +1,4 @@
+(character
+  (left-sprite "left.sprite")
+  (right-sprite "right.sprite")
+  (size 32 32))
