@@ -82,7 +82,7 @@ public class Menu extends BasicGameState {
             game.enterState(View.ID);
         else if (items[itemSelected].equals("Quit"))
             ; /* handled in update */
-        else { /* Map */
+        else if (items[itemSelected].equals("Map")) {
             if (key == Input.KEY_LEFT)
                 maps.previous();
             else if (key == Input.KEY_RIGHT)

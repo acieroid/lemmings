@@ -122,7 +122,12 @@ public class Controller {
      * b
      */
     public void changeBehavior(Behavior a, Behavior b) {
-        behaviors.remove(behaviors.indexOf(a));
-        behaviors.add(b);
+        int index = behaviors.indexOf(a);
+        if (index != -1) {
+            /* Behavior hasn't been changed yet (it might be because
+             * of successive calls to a's update */
+            behaviors.remove(index);
+            behaviors.add(b);
+        }
     }
 }
