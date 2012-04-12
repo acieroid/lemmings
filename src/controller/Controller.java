@@ -47,6 +47,7 @@ public class Controller {
         lemmingsToRelease = 20;
         /* release a lemming each 2 seconds */
         /* TODO: provide an interactive way to change the release interval */
+        /* TODO: speed *should* interacts with this timer too */
         lemmingsTimer.scheduleAtFixedRate(new TimerTask() {
                 public void run() {
                     if (!isPaused() && lemmingsToRelease > 0) {
