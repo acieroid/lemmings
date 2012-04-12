@@ -5,9 +5,21 @@ import controller.Controller;
 import controller.Behavior;
 import controller.CollisionMap;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class Exit extends SimpleBehavior {
+    private Timer timer;
+    private static int TIMEOUT = 300;
+
     public Exit(Behavior b) {
         super(b);
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+                public void run() {
+                    destroy();
+                }
+            }, TIMEOUT);
     }
 
     public String getName() {
@@ -16,6 +28,9 @@ public class Exit extends SimpleBehavior {
 
     public void update(CollisionMap map) {
         /* don't move */
-        /* TODO: notify the controller to delete this character after a bit */
+    }
+
+    public void destroy() {
+        getController().deleteBehavior(this);
     }
 }

@@ -69,7 +69,10 @@ public class Model {
         return c;
     }
 
-    public void removeCharacter(Character c) {
+    /**
+     * Delete a character
+     */
+    public void deleteCharacter(Character c) {
         characters.remove(characters.indexOf(c));
         view.characterChanged(c, Character.CHANGE_DELETED);
     }

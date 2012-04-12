@@ -48,4 +48,8 @@ public class Character extends Entity {
         super.setName(name);
         getView().characterChanged(this, CHANGE_BEHAVIOR);
     }
+
+    public void destroy() {
+        getView().characterChanged(this, CHANGE_DELETED);
+    }
 }

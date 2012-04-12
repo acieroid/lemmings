@@ -130,4 +130,15 @@ public class Controller {
             behaviors.add(b);
         }
     }
+
+    /**
+     * A character has been deleted and its behavior should also be deleted
+     */
+    public void deleteBehavior(Behavior b) {
+        int index = behaviors.indexOf(b);
+        if (index != -1) {
+            model.deleteCharacter(b.getCharacter());
+            behaviors.remove(index);
+        }
+    }
 }
