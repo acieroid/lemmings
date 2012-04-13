@@ -63,8 +63,7 @@ abstract class SimpleBehavior implements Behavior {
         }
 
         /* Check the exit */
-        if (map.getExitX() >= character.getX() &&
-            map.getExitX() <= character.getX() + character.getWidth() &&
+        if (map.getExitX() == character.getX() + width/2 &&
             map.getExitY() >= character.getY() &&
             map.getExitY() <= character.getY() + character.getWidth())
             controller.changeBehavior(this, new Exit(this));

@@ -146,9 +146,9 @@ public class Controller {
      */
     public void releaseLemming()
         throws LemmingsException {
-        Character c = model.addCharacter(colMap.getEntranceX(),
-                                         colMap.getEntranceY(),
-                                         "walker");
+        Character c = model.addCharacter(0, 0, "walker");
+        c.setX(colMap.getEntranceX() - c.getWidth()/2);
+        c.setY(colMap.getEntranceY() - c.getHeight()/2);
         c.setFalling(true);
         synchronized (behaviors) {
             behaviors.add(new controller.behaviors.Walker(this, c));
