@@ -69,6 +69,10 @@ public class View extends BasicGameState implements InputListener {
         mapSelector = new MapSelector(m.getAllMaps());
     }
 
+    public Model getModel() {
+        return model;
+    }
+
     public void setController(Controller c) {
         controller = c;
     }
@@ -259,12 +263,9 @@ public class View extends BasicGameState implements InputListener {
 
     /**
      * Called when a game is finished
-     * @param won: true if the player has won, false if not
      */
-    public void finished(boolean won) {
-        /* TODO */
-        System.out.println("Won !");
-        //game.enterState(LevelEnd.ID);
+    public void finished() {
+        game.enterState(LevelEnd.ID);
     }
 
     /**

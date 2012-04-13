@@ -16,6 +16,7 @@ public class LemmingsGame extends StateBasedGame {
     public void initStatesList(GameContainer container) {
         addState(new Menu(view.getMapSelector()));
         addState(view);
+        addState(new LevelEnd(view.getModel()));
     }
 
     public View getView() {

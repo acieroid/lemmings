@@ -101,8 +101,7 @@ public class Controller {
             if (!model.shouldReleaseLemming() && bs.size() == 0) {
                 /* Won or lost */
                 stop();
-                model.setFinished(model.getLemmingsRescued() >=
-                                  model.getLemmingsToRescue());
+                model.setFinished();
             }
 
             for (Behavior b : bs)

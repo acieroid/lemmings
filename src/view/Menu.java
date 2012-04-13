@@ -19,9 +19,7 @@ public class Menu extends BasicGameState {
     public static final int ID = 1;
     private StateBasedGame game;
 
-    private boolean activated;
     private Font font;
-
     private MapSelector maps;
 
     private int itemSelected;

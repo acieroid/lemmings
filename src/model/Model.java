@@ -103,10 +103,16 @@ public class Model {
 
     /**
      * The player has won or lost
-     * @param won: true if he has won, false if not
      */
-    public void setFinished(boolean won) {
-        view.finished(won);
+    public void setFinished() {
+        view.finished();
+    }
+
+    /**
+     * Return true if the player has won, false if not
+     */
+    public boolean hasWon() {
+        return !shouldReleaseLemming() && lemmingsRescued >= lemmingsToRescue;
     }
 
     /**
