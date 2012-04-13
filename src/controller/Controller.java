@@ -16,20 +16,27 @@ public class Controller {
     private CollisionMap colMap;
     private ResourceManager manager;
     private int speed;
+    private static int MAXSPEED = 5;
     private int lemmingsToRelease; /* TODO: put that in the map definition file ? */
 
     public Controller() {
+        speed = 1;
+        running = false;
+
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
+                private int i = 0;
                 public void run() {
-                    if (!isPaused())
-                        update();
+                    if (!isPaused()) {
+                        if (i % (MAXSPEED/speed) == 0)
+                            update();
+                        i++;
+                    }
                 }
             }, 20, 20);
         lemmingsTimer = new Timer();
         behaviors = new ArrayList<Behavior>();
         manager = new ResourceManager("../data");
-        speed = 1;
     }
 
     public void setModel(Model m) {
@@ -108,7 +115,12 @@ public class Controller {
     }
 
     public void setSpeed(int speed) {
-        this.speed = speed;
+        if (speed <= 0)
+            this.speed = 1;
+        else if (speed > MAXSPEED)
+            this.speed = MAXSPEED;
+        else
+            this.speed = speed;
     }
 
     public void increaseSpeed() {
@@ -116,7 +128,7 @@ public class Controller {
     }
 
     public void decreaseSpeed() {
-        setSpeed(Math.max(getSpeed() - 1, 0));
+        setSpeed(getSpeed() - 1);
     }
 
     public void mouseClicked(int x, int y) {
