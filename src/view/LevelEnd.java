@@ -15,9 +15,11 @@ public class LevelEnd extends BasicGameState {
     public static final int ID = 3;
     private StateBasedGame game;
 
+    private static int MAX_NAME_LENGTH = 30;
+
     private Model model;
     private Font font;
-
+    private String name;
 
     public LevelEnd(Model model) {
         this.model = model;
@@ -42,26 +44,34 @@ public class LevelEnd extends BasicGameState {
         throws SlickException {
         this.game = game;
         font = gc.getGraphics().getFont();
+        name = "";
     }
 
     public void render(GameContainer gc, StateBasedGame game, Graphics g) {
-        String text;
-        drawCenteredText(gc, "Lemmings rescued: " +
+        String[] text = {"Lemmings rescued: " +
                          model.getLemmingsRescued() + "/" +
-                         model.getLemmingsToRescue(), 0, 3, Color.white);
-        if (model.hasWon())
-            text = "Congratulations, you won!";
-        else
-            text = "Too bad, you lost.";
-        drawCenteredText(gc, text, 1, 3, Color.white);
-        drawCenteredText(gc, "Press Enter to return to the main menu", 2, 3, Color.white);
+                         model.getLemmingsToRescue(),
+                         model.hasWon() ? "Congratulations, you won!" : "Too bad, you lost.",
+                         "Type your name to register your score and then press Enter",
+                         "or press escape to return to the main menu.",
+                         "Your name: " + name};
+        for (int i = 0; i < text.length; i++)
+            drawCenteredText(gc, text[i], i, text.length, Color.white);
     }
 
     public void update(GameContainer gc, StateBasedGame game, int delta) {
     }
 
     public void keyPressed(int key, char c) {
-        if (key == Input.KEY_ENTER)
+        if (key == Input.KEY_ENTER) {
+            name = "";
             game.enterState(Menu.ID);
+        }
+        else if (key == Input.KEY_BACK) {
+            name = name.substring(0, name.length() - 1);
+        }
+        else if (name.length() < MAX_NAME_LENGTH) {
+            name += c;
+        }
     }
 }
