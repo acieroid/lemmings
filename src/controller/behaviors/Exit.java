@@ -10,7 +10,7 @@ import java.util.TimerTask;
 
 public class Exit extends SimpleBehavior {
     private Timer timer;
-    private static int TIMEOUT = 300;
+    private static int TIMEOUT = 500;
 
     public Exit(Behavior b) {
         super(b);
