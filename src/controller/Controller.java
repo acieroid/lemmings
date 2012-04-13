@@ -17,7 +17,7 @@ public class Controller {
     private ResourceManager manager;
     private int speed;
     private static int MAXSPEED = 5;
-    private int lemmingsToRelease; /* TODO: put that in the map definition file ? */
+    private int lemmingsToRelease;
 
     public Controller() {
         speed = 1;
@@ -48,26 +48,26 @@ public class Controller {
      */
     public void start(String map)
         throws LemmingsException {
-        running = true;
         colMap = manager.getCollisionMap(map);
-        model.setMap(map);
-        lemmingsToRelease = 20;
+        model.setMap(colMap.getMap());
+        model.setLemmingsToRelease(colMap.getLemmingsToRelease());
+        model.setLemmingsToRescue(colMap.getLemmingsToSave());
         /* release a lemming each 2 seconds */
         /* TODO: provide an interactive way to change the release interval */
         /* TODO: speed *should* interacts with this timer too */
         lemmingsTimer.scheduleAtFixedRate(new TimerTask() {
                 public void run() {
-                    if (!isPaused() && lemmingsToRelease > 0) {
+                    if (!isPaused() && model.shouldReleaseLemming()) {
                         try {
                             releaseLemming();
                         } catch (LemmingsException e) {
                             System.out.println("Error when releasing a lemming: " +
                                                e.getMessage());
                         }
-                        lemmingsToRelease--;
                     }
                 }
-            }, 2000, 2000);
+            }, 1000, 1000);
+        running = true;
     }
 
     /**
@@ -97,6 +97,14 @@ public class Controller {
                  * (TODO) */
                 bs = new ArrayList<Behavior>(behaviors);
             }
+
+            if (!model.shouldReleaseLemming() && bs.size() == 0) {
+                /* Won or lost */
+                stop();
+                model.setFinished(model.getLemmingsRescued() >=
+                                  model.getLemmingsToRescue());
+            }
+
             for (Behavior b : bs)
                 for (int i = 0; i < speed; i++)
                     b.update(colMap);
@@ -146,6 +154,7 @@ public class Controller {
         synchronized (behaviors) {
             behaviors.add(new controller.behaviors.Walker(this, c));
         }
+        model.lemmingReleased();
     }
 
     public void characterSelected(Character c) {
@@ -172,6 +181,8 @@ public class Controller {
     public void deleteBehavior(Behavior b) {
         int index = behaviors.indexOf(b);
         if (index != -1) {
+            if (b.getName() == "exit")
+                model.lemmingRescued();
             model.deleteCharacter(b.getCharacter());
             behaviors.remove(index);
         }

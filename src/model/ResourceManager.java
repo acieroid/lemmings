@@ -25,18 +25,6 @@ class ResourceManager {
         return l;
     }
 
-    public Map getMap(String name)
-        throws LemmingsException {
-        try {
-            BufferedImage image = ImageIO.read(new File(dir + "/maps/" + name + "/background.png"));
-            return new Map(image.getWidth(), image.getHeight(), name);
-        } catch (java.io.IOException e) {
-            throw new LemmingsException("model",
-                                        "Can't load map '" + name + "': " +
-                                        e.getMessage());
-        }
-    }
-
     public Character getCharacter(int x, int y, String name)
         throws LemmingsException {
         LispFile f = new LispFile(dir + "/characters/" + name +

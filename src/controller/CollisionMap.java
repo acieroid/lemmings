@@ -1,19 +1,23 @@
 package controller;
 
 import util.LemmingsException;
+import model.Map;
 
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.File;
 
 public class CollisionMap {
+    private String name;
     private BufferedImage colImage;
     private int[] map;
+
     private int entranceX, entranceY;
     private int exitX, exitY;
 
-    public CollisionMap(String directory)
+    public CollisionMap(String name, String directory)
         throws LemmingsException {
+        this.name = name;
         try {
             /* Load the collison map */
             /* Note that colImage type is TYPE_4BYTE_ABGR */
@@ -98,5 +102,28 @@ public class CollisionMap {
                 return false;
         }
         return true;
+    }
+
+    /**
+     * Return the model.Map corresponding to this Collision Map
+     */
+    public Map getMap() {
+        return new Map(getWidth(), getHeight(), name);
+    }
+
+    /**
+     * Return the number of lemmings to release for this map
+     * @TODO: read this from the definition file
+     */
+    public int getLemmingsToRelease() {
+        return 20;
+    }
+
+    /**
+     * Return the number of lemmings to save for this map
+     * @TODO: read this from the definition file
+     */
+    public int getLemmingsToSave() {
+        return 10;
     }
 }

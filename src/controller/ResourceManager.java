@@ -12,6 +12,6 @@ class ResourceManager {
 
     public CollisionMap getCollisionMap(String name)
         throws LemmingsException {
-        return new CollisionMap(dir + "/maps/" + name);
+        return new CollisionMap(name, dir + "/maps/" + name);
     }
 }

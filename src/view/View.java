@@ -257,7 +257,19 @@ public class View extends BasicGameState implements InputListener {
         characters.clear();
     }
 
+    /**
+     * Called when a game is finished
+     * @param won: true if the player has won, false if not
+     */
+    public void finished(boolean won) {
+        /* TODO */
+        System.out.println("Won !");
+        //game.enterState(LevelEnd.ID);
+    }
 
+    /**
+     * Launch the view (displaying the menu first !)
+     */
     public void start() {
         try {
             game = new LemmingsGame(this);

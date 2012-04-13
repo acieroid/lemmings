@@ -10,11 +10,16 @@ public class Model {
     private View view;
     private Map map;
     private ArrayList<Character> characters;
+    private int lemmingsReleased, lemmingsToRelease;
+    private int lemmingsRescued, lemmingsToRescue;
+
     private ResourceManager manager;
 
     public Model() {
+        view = null;
         characters = new ArrayList<Character>();
         manager = new ResourceManager("../data");
+        reset();
     }
 
     /**
@@ -27,9 +32,10 @@ public class Model {
     /**
      * Set the current map
      */
-    public void setMap(String map)
+    public void setMap(Map map)
         throws LemmingsException {
-        this.map = manager.getMap(map);
+        reset();
+        this.map = map;
     }
 
     /**
@@ -82,6 +88,88 @@ public class Model {
      */
     public void clearCharacters() {
         characters.clear();
-        view.charactersCleared();
+        if (view != null)
+            view.charactersCleared();
+    }
+
+    /**
+     * Reinitializes the state of the model
+     */
+    public void reset() {
+        clearCharacters();
+        lemmingsRescued = 0;
+        lemmingsReleased = 0;
+    }
+
+    /**
+     * The player has won or lost
+     * @param won: true if he has won, false if not
+     */
+    public void setFinished(boolean won) {
+        view.finished(won);
+    }
+
+    /**
+     * Return the number of lemmings to release
+     */
+    public int getLemmingsToRelease() {
+        return lemmingsToRelease;
+    }
+
+    /**
+     * Set the number of lemmings to release
+     */
+    public void setLemmingsToRelease(int n) {
+        lemmingsToRelease = n;
+    }
+
+
+    /**
+     * Return the number of lemmings released
+     */
+    public int getLemmingsReleased() {
+        return lemmingsReleased;
+    }
+
+    /**
+     * A lemming has been released
+     */
+    public void lemmingReleased() {
+        lemmingsReleased++;
+    }
+
+    /**
+     * @return true if we should still release lemmings
+     */
+    public boolean shouldReleaseLemming() {
+        return lemmingsReleased < lemmingsToRelease;
+    }
+
+    /**
+     * Return the number of lemmings to rescue
+     */
+    public int getLemmingsToRescue() {
+        return lemmingsToRescue;
+    }
+
+    /**
+     * Set the number of lemmings to rescue
+     */
+    public void setLemmingsToRescue(int n) {
+        lemmingsToRescue = n;
+    }
+
+    /**
+     * Return the number of lemmings rescued
+     */
+    public int getLemmingsRescued() {
+        return lemmingsRescued;
+    }
+
+    /**
+     * A lemming has been rescued
+     */
+    public void lemmingRescued() {
+        lemmingsRescued++;
     }
 }
