@@ -5,6 +5,7 @@ import model.Character;
 import controller.Controller;
 import util.LemmingsException;
 import util.MapSelector;
+import view.gui.GUI;
 
 import java.util.ListIterator;
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class View extends BasicGameState implements InputListener {
 
     private Font font;
     private Log log;
+    private GUI gui;
 
     private ResourceManager manager;
     private MapSelector mapSelector;
@@ -79,10 +81,10 @@ public class View extends BasicGameState implements InputListener {
 
     public void init(GameContainer gc, StateBasedGame game)
         throws SlickException {
-        System.out.println(gc.getScreenWidth());
         this.game = game;
         font = gc.getGraphics().getFont();
         log = new Log(width - 20, 200, font);
+        gui = new GUI(gc.getHeight()-100);
     }
 
     public void update(GameContainer gc, StateBasedGame game, int delta) {
@@ -99,7 +101,6 @@ public class View extends BasicGameState implements InputListener {
             }
             toAdd.clear();
         }
-
 
         /* Handle scrolling */
         if (input.isKeyDown(Input.KEY_LEFT))
@@ -159,6 +160,8 @@ public class View extends BasicGameState implements InputListener {
         if (controller.isPaused())
             drawCenteredText(gc, "Pause");
 
+        gui.draw(gc);
+        /* TODO: put this in the GUI */
         drawCenteredText(gc,
                          "Lemmings released: " + model.getLemmingsReleased() +
                          "/" + model.getLemmingsToRelease() + " | " +
