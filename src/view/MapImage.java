@@ -14,11 +14,11 @@ public class MapImage {
         this.foreground = new Image(directory + "/foreground.png");
     }
 
-    public void drawBackground(int x, int y) {
-        background.draw(x, y);
+    public Image getBackground() {
+        return background;
     }
 
-    public void drawForeground(int x, int y) {
-        foreground.draw(x, y);
+    public Image getForeground() {
+        return foreground;
     }
 }

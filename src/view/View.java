@@ -77,16 +77,17 @@ public class View extends BasicGameState implements InputListener {
         controller = c;
     }
 
-    public void init(GameContainer container, StateBasedGame game)
+    public void init(GameContainer gc, StateBasedGame game)
         throws SlickException {
+        System.out.println(gc.getScreenWidth());
         this.game = game;
-        font = container.getGraphics().getFont();
+        font = gc.getGraphics().getFont();
         log = new Log(width - 20, 200, font);
     }
 
-    public void update(GameContainer container, StateBasedGame game, int delta) {
+    public void update(GameContainer gc, StateBasedGame game, int delta) {
         /* Do nothing related to the model here */
-        Input input = container.getInput();
+        Input input = gc.getInput();
 
         if (toAdd.size() != 0) {
             for (Character c : toAdd) {
@@ -119,12 +120,19 @@ public class View extends BasicGameState implements InputListener {
                         text, Color.white);
     }
 
-    public void render(GameContainer container, StateBasedGame game, Graphics g) {
-        Input input = container.getInput();
+    private void drawCenteredText(GameContainer gc, String text, int y) {
+        font.drawString(gc.getWidth()/2 - font.getWidth(text)/2,
+                        y - font.getLineHeight()/2,
+                        text, Color.white);
+    }
+        
+
+    public void render(GameContainer gc, StateBasedGame game, Graphics g) {
+        Input input = gc.getInput();
         if (map == null)
             return;
 
-        map.drawBackground(-scrollX, -scrollY);
+        map.getBackground().draw(-scrollX, -scrollY);
         selected = null;
 
         for (CharacterAnimation a : characters) {
@@ -146,10 +154,18 @@ public class View extends BasicGameState implements InputListener {
             g.drawRect(selected.getX()-scrollX, selected.getY()-scrollY,
                        selected.getWidth(), selected.getHeight());
 
-        map.drawForeground(-scrollX, -scrollY);
+        map.getForeground().draw(-scrollX, -scrollY);
 
         if (controller.isPaused())
-            drawCenteredText(container, "Pause");
+            drawCenteredText(gc, "Pause");
+
+        drawCenteredText(gc,
+                         "Lemmings released: " + model.getLemmingsReleased() +
+                         "/" + model.getLemmingsToRelease() + " | " +
+                         "Lemmings rescued: " + model.getLemmingsRescued() +
+                         "/" + model.getLemmingsToRescue(),
+                         gc.getHeight()-20);
+                         
 
         log.draw(10, height - 210);
     }
@@ -191,7 +207,7 @@ public class View extends BasicGameState implements InputListener {
         }
     }
 
-    public void enter(GameContainer container, StateBasedGame game) {
+    public void enter(GameContainer gc, StateBasedGame game) {
         String mapName = mapSelector.current();
         try {
             log.add("Loading map: '" + mapName + "'");
@@ -204,7 +220,7 @@ public class View extends BasicGameState implements InputListener {
         }
     }
 
-    public void leave(GameContainer container, StateBasedGame game) {
+    public void leave(GameContainer gc, StateBasedGame game) {
         controller.stop();
     }
 
@@ -274,10 +290,10 @@ public class View extends BasicGameState implements InputListener {
     public void start() {
         try {
             game = new LemmingsGame(this);
-            AppGameContainer container = new AppGameContainer(game, width, height, false);
-            container.setShowFPS(true);
-            container.setTargetFrameRate(60);
-            container.start();
+            AppGameContainer gc = new AppGameContainer(game, width, height, false);
+            gc.setShowFPS(true);
+            gc.setTargetFrameRate(60);
+            gc.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
