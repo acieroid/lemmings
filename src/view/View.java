@@ -84,7 +84,7 @@ public class View extends BasicGameState implements InputListener {
         this.game = game;
         font = gc.getGraphics().getFont();
         log = new Log(width - 20, 200, font);
-        gui = new GUI(gc.getHeight()-100);
+        gui = new GUI(0, gc.getHeight()-100, gc.getWidth(), 100);
     }
 
     public void update(GameContainer gc, StateBasedGame game, int delta) {
@@ -208,6 +208,14 @@ public class View extends BasicGameState implements InputListener {
         } catch (Exception e) {
             log.add(e.getMessage());
         }
+    }
+
+    public void mousePressed(int button, int x, int y) {
+        gui.mousePressed(x, y);
+    }
+
+    public void mouseReleased(int button, int x, int y) {
+        gui.mouseReleased(x, y);
     }
 
     public void enter(GameContainer gc, StateBasedGame game) {

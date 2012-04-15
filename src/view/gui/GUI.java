@@ -5,25 +5,42 @@ import util.LemmingsException;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.GameContainer;
 
+import java.util.ArrayList;
+
 public class GUI {
-    private Button pause, increaseSpeed, decreaseSpeed, nuke;
-    private int y;
+    private ArrayList<Button> buttons;
+    private int x, y;
+    private int w, h;
 
     public static String RESOURCE_DIR = "../data/gui";
 
-    public GUI(int y)
+    public GUI(int x, int y, int w, int h)
         throws SlickException {
+        this.x = x;
         this.y = y;
-        pause = new Button("pause.png");
-        increaseSpeed = new Button("faster.png");
-        decreaseSpeed = new Button("slower.png");
+        this.w = w;
+        this.h = h;
+        buttons = new ArrayList<Button>();
+        buttons.add(new Button("pause.png", w - 200, y));
+        buttons.add(new Button("faster.png", w - 150, y));
+        buttons.add(new Button("slower.png", w - 100, y));
         //nuke = new AnimatedButton("nuke.sprite");
     }
 
     public void draw(GameContainer gc) {
-        pause.draw(gc.getWidth() - 200, y);
-        decreaseSpeed.draw(gc.getWidth() - 150, y);
-        increaseSpeed.draw(gc.getWidth() - 100, y);
-        //nuke.draw(gc.getWidth() - 50, y);
+        for (Button b : buttons)
+            b.draw();
+    }
+
+    public void mousePressed(int x, int y) {
+        for (Button b : buttons)
+            if (b.contains(x, y))
+                b.pressed();
+    }
+
+    public void mouseReleased(int x, int y) {
+        for (Button b : buttons)
+            if (b.contains(x, y))
+                b.released();
     }
 }
