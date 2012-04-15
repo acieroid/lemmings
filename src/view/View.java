@@ -84,7 +84,7 @@ public class View extends BasicGameState implements InputListener {
         this.game = game;
         font = gc.getGraphics().getFont();
         log = new Log(width - 20, 200, font);
-        gui = new GUI(0, gc.getHeight()-100, gc.getWidth(), 100);
+        gui = new GUI(0, gc.getHeight()-100, gc.getWidth(), 100, controller);
     }
 
     public void update(GameContainer gc, StateBasedGame game, int delta) {

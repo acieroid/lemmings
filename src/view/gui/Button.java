@@ -8,8 +8,9 @@ public class Button {
     private Image image;
     private boolean enabled;
     private int x, y;
+    private ButtonBehavior behavior;
 
-    public Button(String image, int x, int y)
+    public Button(String image, int x, int y, ButtonBehavior b)
         throws SlickException {
         if (disabledBackground == null || enabledBackground == null) {
             disabledBackground = new Image(GUI.RESOURCE_DIR + "/hbuttonbgb.png");
@@ -17,9 +18,11 @@ public class Button {
         }
 
         this.image = new Image(GUI.RESOURCE_DIR + "/" + image);
-        enabled = false;
         this.x = x;
         this.y = y;
+        behavior = b;
+        behavior.setButton(this);
+        enabled = false;
     }
 
     public void draw() {
@@ -36,11 +39,19 @@ public class Button {
                 y >= this.y && y <= this.y + enabledBackground.getHeight());
     }
 
-    public void pressed() {
+    public void enable() {
         enabled = true;
     }
 
-    public void released() {
+    public void disable() {
         enabled = false;
+    }
+
+    public void pressed() {
+        behavior.pressed();
+    }
+
+    public void released() {
+        behavior.released();
     }
 }

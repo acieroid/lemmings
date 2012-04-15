@@ -1,6 +1,7 @@
 package view.gui;
 
 import util.LemmingsException;
+import controller.Controller;
 
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.GameContainer;
@@ -14,16 +15,19 @@ public class GUI {
 
     public static String RESOURCE_DIR = "../data/gui";
 
-    public GUI(int x, int y, int w, int h)
+    public GUI(int x, int y, int w, int h, Controller controller)
         throws SlickException {
         this.x = x;
         this.y = y;
         this.w = w;
         this.h = h;
         buttons = new ArrayList<Button>();
-        buttons.add(new Button("pause.png", w - 200, y));
-        buttons.add(new Button("faster.png", w - 150, y));
-        buttons.add(new Button("slower.png", w - 100, y));
+        buttons.add(new Button("pause.png", w - 200, y,
+                               new PauseBehavior(controller)));
+        buttons.add(new Button("faster.png", w - 150, y,
+                               new FasterBehavior(controller)));
+        buttons.add(new Button("slower.png", w - 100, y,
+                               new SlowerBehavior(controller)));
         //nuke = new AnimatedButton("nuke.sprite");
     }
 
