@@ -113,4 +113,8 @@ public class CharacterAnimation {
     public void start() {
         animation.start();
     }
+
+    public boolean isStopped() {
+        return animation.isStopped();
+    }
 }

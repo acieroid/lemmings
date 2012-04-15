@@ -138,6 +138,12 @@ public class View extends BasicGameState implements InputListener {
 
         for (CharacterAnimation a : characters) {
             try {
+                
+                if (controller.isPaused())
+                    a.stop();
+                else if (a.isStopped())
+                    a.start();
+
                 a.checkIfChanged();
                 g.drawAnimation(a.getAnimation(),
                                 a.getX()-scrollX, a
@@ -182,12 +188,6 @@ public class View extends BasicGameState implements InputListener {
         }
         else if (key == Input.KEY_P || key == Input.KEY_PAUSE) {
             controller.pause();
-            for (CharacterAnimation animation : characters) {
-                if (controller.isPaused())
-                    animation.stop();
-                else
-                    animation.start();
-            }
         }
         else if (key == Input.KEY_F2) {
             controller.decreaseSpeed();

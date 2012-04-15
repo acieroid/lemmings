@@ -24,10 +24,10 @@ public class GUI {
         buttons = new ArrayList<Button>();
         buttons.add(new Button("pause.png", w - 200, y,
                                new PauseBehavior(controller)));
-        buttons.add(new Button("faster.png", w - 150, y,
-                               new FasterBehavior(controller)));
-        buttons.add(new Button("slower.png", w - 100, y,
+        buttons.add(new Button("slower.png", w - 150, y,
                                new SlowerBehavior(controller)));
+        buttons.add(new Button("faster.png", w - 100, y,
+                               new FasterBehavior(controller)));
         //nuke = new AnimatedButton("nuke.sprite");
     }
 
