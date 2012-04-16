@@ -16,7 +16,7 @@ public class GUI {
     public static String RESOURCE_DIR = "../data/gui";
 
     public GUI(int x, int y, int w, int h, Controller controller)
-        throws SlickException {
+        throws SlickException, LemmingsException {
         this.x = x;
         this.y = y;
         this.w = w;
@@ -28,7 +28,9 @@ public class GUI {
                                new SlowerBehavior(controller)));
         buttons.add(new Button("faster.png", w - 100, y,
                                new FasterBehavior(controller)));
-        //nuke = new AnimatedButton("nuke.sprite");
+        buttons.add(new Button("nuke.sprite", w - 50, y,
+                               new NukeBehavior(controller),
+                               true));
     }
 
     public void draw(GameContainer gc) {

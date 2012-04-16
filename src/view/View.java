@@ -81,10 +81,14 @@ public class View extends BasicGameState implements InputListener {
 
     public void init(GameContainer gc, StateBasedGame game)
         throws SlickException {
-        this.game = game;
-        font = gc.getGraphics().getFont();
-        log = new Log(width - 20, 200, font);
-        gui = new GUI(0, gc.getHeight()-100, gc.getWidth(), 100, controller);
+        try {
+            this.game = game;
+            font = gc.getGraphics().getFont();
+            log = new Log(width - 20, 200, font);
+            gui = new GUI(0, gc.getHeight()-100, gc.getWidth(), 100, controller);
+        } catch (LemmingsException e) {
+            throw new SlickException(e.getMessage());
+        }
     }
 
     public void update(GameContainer gc, StateBasedGame game, int delta) {

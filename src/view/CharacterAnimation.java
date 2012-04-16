@@ -39,8 +39,7 @@ public class CharacterAnimation {
         changed = true;
     }
 
-    public void changeDirection()
-        throws LemmingsException {
+    public void changeDirection() {
         changed = true;
     }
 
