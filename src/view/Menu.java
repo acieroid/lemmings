@@ -53,7 +53,7 @@ public class Menu extends BasicGameState {
         String text;
         for (int i = 0; i < items.length; i++) {
             text = items[i];
-            if (text.equals("Map"))
+            if (text == "Map")
                 text = "Map : < " + maps.current() + " >";
             drawCenteredText(gc, text, i, items.length,
                              (i == itemSelected) ? Color.green : Color.white);
@@ -63,7 +63,7 @@ public class Menu extends BasicGameState {
     public void update(GameContainer gc, StateBasedGame game, int delta) {
         Input input = gc.getInput();
         if (input.isKeyDown(Input.KEY_ENTER) &&
-            items[itemSelected].equals("Quit"))
+            items[itemSelected] == "Quit")
             gc.exit();
     }
 
@@ -76,11 +76,11 @@ public class Menu extends BasicGameState {
         else if (key == Input.KEY_UP)
             itemSelected = Math.max(itemSelected-1, 0);
 
-        if (items[itemSelected].equals("Play") && key == Input.KEY_ENTER)
+        if (items[itemSelected] == "Play" && key == Input.KEY_ENTER)
             game.enterState(View.ID);
-        else if (items[itemSelected].equals("Quit"))
+        else if (items[itemSelected] == "Quit")
             ; /* handled in update */
-        else if (items[itemSelected].equals("Map")) {
+        else if (items[itemSelected] == "Map") {
             if (key == Input.KEY_LEFT)
                 maps.previous();
             else if (key == Input.KEY_RIGHT)

@@ -157,6 +157,11 @@ public class Controller {
     }
 
     public void characterSelected(Character c) {
+        /* TODO: do not change the behavior if it should not be
+         * accepted (eg. faller -> blocker) */
+        Behavior b = behaviorOf(c);
+        if (b != null)
+            changeBehavior(b, new controller.behaviors.Blocker(b));
         System.out.println("Character selected");
     }
 
@@ -185,5 +190,16 @@ public class Controller {
             model.deleteCharacter(b.getCharacter());
             behaviors.remove(index);
         }
+    }
+
+    /**
+     * @return the behavior corresponding to the character c
+     */
+    private Behavior behaviorOf(Character c) {
+        for (Behavior b : behaviors)
+            if (b.getCharacter() == c)
+                return b;
+
+        return null;
     }
 }
