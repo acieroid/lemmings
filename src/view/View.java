@@ -29,7 +29,7 @@ public class View extends BasicGameState implements InputListener {
     private static int width = 1024, height = 768;
 
     private Model model;
-    private Controller controller;
+    private Controller contr;
 
     private int scrollX, scrollY;
     private static int scrollSpeed = 1;
@@ -38,7 +38,6 @@ public class View extends BasicGameState implements InputListener {
     private Log log;
     private GUI gui;
 
-    private ResourceManager manager;
     private MapSelector mapSelector;
 
     private MapImage map;
@@ -52,7 +51,6 @@ public class View extends BasicGameState implements InputListener {
         super();
         scrollX = 0;
         scrollY = 0;
-        manager = new ResourceManager("../data");
         characters = new ArrayList<CharacterAnimation>();
         initialized = false;
         toAdd = new ArrayList<Character>();
@@ -68,7 +66,7 @@ public class View extends BasicGameState implements InputListener {
 
     public void setModel(Model m) {
         model = m;
-        mapSelector = new MapSelector(m.getAllMaps());
+        mapSelector = new MapSelector(controller.ResourceManager.getAllMaps());
     }
 
     public Model getModel() {
@@ -76,7 +74,7 @@ public class View extends BasicGameState implements InputListener {
     }
 
     public void setController(Controller c) {
-        controller = c;
+        contr = c;
     }
 
     public void init(GameContainer gc, StateBasedGame game)
@@ -85,7 +83,7 @@ public class View extends BasicGameState implements InputListener {
             this.game = game;
             font = gc.getGraphics().getFont();
             log = new Log(width - 20, 200, font);
-            gui = new GUI(0, gc.getHeight()-100, gc.getWidth(), 100, controller);
+            gui = new GUI(0, gc.getHeight()-100, gc.getWidth(), 100, contr);
         } catch (LemmingsException e) {
             throw new SlickException(e.getMessage());
         }
@@ -98,7 +96,7 @@ public class View extends BasicGameState implements InputListener {
         if (toAdd.size() != 0) {
             for (Character c : toAdd) {
                 try {
-                    characters.add(manager.getAnimation(c));
+                    characters.add(ResourceManager.getAnimation(c));
                 } catch (LemmingsException e) {
                     log.add(e.getMessage());
                 }
@@ -143,7 +141,7 @@ public class View extends BasicGameState implements InputListener {
         for (CharacterAnimation a : characters) {
             try {
                 
-                if (controller.isPaused())
+                if (contr.isPaused())
                     a.stop();
                 else if (a.isStopped())
                     a.start();
@@ -167,7 +165,7 @@ public class View extends BasicGameState implements InputListener {
 
         map.getForeground().draw(-scrollX, -scrollY);
 
-        if (controller.isPaused())
+        if (contr.isPaused())
             drawCenteredText(gc, "Pause");
 
         gui.draw(gc);
@@ -191,24 +189,24 @@ public class View extends BasicGameState implements InputListener {
             game.enterState(Menu.ID);
         }
         else if (key == Input.KEY_P || key == Input.KEY_PAUSE) {
-            controller.pause();
+            contr.pause();
         }
         else if (key == Input.KEY_F2) {
-            controller.decreaseSpeed();
-            log.add("Speed set to " + controller.getSpeed());
+            contr.decreaseSpeed();
+            log.add("Speed set to " + contr.getSpeed());
         }
         else if (key == Input.KEY_F3) {
-            controller.increaseSpeed();
-            log.add("Speed set to " + controller.getSpeed());
+            contr.increaseSpeed();
+            log.add("Speed set to " + contr.getSpeed());
         }
     }
 
     public void mouseClicked(int button, int x, int y, int clickCount) {
         try {
             if (selected != null)
-                controller.characterSelected(selected.getCharacter());
+                contr.characterSelected(selected.getCharacter());
             else
-                controller.mouseClicked(x + scrollX, y + scrollY);
+                contr.mouseClicked(x + scrollX, y + scrollY);
         } catch (Exception e) {
             log.add(e.getMessage());
         }
@@ -226,8 +224,8 @@ public class View extends BasicGameState implements InputListener {
         String mapName = mapSelector.current();
         try {
             log.add("Loading map: '" + mapName + "'");
-            controller.start(mapName);
-            map = manager.getMap(mapName);
+            contr.start(mapName);
+            map = ResourceManager.getMap(mapName);
             log.add("Map loaded.");
         } catch (Exception e) {
             log.add(e.getMessage());
@@ -236,7 +234,7 @@ public class View extends BasicGameState implements InputListener {
     }
 
     public void leave(GameContainer gc, StateBasedGame game) {
-        controller.stop();
+        contr.stop();
     }
 
     /**

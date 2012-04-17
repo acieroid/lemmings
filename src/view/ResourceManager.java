@@ -10,13 +10,9 @@ import org.newdawn.slick.Font;
 import org.newdawn.slick.AngelCodeFont;
 
 class ResourceManager {
-    private String dir;
+    private static String dir = "../data/";
 
-    public ResourceManager(String directory) {
-        this.dir = directory;
-    }
-
-    public MapImage getMap(String name)
+    public static MapImage getMap(String name)
         throws LemmingsException {
         try {
             return new MapImage(dir + "/maps/" + name + "/");
@@ -27,7 +23,7 @@ class ResourceManager {
         }
     }
 
-    public Font getFont(String fontName)
+    public static Font getFont(String fontName)
         throws LemmingsException {
         try {
             return new AngelCodeFont(dir + "/" + fontName + ".fnt",
@@ -39,7 +35,7 @@ class ResourceManager {
         }
     }
 
-    public CharacterAnimation getAnimation(Character c)
+    public static CharacterAnimation getAnimation(Character c)
         throws LemmingsException {
         return new CharacterAnimation(c, dir, c.getName());
     }

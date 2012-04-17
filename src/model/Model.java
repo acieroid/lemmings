@@ -13,12 +13,9 @@ public class Model {
     private int lemmingsReleased, lemmingsToRelease;
     private int lemmingsRescued, lemmingsToRescue;
 
-    private ResourceManager manager;
-
     public Model() {
         view = null;
         characters = new ArrayList<Character>();
-        manager = new ResourceManager("../data");
         reset();
     }
 
@@ -46,13 +43,6 @@ public class Model {
     }
 
     /**
-     * Return a list of all the maps' names
-     */
-    public LinkedList<String> getAllMaps() {
-        return manager.getAllMaps();
-    }
-
-    /**
      * Set the view associated with this model
      */
     public void setView(View v) {
@@ -60,17 +50,21 @@ public class Model {
     }
 
     /**
+     * @return the view associated with this model
+     */
+    public View getView() {
+        return view;
+    }
+
+    /**
      * Add a character at a certain position
-     * @param x: the x value of the character position
-     * @param y: the y value of the character position
-     * @param name: the name of the type of character
+     * @param c: the haracter to be added
      * @return the character that has been added
      */
-    public Character addCharacter(int x, int y, String name)
+    public Character addCharacter(Character c)
         throws LemmingsException {
-        Character c = manager.getCharacter(x, y, name);
-        characters.add(c);
         c.setView(view);
+        characters.add(c);
         view.characterAdded(c);
         return c;
     }

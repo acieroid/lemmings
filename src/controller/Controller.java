@@ -14,7 +14,6 @@ public class Controller {
     private boolean running;
     private ArrayList<Behavior> behaviors;
     private CollisionMap colMap;
-    private ResourceManager manager;
     private int speed;
     private static int MAXSPEED = 5;
     private int lemmingsToRelease;
@@ -36,7 +35,6 @@ public class Controller {
             }, 20, 20);
         lemmingsTimer = new Timer();
         behaviors = new ArrayList<Behavior>();
-        manager = new ResourceManager("../data");
     }
 
     public void setModel(Model m) {
@@ -48,7 +46,7 @@ public class Controller {
      */
     public void start(String map)
         throws LemmingsException {
-        colMap = manager.getCollisionMap(map);
+        colMap = ResourceManager.getCollisionMap(map);
         model.setMap(colMap.getMap());
         model.setLemmingsToRelease(colMap.getLemmingsToRelease());
         model.setLemmingsToRescue(colMap.getLemmingsToSave());
@@ -146,7 +144,8 @@ public class Controller {
      */
     public void releaseLemming()
         throws LemmingsException {
-        Character c = model.addCharacter(0, 0, "walker");
+        Character c = new Character(0, 0, 32, 32, "walker");
+        model.addCharacter(c);
         c.setX(colMap.getEntranceX() - c.getWidth()/2);
         c.setY(colMap.getEntranceY() - c.getHeight()/2);
         c.setFalling(true);
