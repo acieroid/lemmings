@@ -8,13 +8,12 @@ import controller.CollisionMap;
 public class Blocker extends SimpleBehavior {
     public Blocker(Behavior b) {
         super(b);
+        getCharacter().setDirection(Character.DONT_MOVE);
     }
 
     public String getName() {
         return "blocker";
     }
 
-    public void update(CollisionMap map) {
-        /* don't move */
-    }
+    /* TODO: actually *block* the lemmings */
 }

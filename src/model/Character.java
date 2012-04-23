@@ -2,6 +2,7 @@ package model;
 
 public class Character extends Entity {
     public static int LEFT = -1;
+    public static int DONT_MOVE = 0;
     public static int RIGHT = 1;
 
     public static int CHANGE_NONE = 0;
@@ -32,8 +33,12 @@ public class Character extends Entity {
         return direction;
     }
 
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
+
     public void changeDirection() {
-        direction *= -1;
+        setDirection(getDirection() * -1);
         getView().characterChanged(this, CHANGE_DIRECTION);
     }
 

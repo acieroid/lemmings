@@ -146,8 +146,8 @@ public class Controller {
         throws LemmingsException {
         Character c = new Character(0, 0, 32, 32, "walker");
         model.addCharacter(c);
-        c.setX(colMap.getEntranceX() - c.getWidth()/2);
-        c.setY(colMap.getEntranceY() - c.getHeight()/2);
+        c.setX(colMap.getMap().getEntranceX() - c.getWidth()/2);
+        c.setY(colMap.getMap().getEntranceY() - c.getHeight()/2);
         c.setFalling(true);
         synchronized (behaviors) {
             behaviors.add(new controller.behaviors.Walker(this, c));
@@ -160,7 +160,7 @@ public class Controller {
          * accepted (eg. faller -> blocker) */
         Behavior b = behaviorOf(c);
         if (b != null)
-            changeBehavior(b, new controller.behaviors.Blocker(b));
+            changeBehavior(b, new controller.behaviors.Bomber(b));
         System.out.println("Character selected");
     }
 

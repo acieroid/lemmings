@@ -27,7 +27,7 @@ public class Exit extends SimpleBehavior {
     }
 
     public void update(CollisionMap map) {
-        /* don't move */
+        /* don't move nor fall */
     }
 
     public void destroy() {

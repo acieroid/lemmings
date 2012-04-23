@@ -253,33 +253,29 @@ public class View extends BasicGameState implements InputListener {
      * @TODO: this should be implemented in CharacterAnimation
      */
     public void characterChanged(Character character, int change) {
-        try {
-            if (change == Character.CHANGE_DELETED) {
-                CharacterAnimation toDelete = null;
-                for (CharacterAnimation a : characters) {
-                    if (a.getCharacter() == character) {
-                        toDelete = a;
-                        break;
-                    }
+        if (change == Character.CHANGE_DELETED) {
+            CharacterAnimation toDelete = null;
+            for (CharacterAnimation a : characters) {
+                if (a.getCharacter() == character) {
+                    toDelete = a;
+                    break;
                 }
-                if (toDelete != null)
-                    characters.remove(characters.indexOf(toDelete));
             }
-            else {
-                for (CharacterAnimation a : characters) {
-                    if (a.getCharacter() == character) {
-                        if (change == Character.CHANGE_FALLING ||
-                            change == Character.CHANGE_BEHAVIOR)
-                            a.setAnimation(character.getName());
-                        else if (change == Character.CHANGE_DIRECTION)
-                            a.changeDirection();
+            if (toDelete != null)
+                characters.remove(characters.indexOf(toDelete));
+        }
+        else {
+            for (CharacterAnimation a : characters) {
+                if (a.getCharacter() == character) {
+                    if (change == Character.CHANGE_FALLING ||
+                        change == Character.CHANGE_BEHAVIOR)
+                        a.setAnimation(character.getName());
+                    else if (change == Character.CHANGE_DIRECTION)
+                        a.changeDirection();
 
-                        break;
-                    }
+                    break;
                 }
             }
-        } catch (LemmingsException e) {
-            log.add(e.getMessage());
         }
     }
 

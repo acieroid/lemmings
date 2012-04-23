@@ -11,7 +11,6 @@ import org.newdawn.slick.SpriteSheet;
 public class CharacterAnimation {
     private Animation animation;
     private Character character;
-    private LispFile definition;
     private LispFile sprite;
     private SpriteSheet sheet;
     private String resourceDirectory, directory;
@@ -27,15 +26,18 @@ public class CharacterAnimation {
         loadFromDefinition();
     }
 
+    private String getStrDirection() {
+        if (character.getDirection() == Character.LEFT)
+            return "left";
+        else
+            return "right";
+    }
+
     /* TODO: take the spritesheet as argument (will improve
      * performance and memory consumption) */
-    public synchronized void setAnimation(String animation)
-        throws LemmingsException {
+    public synchronized void setAnimation(String animation) {
         anim = animation;
         directory = resourceDirectory + "/characters/" + animation;
-        definition = new LispFile(directory + "/" +
-                                  animation + ".character");
-
         changed = true;
     }
 
@@ -50,7 +52,7 @@ public class CharacterAnimation {
         String direction = character.getDirection() == Character.RIGHT ?
             "right-sprite" : "left-sprite";
         sprite = new LispFile(directory + "/" +
-                              definition.getStringProperty(direction));
+                              getStrDirection() + ".sprite");
 
         try {
             sheet = new SpriteSheet(directory + "/" +

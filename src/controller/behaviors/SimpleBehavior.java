@@ -46,7 +46,8 @@ abstract class SimpleBehavior implements Behavior {
         }
 
         /* The character walks */
-        if (!character.isFalling()) {
+        if (character.getDirection() != Character.DONT_MOVE &&
+            !character.isFalling()) {
             int dx = character.getDirection();
 
             if (map.isCollisionFree(x+dx, y, width, height)) {
@@ -63,9 +64,9 @@ abstract class SimpleBehavior implements Behavior {
         }
 
         /* Check the exit */
-        if (map.getExitX() == character.getX() + width/2 &&
-            map.getExitY() >= character.getY() &&
-            map.getExitY() <= character.getY() + character.getWidth())
+        if (map.getMap().getExitX() == character.getX() + width/2 &&
+            map.getMap().getExitY() >= character.getY() &&
+            map.getMap().getExitY() <= character.getY() + character.getWidth())
             controller.changeBehavior(this, new Exit(this));
     }
 }
