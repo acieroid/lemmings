@@ -42,8 +42,10 @@ public class Bomber extends SimpleBehavior {
     }
 
     public void explode() {
-        //colMap.destroy(
-        /* TODO: the colMap should in fact be something in the model */
+        colMap.getMap().destroy(getCharacter().getX(),
+                                getCharacter().getY(),
+                                getCharacter().getWidth(),
+                                getCharacter().getHeight());
     }
 
     public void destroy() {
