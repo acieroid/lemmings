@@ -1,8 +1,10 @@
 package model;
 
 import util.LemmingsException;
+import view.View;
 
 public class Map extends Entity {
+    private View view;
     private String name;
     private int width, height;
     private int entranceX, entranceY;
@@ -23,29 +25,33 @@ public class Map extends Entity {
         this.exitY = exitY;
     }
 
+    public void setView(View view) {
+        this.view = view;
+    }
+
     public int[] getCollisionData() {
         return collisionData;
     }
 
     /**
      * Delete a rectangle from the collision map
-     * @TODO: notify the view
      */
     public void destroy(int x, int y, int w, int h) {
         for (int i = 0; i < w; i++)
-            for (int j = 0; j < w; j++)
+            for (int j = 0; j < h; j++)
                 collisionData[(y+j)*getWidth() + x+i] = 0;
+        view.destroyed(x, y, w, h);
     }
 
     /**
      * Destroy a zone from the collision map
-     * @TODO: notify the view
      */
     public void destroy(int[] zone, int x, int y, int w, int h) {
-        for (int i = 0; i < w; i++)
-            for (int j = 0; j < w; j++)
+        for (int i = 0; i < h; i++)
+            for (int j = 0; j < h; j++)
                 if (zone[j*w + i] != 0)
                     collisionData[(y+j)*getWidth() + x+i] = 0;
+        view.destroyed(zone, x, y, w, h);
     }
 
     public int getWidth() {

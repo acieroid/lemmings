@@ -46,6 +46,7 @@ public class View extends BasicGameState implements InputListener {
 
     private boolean initialized;
     private ArrayList<Character> toAdd;
+    private ArrayList<DestroyInfo> toDestroy;
 
     public View() {
         super();
@@ -54,6 +55,7 @@ public class View extends BasicGameState implements InputListener {
         characters = new ArrayList<CharacterAnimation>();
         initialized = false;
         toAdd = new ArrayList<Character>();
+        toDestroy = new ArrayList<DestroyInfo>();
     }
 
     public int getID() {
@@ -102,6 +104,17 @@ public class View extends BasicGameState implements InputListener {
                 }
             }
             toAdd.clear();
+        }
+
+        if (toDestroy.size() != 0) {
+            for (DestroyInfo i : toDestroy) {
+                /* TODO: map should handle the destroy info */
+                if (i.hasZone)
+                    map.destroy(i.zone, i.x, i.y, i.w, i.h);
+                else
+                    map.destroy(i.x, i.y, i.w, i.h);
+            }
+            toDestroy.clear();
         }
 
         /* Handle scrolling */
@@ -311,4 +324,41 @@ public class View extends BasicGameState implements InputListener {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Called when pixels on the collision map are destroyed
+     */
+    public void destroyed(int x, int y, int w, int h) {
+        toDestroy.add(new DestroyInfo(x, y, w, h));
+    }
+
+    /**
+     * Called when a zone of pixel on the collision maps are destroyed
+     */
+    public void destroyed(int[] zone, int x, int y, int w, int h) {
+        toDestroy.add(new DestroyInfo(zone, x, y, w, h));
+    }
+
+    /**
+     * Represents a zone to be destroyed
+     */
+    class DestroyInfo {
+        public int x, y, w, h;
+        public int[] zone;
+        public boolean hasZone;
+
+        public DestroyInfo(int x, int y, int w, int h) {
+            this.x = x;
+            this.y = y;
+            this.w = w;
+            this.h = h;
+            this.hasZone = false;
+        }
+
+        public DestroyInfo(int zone[], int x, int y, int w, int h) {
+            this(x, y, w, h);
+            this.zone = zone;
+            this.hasZone = true;
+        }
+    }   
 }

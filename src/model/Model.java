@@ -33,6 +33,7 @@ public class Model {
         throws LemmingsException {
         reset();
         this.map = map;
+        map.setView(view);
     }
 
     /**
