@@ -70,7 +70,7 @@ public class LevelEnd extends BasicGameState {
         else if (key == Input.KEY_ESCAPE) {
             game.enterState(Menu.ID);
         }
-        else if (key == Input.KEY_BACK) {
+        else if (key == Input.KEY_BACK && name.length() > 0) {
             name = name.substring(0, name.length() - 1);
         }
         else if (name.length() < MAX_NAME_LENGTH) {
