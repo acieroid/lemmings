@@ -44,8 +44,8 @@ public class Bomber extends SimpleBehavior {
     public void explode() {
         colMap.getMap().destroy(getCharacter().getX(),
                                 getCharacter().getY(),
-                                getCharacter().getWidth(),
-                                getCharacter().getHeight());
+                                getCharacter().getWidth()+10,
+                                getCharacter().getHeight()+10);
     }
 
     public void destroy() {
