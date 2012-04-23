@@ -138,9 +138,13 @@ public class View extends BasicGameState implements InputListener {
         map.getBackground().draw(-scrollX, -scrollY);
         selected = null;
 
-        for (CharacterAnimation a : characters) {
+        ArrayList<CharacterAnimation> anims;
+        synchronized(characters) {
+            anims = new ArrayList<CharacterAnimation>(characters);
+        }
+
+        for (CharacterAnimation a : anims) {
             try {
-                
                 if (contr.isPaused())
                     a.stop();
                 else if (a.isStopped())

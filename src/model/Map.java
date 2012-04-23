@@ -44,7 +44,7 @@ public class Map extends Entity {
     public void destroy(int[] zone, int x, int y, int w, int h) {
         for (int i = 0; i < w; i++)
             for (int j = 0; j < w; j++)
-                if (zone[j*w + x+i] != 0)
+                if (zone[j*w + i] != 0)
                     collisionData[(y+j)*getWidth() + x+i] = 0;
     }
 
