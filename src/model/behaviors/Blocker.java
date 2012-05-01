@@ -1,9 +1,9 @@
-package controller.behaviors;
+package model.behaviors;
 
 import model.Character;
-import controller.Controller;
-import controller.Behavior;
-import controller.CollisionMap;
+import model.Model;
+import model.Behavior;
+import model.Map;
 
 public class Blocker extends SimpleBehavior {
     public Blocker(Behavior b) {

@@ -1,9 +1,9 @@
-package controller.behaviors;
+package model.behaviors;
 
+import model.Model;
 import model.Character;
-import controller.Controller;
-import controller.Behavior;
-import controller.CollisionMap;
+import model.Behavior;
+import model.Map;
 
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
@@ -15,7 +15,6 @@ public class Bomber extends SimpleBehavior {
     private static int TIMEOUT_EXPLODE = 900;
     private static int TIMEOUT_DESTROY = 1200;
     private Timer timer;
-    private CollisionMap colMap;
 
     private int width, height;
     private int[] collisionData;
@@ -43,7 +42,7 @@ public class Bomber extends SimpleBehavior {
             image.getRGB(0, 0, width, height, collisionData, 0, width);
         } catch (java.io.IOException e) {
             /* TODO */
-            /*throw new LemmingsException("controller",
+            /*throw new LemmingsException("model",
               "Can't load radius for bomber");*/
         }
     }
@@ -52,24 +51,19 @@ public class Bomber extends SimpleBehavior {
         return "bomber";
     }
 
-    public void update(CollisionMap colMap) {
-        super.update(colMap);
-        this.colMap = colMap;
-    }
-
     public void explode() {
         int x = getCharacter().getX();
         int y = getCharacter().getY();
         int w = getCharacter().getWidth();
         int h = getCharacter().getHeight();
-        colMap.getMap().destroy(collisionData,
-                                x - (width/2 - w/2),
-                                y - (width/2 - w/2),
-                                width,
-                                height);
+        getModel().getMap().destroy(collisionData,
+                                    x - (width/2 - w/2),
+                                    y - (width/2 - w/2),
+                                    width,
+                                    height);
     }
 
     public void destroy() {
-        getController().deleteBehavior(this);
+        getModel().deleteCharacter(getCharacter());
     }
 }

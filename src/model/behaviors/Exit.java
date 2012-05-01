@@ -1,9 +1,9 @@
-package controller.behaviors;
+package model.behaviors;
 
+import model.Model;
 import model.Character;
-import controller.Controller;
-import controller.Behavior;
-import controller.CollisionMap;
+import model.Behavior;
+import model.Map;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -26,11 +26,12 @@ public class Exit extends SimpleBehavior {
         return "exit";
     }
 
-    public void update(CollisionMap map) {
+    public void update(Map map) {
         /* don't move nor fall */
     }
 
     public void destroy() {
-        getController().deleteBehavior(this);
+        getModel().deleteCharacter(getCharacter());
+        getModel().lemmingRescued();
     }
 }

@@ -10,7 +10,7 @@ public class PauseBehavior extends ButtonBehavior {
     public void pressed() {
         getController().pause();
 
-        if (getController().isPaused())
+        if (getController().getModel().isPaused())
             getButton().enable();
         else
             getButton().disable();

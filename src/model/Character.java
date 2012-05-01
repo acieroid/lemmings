@@ -14,6 +14,8 @@ public class Character extends Entity {
     private int direction;
     private boolean falling;
 
+    private Behavior behavior;
+
     public Character(int x, int y, int width, int height, String name) {
         super(x, y, width, height, name);
         direction = RIGHT;
@@ -56,5 +58,17 @@ public class Character extends Entity {
 
     public void destroy() {
         getView().characterChanged(this, CHANGE_DELETED);
+    }
+
+    public Behavior getBehavior() {
+        return behavior;
+    }
+
+    /*
+     * Set the current behavior of this character
+     * @TODO: what to do if the behavior has a timer and will act on the character later ?
+     */
+    public void setBehavior(Behavior b) {
+        behavior = b;
     }
 }

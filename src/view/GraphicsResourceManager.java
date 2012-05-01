@@ -9,7 +9,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.AngelCodeFont;
 
-class ResourceManager {
+class GraphicsResourceManager {
     private static String dir = "../data/";
 
     public static MapImage getMap(String name)

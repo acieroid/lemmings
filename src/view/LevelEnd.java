@@ -50,7 +50,7 @@ public class LevelEnd extends BasicGameState {
     public void render(GameContainer gc, StateBasedGame game, Graphics g) {
         String[] text = {"Lemmings rescued: " +
                          model.getLemmingsRescued() + "/" +
-                         model.getLemmingsToRescue(),
+                         model.getMap().getLemmingsToRescue(),
                          model.hasWon() ? "Congratulations, you won!" : "Too bad, you lost.",
                          "Type your name to register your score and then press Enter",
                          "or press escape to return to the main menu.",

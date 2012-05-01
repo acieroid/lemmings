@@ -1,22 +1,22 @@
-package controller.behaviors;
+package model.behaviors;
 
 import model.Character;
-import controller.Controller;
-import controller.Behavior;
-import controller.CollisionMap;
+import model.Model;
+import model.Behavior;
+import model.Map;
 
 abstract class SimpleBehavior implements Behavior {
-    private Controller controller;
+    private Model model;
     private Character character;
 
-    public SimpleBehavior(Controller controller, Character character) {
-        this.controller = controller;
+    public SimpleBehavior(Model model, Character character) {
+        this.model = model;
         this.character = character;
         character.setName(getName());
     }
 
     public SimpleBehavior(Behavior b) {
-        this(b.getController(), b.getCharacter());
+        this(b.getModel(), b.getCharacter());
     }
 
     abstract public String getName();
@@ -25,11 +25,11 @@ abstract class SimpleBehavior implements Behavior {
         return character;
     }
 
-    public Controller getController() {
-        return controller;
+    public Model getModel() {
+        return model;
     }
 
-    public void update(CollisionMap map) {
+    public void update(Map map) {
         int x = character.getX();
         int y = character.getY();
         int width = character.getWidth();
@@ -64,9 +64,9 @@ abstract class SimpleBehavior implements Behavior {
         }
 
         /* Check the exit */
-        if (map.getMap().getExitX() == character.getX() + width/2 &&
-            map.getMap().getExitY() >= character.getY() &&
-            map.getMap().getExitY() <= character.getY() + character.getWidth())
-            controller.changeBehavior(this, new Exit(this));
+        if (map.getExitX() == character.getX() + width/2 &&
+            map.getExitY() >= character.getY() &&
+            map.getExitY() <= character.getY() + character.getWidth())
+            character.setBehavior(new Exit(this));
     }
 }

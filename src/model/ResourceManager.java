@@ -1,7 +1,6 @@
-package controller;
+package model;
 
 import util.LemmingsException;
-import parser.LispFile;
 
 import java.util.LinkedList;
 import java.util.Collections;
@@ -19,8 +18,8 @@ public class ResourceManager {
         return l;
     }
 
-    public static CollisionMap getCollisionMap(String name)
+    public static Map getMap(String name)
         throws LemmingsException {
-        return new CollisionMap(name, dir + "/maps/" + name);
+        return new Map(name, dir + "/maps/" + name);
     }
 }

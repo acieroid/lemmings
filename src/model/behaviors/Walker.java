@@ -1,12 +1,12 @@
-package controller.behaviors;
+package model.behaviors;
 
 import model.Character;
-import controller.Controller;
-import controller.Behavior;
+import model.Model;
+import model.Behavior;
 
 public class Walker extends SimpleBehavior {
-    public Walker(Controller controller, Character character) {
-        super(controller, character);
+    public Walker(Model model, Character character) {
+        super(model, character);
     }
 
     public Walker(Behavior b) {
