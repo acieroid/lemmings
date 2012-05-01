@@ -132,15 +132,23 @@ public class View extends BasicGameState implements InputListener {
     }
 
     private void drawCenteredText(GameContainer gc, String text) {
-        font.drawString(gc.getWidth()/2 - font.getWidth(text)/2,
-                        gc.getHeight()/2 - font.getLineHeight()/2,
-                        text, Color.white);
+        try {
+            font.drawString(gc.getWidth()/2 - font.getWidth(text)/2,
+                            gc.getHeight()/2 - font.getLineHeight()/2,
+                            text, Color.white);
+        } catch (org.lwjgl.opengl.OpenGLException e) {
+            System.out.println("Warning: " + e);
+        }
     }
 
     private void drawCenteredText(GameContainer gc, String text, int y) {
-        font.drawString(gc.getWidth()/2 - font.getWidth(text)/2,
-                        y - font.getLineHeight()/2,
-                        text, Color.white);
+        try {
+            font.drawString(gc.getWidth()/2 - font.getWidth(text)/2,
+                            y - font.getLineHeight()/2,
+                            text, Color.white);
+        } catch (org.lwjgl.opengl.OpenGLException e) {
+            System.out.println("Warning: " + e);
+        }
     }
         
 

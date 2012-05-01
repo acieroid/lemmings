@@ -37,7 +37,11 @@ public class LevelEnd extends BasicGameState {
         int start = gc.getHeight()/2 - (spacing+font.getLineHeight())*nLines/2;
         int x = gc.getWidth()/2 - font.getWidth(text)/2;
         int y = start + line*(spacing+font.getLineHeight());
-        font.drawString(x, y, text, color);
+        try {
+            font.drawString(x, y, text, color);
+        } catch (org.lwjgl.opengl.OpenGLException e) {
+            System.out.println("Warning: " + e);
+        }
     }
 
     public void init(GameContainer gc, StateBasedGame game)
