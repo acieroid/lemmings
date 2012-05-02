@@ -58,6 +58,11 @@ abstract class SimpleBehavior implements Behavior {
                 character.setX(x+dx);
                 character.setY(y-1);
             }
+            else if (map.isCollisionFree(x+dx, y-2, width, height)) {
+                /* Can even climb two pixel ! */
+                character.setX(x+dx);
+                character.setY(y-2);
+            }
             else {
                 character.changeDirection();
             }

@@ -112,7 +112,7 @@ public class Map extends Entity {
     public void destroy(int[] zone, int x, int y, int w, int h) {
         for (int i = 0; i < h; i++)
             for (int j = 0; j < h; j++)
-                if (zone[j*w + i] != 0)
+                if (zone[j*w + i] != 0xFFFFFF)
                     collisionData[(y+j)*getWidth() + x+i] = 0;
         view.destroyed(zone, x, y, w, h);
     }
