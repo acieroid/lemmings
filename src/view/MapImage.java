@@ -42,8 +42,6 @@ public class MapImage {
         } catch (java.io.IOException e) {
             throw new SlickException(e.getMessage());
         }
-        destroy(0, 5, getWidth()/2, 5);
-        reloadTexture();
     }
 
     public int getWidth() {
@@ -87,24 +85,19 @@ public class MapImage {
      * Destroy a pixel on the map
      */
     public void destroyPixel(int x, int y) {
-        buffer.put(4*(y*getWidth() + x), (byte) 0);
-        buffer.put(4*(y*getWidth() + x)+1, (byte) 0);
-        buffer.put(4*(y*getWidth() + x)+2, (byte) 0);
-        buffer.put(4*(y*getWidth() + x)+3, (byte) 0);
+        int offset = 4*(y*get2Fold(getWidth()) + x);
+        buffer.put(offset, (byte) 0);
+        buffer.put(offset+1, (byte) 0);
+        buffer.put(offset+2, (byte) 0);
+        buffer.put(offset+3, (byte) 0);
     }
 
     /**
      * Reload OpenGL texture
      */
     private void reloadTexture() {
-        /* Garder un ImageData (ou java.nio.ByteBuffer), chargé au
-           début avec les données de l'image (PNGImageData,
-           loadImage).  Quand un truc est supprimé, le supprimer du
-           ImageData et recharger la texture. Voir
-           opengl/InternalTextureLoader.java, ligne 435 et
-           éventuellement 442 */
-
-        /* TODO: this don't work with some version of slick (introduced in revision 1490) */
+        /* TODO: this don't work with some version of slick
+         * (introduced in revision 1490) */
         /* texture.setTextureData(SGL.GL_RGBA, 4, SGL.GL_NEAREST, SGL.GL_NEAREST, buffer); */
 
         texture.bind();
