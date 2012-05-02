@@ -13,7 +13,7 @@ import java.util.TimerTask;
 
 public class Bomber extends SimpleBehavior {
     private static int TIMEOUT_EXPLODE = 900;
-    private static int TIMEOUT_DESTROY = 1200;
+    private static int TIMEOUT_DESTROY = 910;
     private Timer timer;
 
     private int width, height;
