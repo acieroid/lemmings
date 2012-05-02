@@ -76,7 +76,8 @@ public class MapImage {
     public void destroy(int[] zone, int x, int y, int w, int h) {
         for (int i = 0; i < w; i++)
             for (int j = 0; j < h; j++)
-                if (zone[j*w + i] != 0)
+                /* In pingus, the radius images are colored on a white background */
+                if (zone[j*w + i] != 0xFFFFFF)
                     destroyPixel(x+i, y+j);
         reloadTexture();
     }
