@@ -6,8 +6,9 @@ import view.View;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.File;
+import java.io.Serializable;
 
-public class Map extends Entity {
+public class Map extends Entity implements Serializable {
     private View view;
     private String name;
     private int entranceX, entranceY;

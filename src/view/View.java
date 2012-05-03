@@ -209,13 +209,18 @@ public class View extends BasicGameState implements InputListener {
         else if (key == Input.KEY_P || key == Input.KEY_PAUSE) {
             controller.pause();
         }
+        else if (key == Input.KEY_S) {
+            try {
+                controller.save();
+            } catch (LemmingsException e) {
+                log.add(e.getMessage());
+            }
+        }
         else if (key == Input.KEY_F2) {
             controller.decreaseSpeed();
-            log.add("Speed set to " + model.getSpeed());
         }
         else if (key == Input.KEY_F3) {
             controller.increaseSpeed();
-            log.add("Speed set to " + model.getSpeed());
         }
     }
 

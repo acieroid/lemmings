@@ -5,7 +5,9 @@ import model.Model;
 import model.Behavior;
 import model.Map;
 
-abstract class SimpleBehavior implements Behavior {
+import java.io.Serializable;
+
+abstract class SimpleBehavior implements Behavior, Serializable{
     private Model model;
     private Character character;
 

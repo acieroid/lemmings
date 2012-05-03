@@ -1,6 +1,8 @@
 package model;
 
-public class Character extends Entity {
+import java.io.Serializable;
+
+public class Character extends Entity implements Serializable {
     public static int LEFT = -1;
     public static int DONT_MOVE = 0;
     public static int RIGHT = 1;

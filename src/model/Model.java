@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.io.Serializable;
 
-public class Model {
+public class Model implements Serializable {
     private static int MAXSPEED = 5;
 
     private View view;
