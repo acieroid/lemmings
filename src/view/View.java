@@ -5,7 +5,7 @@ import model.Character;
 import model.ResourceManager;
 import controller.Controller;
 import util.LemmingsException;
-import util.MapSelector;
+import util.Selector;
 import view.gui.GUI;
 
 import java.util.ListIterator;
@@ -39,7 +39,7 @@ public class View extends BasicGameState implements InputListener {
     private Log log;
     private GUI gui;
 
-    private MapSelector mapSelector;
+    private Selector mapSelector;
 
     private MapImage map;
     private ArrayList<CharacterAnimation> characters;
@@ -63,13 +63,12 @@ public class View extends BasicGameState implements InputListener {
         return ID;
     }
 
-    public MapSelector getMapSelector() {
-        return mapSelector;
-    }
-
     public void setModel(Model model) {
         this.model = model;
-        mapSelector = new MapSelector(ResourceManager.getAllMaps());
+    }
+
+    public void setMapSelector(Selector mapSelector) {
+        this.mapSelector = mapSelector;
     }
 
     public Model getModel() {
@@ -80,16 +79,9 @@ public class View extends BasicGameState implements InputListener {
         controller = c;
     }
 
-    public void init(GameContainer gc, StateBasedGame game)
-        throws SlickException {
-        try {
-            this.game = game;
-            font = gc.getGraphics().getFont();
-            log = new Log(width - 20, 200, font);
-            gui = new GUI(0, gc.getHeight()-100, gc.getWidth(), 100, controller);
-        } catch (LemmingsException e) {
-            throw new SlickException(e.getMessage());
-        }
+    public void init(GameContainer gc, StateBasedGame game) {
+        this.game = game;
+        font = gc.getGraphics().getFont();
     }
 
     public void update(GameContainer gc, StateBasedGame game, int delta) {
@@ -246,7 +238,11 @@ public class View extends BasicGameState implements InputListener {
 
     public void enter(GameContainer gc, StateBasedGame game) {
         String mapName = mapSelector.current();
+        width = gc.getWidth();
+        height = gc.getHeight();
         try {
+            log = new Log(width - 20, 200, font);
+            gui = new GUI(0, gc.getHeight()-100, gc.getWidth(), 100, controller);
             controller.start(mapName);
             map = GraphicsResourceManager.getMap(mapName);
         } catch (Exception e) {

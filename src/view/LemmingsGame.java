@@ -1,6 +1,6 @@
 package view;
 
-import util.MapSelector;
+import util.Selector;
 
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.GameContainer;
@@ -14,9 +14,12 @@ public class LemmingsGame extends StateBasedGame {
     }
 
     public void initStatesList(GameContainer container) {
-        addState(new Menu(view.getMapSelector()));
+        Menu menu = new Menu();
+        addState(menu);
         addState(view);
         addState(new LevelEnd(view.getModel()));
+
+        view.setMapSelector(menu.getMapSelector());
     }
 
     public View getView() {
