@@ -89,7 +89,8 @@ public class View extends BasicGameState implements InputListener {
         Input input = gc.getInput();
 
         if (toAdd.size() != 0) {
-            for (Character c : toAdd) {
+            for (int i = 0; i < toAdd.size(); i++) {
+                Character c = toAdd.get(i);
                 try {
                     characters.add(GraphicsResourceManager.getAnimation(c));
                 } catch (LemmingsException e) {
@@ -100,19 +101,11 @@ public class View extends BasicGameState implements InputListener {
         }
 
         if (toDestroy.size() != 0) {
-            ArrayList<DestroyInfo> td;
-            synchronized (toDestroy) {
-                td = new ArrayList<DestroyInfo>(toDestroy);
-                toDestroy.clear();
+            for (int i = 0; i < toDestroy.size(); i++) {
+                DestroyInfo info = toDestroy.get(i);
+                map.destroy(toDestroy.get(i));
             }
-
-            for (DestroyInfo i : td) {
-                /* TODO: map should handle the destroy info */
-                if (i.hasZone)
-                    map.destroy(i.zone, i.x, i.y, i.w, i.h);
-                else
-                    map.destroy(i.x, i.y, i.w, i.h);
-            }
+            toDestroy.clear();
         }
 
         /* Handle scrolling */
@@ -157,12 +150,8 @@ public class View extends BasicGameState implements InputListener {
         map.getBackground().draw(-scrollX, -scrollY);
         selected = null;
 
-        ArrayList<CharacterAnimation> anims;
-        synchronized(characters) {
-            anims = new ArrayList<CharacterAnimation>(characters);
-        }
-
-        for (CharacterAnimation a : anims) {
+        for (int i = 0; i < characters.size(); i++) {
+            CharacterAnimation a = characters.get(i);
             try {
                 if (model.isPaused())
                     a.stop();
@@ -343,40 +332,13 @@ public class View extends BasicGameState implements InputListener {
      * Called when pixels on the collision map are destroyed
      */
     public void destroyed(int x, int y, int w, int h) {
-        synchronized (toDestroy) {
-            toDestroy.add(new DestroyInfo(x, y, w, h));
-        }
+        toDestroy.add(new DestroyInfo(x, y, w, h));
     }
 
     /**
      * Called when a zone of pixel on the collision maps are destroyed
      */
     public void destroyed(int[] zone, int x, int y, int w, int h) {
-        synchronized (toDestroy) {
-            toDestroy.add(new DestroyInfo(zone, x, y, w, h));
-        }
+        toDestroy.add(new DestroyInfo(zone, x, y, w, h));
     }
-
-    /**
-     * Represents a zone to be destroyed
-     */
-    class DestroyInfo {
-        public int x, y, w, h;
-        public int[] zone;
-        public boolean hasZone;
-
-        public DestroyInfo(int x, int y, int w, int h) {
-            this.x = x;
-            this.y = y;
-            this.w = w;
-            this.h = h;
-            this.hasZone = false;
-        }
-
-        public DestroyInfo(int zone[], int x, int y, int w, int h) {
-            this(x, y, w, h);
-            this.zone = zone;
-            this.hasZone = true;
-        }
-    }   
 }
