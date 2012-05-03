@@ -89,7 +89,8 @@ public class View extends BasicGameState implements InputListener {
         Input input = gc.getInput();
 
         if (toAdd.size() != 0) {
-            for (Character c : toAdd) {
+            for (int i = 0; i < toAdd.size(); i++) {
+                Character c = toAdd.get(i);
                 try {
                     characters.add(GraphicsResourceManager.getAnimation(c));
                 } catch (LemmingsException e) {
@@ -147,12 +148,8 @@ public class View extends BasicGameState implements InputListener {
         map.getBackground().draw(-scrollX, -scrollY);
         selected = null;
 
-        ArrayList<CharacterAnimation> anims;
-        synchronized(characters) {
-            anims = new ArrayList<CharacterAnimation>(characters);
-        }
-
-        for (CharacterAnimation a : anims) {
+        for (int i = 0; i < characters.size(); i++) {
+            CharacterAnimation a = characters.get(i);
             try {
                 if (model.isPaused())
                     a.stop();
