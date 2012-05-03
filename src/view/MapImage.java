@@ -83,16 +83,6 @@ public class MapImage {
     }
 
     /**
-     * Destroy something on the map
-     */
-    public void destroy(DestroyInfo i) {
-        if (i.hasZone)
-            destroy(i.zone, i.x, i.y, i.w, i.h);
-        else
-            destroy(i.x, i.y, i.w, i.h);
-    }
-
-    /**
      * Destroy a pixel on the map
      */
     public void destroyPixel(int x, int y) {

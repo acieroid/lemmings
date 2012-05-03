@@ -89,8 +89,7 @@ public class View extends BasicGameState implements InputListener {
         Input input = gc.getInput();
 
         if (toAdd.size() != 0) {
-            for (int i = 0; i < toAdd.size(); i++) {
-                Character c = toAdd.get(i);
+            for (Character c : toAdd) {
                 try {
                     characters.add(GraphicsResourceManager.getAnimation(c));
                 } catch (LemmingsException e) {
@@ -101,10 +100,8 @@ public class View extends BasicGameState implements InputListener {
         }
 
         if (toDestroy.size() != 0) {
-            for (int i = 0; i < toDestroy.size(); i++) {
-                DestroyInfo info = toDestroy.get(i);
-                map.destroy(toDestroy.get(i));
-            }
+            for (int i = 0; i < 1; i++)
+                toDestroy.get(i).apply(map);
             toDestroy.clear();
         }
 
@@ -150,8 +147,12 @@ public class View extends BasicGameState implements InputListener {
         map.getBackground().draw(-scrollX, -scrollY);
         selected = null;
 
-        for (int i = 0; i < characters.size(); i++) {
-            CharacterAnimation a = characters.get(i);
+        ArrayList<CharacterAnimation> anims;
+        synchronized(characters) {
+            anims = new ArrayList<CharacterAnimation>(characters);
+        }
+
+        for (CharacterAnimation a : anims) {
             try {
                 if (model.isPaused())
                     a.stop();
@@ -340,5 +341,35 @@ public class View extends BasicGameState implements InputListener {
      */
     public void destroyed(int[] zone, int x, int y, int w, int h) {
         toDestroy.add(new DestroyInfo(zone, x, y, w, h));
+    }
+
+    /**
+     * Represents a zone to be destroyed
+     */
+    class DestroyInfo {
+        private int x, y, w, h;
+        private int[] zone;
+        private boolean hasZone;
+
+        public DestroyInfo(int x, int y, int w, int h) {
+            this.x = x;
+            this.y = y;
+            this.w = w;
+            this.h = h;
+            this.hasZone = false;
+        }
+
+        public DestroyInfo(int zone[], int x, int y, int w, int h) {
+            this(x, y, w, h);
+            this.zone = zone;
+            this.hasZone = true;
+        }
+
+        public void apply(MapImage map) {
+            if (hasZone)
+                map.destroy(zone, x, y, w, h);
+            else
+                map.destroy(x, y, w, h);
+        }
     }
 }
