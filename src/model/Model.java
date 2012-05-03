@@ -7,15 +7,18 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Date;
 import java.io.Serializable;
 
 public class Model implements Serializable {
     private static int MAXSPEED = 5;
+    private static int LEMMING_RELEASE_TIMEOUT = 1000;
 
     private View view;
     private Map map;
     private ArrayList<Character> characters;
-    private Timer timer, lemmingsTimer;
+    private Timer timer;
+    private int lemmingReleaseTimer = 0;
 
     private int lemmingsReleased, lemmingsRescued;
     private boolean running;
@@ -29,20 +32,20 @@ public class Model implements Serializable {
         view = null;
         characters = new ArrayList<Character>();
 
+        createTimer();
+        reset();
+    }
+
+    private void createTimer() {
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
-                private int i = 0;
+                private long lastTime = new Date().getTime();
                 public void run() {
-                    if (!isPaused()) {
-                        if (i % (MAXSPEED/speed) == 0)
-                            update();
-                        i++;
-                    }
+                    long now = new Date().getTime();
+                    update(speed*(now - lastTime));
+                    lastTime = now;
                 }
             }, 20, 20);
-        lemmingsTimer = new Timer();
-
-        reset();
     }
 
     /**
@@ -95,8 +98,11 @@ public class Model implements Serializable {
      * Delete a character
      */
     public void deleteCharacter(Character c) {
-        characters.remove(characters.indexOf(c));
-        view.characterChanged(c, Character.CHANGE_DELETED);
+        int index = characters.indexOf(c);
+        if (index != -1) {
+            characters.remove(index);
+            view.characterChanged(c, Character.CHANGE_DELETED);
+        }
     }
 
     /**
@@ -187,24 +193,7 @@ public class Model implements Serializable {
      * Start the game with a certain map
      */
     public void start() {
-        System.out.println("Starting game");
-        /* release a lemming each 2 seconds */
-        /* TODO: provide an interactive way to change the release interval */
-        /* TODO: speed *should* interacts with this timer too */
-        lemmingsTimer.scheduleAtFixedRate(new TimerTask() {
-                public void run() {
-                    if (!isPaused() && shouldReleaseLemming()) {
-                        try {
-                            releaseLemming();
-                        } catch (LemmingsException e) {
-                            System.out.println("Error when releasing a lemming: " +
-                                               e.getMessage());
-                        }
-                    }
-                }
-            }, 1000, 1000);
         running = true;
-        System.out.println("Game started");
     }
 
     /**
@@ -218,7 +207,6 @@ public class Model implements Serializable {
      * Stop the game
      */
     public void stop() {
-        System.out.println("Game stopped");
         running = false;
         clearCharacters();
     }
@@ -226,8 +214,20 @@ public class Model implements Serializable {
     /**
      * Update the game
      */
-    public void update() {
-        if (running) {
+    public void update(long delta) {
+        if (!isPaused()) {
+            long now = new Date().getTime();
+            lemmingReleaseTimer += delta;
+            if (lemmingReleaseTimer > LEMMING_RELEASE_TIMEOUT &&
+                shouldReleaseLemming()) {
+                try {
+                    releaseLemming();
+                    lemmingReleaseTimer = 0;
+                } catch (LemmingsException e) {
+                    System.out.println("Error when releasing a lemming: " + e.getMessage());
+                }
+            }
+
             ArrayList<Character> cs;
             synchronized (characters) {
                 /* Avoid having characters locked during all the calls
@@ -243,9 +243,10 @@ public class Model implements Serializable {
             }
 
             for (Character c : cs)
+                /* TODO: use the delta */
                 for (int i = 0; i < speed; i++)
                     if (c.getBehavior() != null)
-                        c.getBehavior().update(map);
+                        c.getBehavior().update(map, delta);
                     else
                         System.out.println("Character has no behavior !!!");
         }

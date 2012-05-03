@@ -31,7 +31,7 @@ abstract class SimpleBehavior implements Behavior, Serializable{
         return model;
     }
 
-    public void update(Map map) {
+    public void update(Map map, long delta) {
         int x = character.getX();
         int y = character.getY();
         int width = character.getWidth();

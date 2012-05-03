@@ -8,13 +8,13 @@ import model.Map;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.File;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Date;
 
 public class Bomber extends SimpleBehavior {
-    private static int TIMEOUT_EXPLODE = 900;
+    private static int TIMEOUT_EXPLODE = 850;
     private static int TIMEOUT_DESTROY = 910;
-    private Timer timer;
+    private int timer;
+    private boolean destroyed;
 
     private int width, height;
     private int[] collisionData;
@@ -22,17 +22,8 @@ public class Bomber extends SimpleBehavior {
     public Bomber(Behavior b) {
         super(b);
         getCharacter().setDirection(Character.DONT_MOVE);
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-                public void run() {
-                    explode();
-                }
-            }, TIMEOUT_EXPLODE);
-        timer.schedule(new TimerTask() {
-                public void run() {
-                    destroy();
-                }
-            }, TIMEOUT_DESTROY);
+        timer = 0;
+        destroyed = false;
         /* TODO: only load it once ? And use the resource manager */
         try {
             BufferedImage image = ImageIO.read(new File("../data/characters/bomber/radius.png"));
@@ -51,6 +42,18 @@ public class Bomber extends SimpleBehavior {
         return "bomber";
     }
 
+    public void update(Map map, long delta) {
+        if (!destroyed) {
+            super.update(map, delta);
+            timer += delta;
+
+            if (timer > TIMEOUT_EXPLODE)
+                explode();
+            if (timer > TIMEOUT_DESTROY)
+                destroy();
+        }
+    }
+
     public void explode() {
         int x = getCharacter().getX();
         int y = getCharacter().getY();
@@ -64,6 +67,7 @@ public class Bomber extends SimpleBehavior {
     }
 
     public void destroy() {
+        destroyed = true;
         getModel().deleteCharacter(getCharacter());
     }
 }

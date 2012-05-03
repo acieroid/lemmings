@@ -6,5 +6,5 @@ public interface Behavior {
     public String getName();
     public Model getModel();
     public Character getCharacter();
-    public void update(Map map);
+    public void update(Map map, long delta);
 }

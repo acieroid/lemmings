@@ -100,14 +100,19 @@ public class View extends BasicGameState implements InputListener {
         }
 
         if (toDestroy.size() != 0) {
-            for (DestroyInfo i : toDestroy) {
+            ArrayList<DestroyInfo> td;
+            synchronized (toDestroy) {
+                td = new ArrayList<DestroyInfo>(toDestroy);
+                toDestroy.clear();
+            }
+
+            for (DestroyInfo i : td) {
                 /* TODO: map should handle the destroy info */
                 if (i.hasZone)
                     map.destroy(i.zone, i.x, i.y, i.w, i.h);
                 else
                     map.destroy(i.x, i.y, i.w, i.h);
             }
-            toDestroy.clear();
         }
 
         /* Handle scrolling */
@@ -338,14 +343,18 @@ public class View extends BasicGameState implements InputListener {
      * Called when pixels on the collision map are destroyed
      */
     public void destroyed(int x, int y, int w, int h) {
-        toDestroy.add(new DestroyInfo(x, y, w, h));
+        synchronized (toDestroy) {
+            toDestroy.add(new DestroyInfo(x, y, w, h));
+        }
     }
 
     /**
      * Called when a zone of pixel on the collision maps are destroyed
      */
     public void destroyed(int[] zone, int x, int y, int w, int h) {
-        toDestroy.add(new DestroyInfo(zone, x, y, w, h));
+        synchronized (toDestroy) {
+            toDestroy.add(new DestroyInfo(zone, x, y, w, h));
+        }
     }
 
     /**
