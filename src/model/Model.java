@@ -14,10 +14,10 @@ public class Model implements Serializable {
     private static int MAXSPEED = 5;
     private static int LEMMING_RELEASE_TIMEOUT = 1000;
 
-    private View view;
+    private transient View view;
     private Map map;
     private ArrayList<Character> characters;
-    private Timer timer;
+    private transient Timer timer;
     private int lemmingReleaseTimer = 0;
 
     private int lemmingsReleased, lemmingsRescued;

@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.Serializable;
 
 public class Map extends Entity implements Serializable {
-    private View view;
     private String name;
     private int entranceX, entranceY;
     private int exitX, exitY;
@@ -72,10 +71,6 @@ public class Map extends Entity implements Serializable {
         }
     }
 
-    public void setView(View view) {
-        this.view = view;
-    }
-
     
     /**
      * Check if a rectangle is collision free
@@ -104,7 +99,7 @@ public class Map extends Entity implements Serializable {
         for (int i = 0; i < w; i++)
             for (int j = 0; j < h; j++)
                 collisionData[(y+j)*getWidth() + x+i] = 0;
-        view.destroyed(x, y, w, h);
+        getView().destroyed(x, y, w, h);
     }
 
     /**
@@ -115,7 +110,7 @@ public class Map extends Entity implements Serializable {
             for (int j = 0; j < h; j++)
                 if (zone[j*w + i] != 0xFFFFFF)
                     collisionData[(y+j)*getWidth() + x+i] = 0;
-        view.destroyed(zone, x, y, w, h);
+        getView().destroyed(zone, x, y, w, h);
     }
 
     public int getEntranceX() {

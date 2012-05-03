@@ -5,7 +5,7 @@ import view.View;
 public class Entity {
     private int x, y, width, height;
     private String name;
-    private View view;
+    private transient View view;
 
     public Entity(int x, int y, int width, int height, String name) {
         this.x = x;
