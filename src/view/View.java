@@ -27,7 +27,7 @@ public class View extends BasicGameState implements InputListener {
     public static final int ID = 2;
     private StateBasedGame game;
 
-    private static int width = 1024, height = 768;
+    private int width, height;
 
     private Model model;
     private Controller controller;
@@ -321,7 +321,10 @@ public class View extends BasicGameState implements InputListener {
     public void start() {
         try {
             game = new LemmingsGame(this);
-            AppGameContainer gc = new AppGameContainer(game, width, height, false);
+            AppGameContainer gc = new AppGameContainer(game);
+            width = gc.getScreenWidth();
+            height = gc.getScreenHeight();
+            gc.setDisplayMode(width, height, false);
             gc.setShowFPS(true);
             gc.setTargetFrameRate(60);
             gc.start();
