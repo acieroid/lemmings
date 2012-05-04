@@ -233,27 +233,19 @@ public class Model implements Serializable {
                 }
             }
 
-            ArrayList<Character> cs;
-            synchronized (characters) {
-                /* Avoid having characters locked during all the calls
-                 * to update. But maybe it isn't the best solution
-                 * (TODO) */
-                cs = new ArrayList<Character>(characters);
-            }
-
-            if (!shouldReleaseLemming() && cs.size() == 0) {
+            if (!shouldReleaseLemming() && characters.size() == 0) {
                 /* Won or lost */
                 stop();
                 view.finished();
             }
 
-            for (Character c : cs)
+            for (int i = 0; i < characters.size(); i++) {
+                Character c = characters.get(i);
                 /* TODO: use the delta */
-                for (int i = 0; i < speed; i++)
+                for (int j = 0; j < speed; j++)
                     if (c.getBehavior() != null)
                         c.getBehavior().update(map, delta);
-                    else
-                        System.out.println("Character has no behavior !!!");
+            }
         }
     }
 }
