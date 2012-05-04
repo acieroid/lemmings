@@ -256,7 +256,6 @@ public class View extends BasicGameState implements InputListener {
     }
 
     public void enter(GameContainer gc, StateBasedGame game) {
-        System.out.println("Starting game");
         String mapName = mapSelector.current();
         width = gc.getWidth();
         height = gc.getHeight();

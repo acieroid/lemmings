@@ -3,6 +3,7 @@ package controller;
 import view.View;
 import model.Model;
 import model.Character;
+import model.Behavior;
 import util.LemmingsException;
 
 import java.io.FileOutputStream;
@@ -14,8 +15,10 @@ import java.io.ObjectInputStream;
 public class Controller {
     private Model model;
     private View view;
+    private String selectedBehavior;
 
     public Controller() {
+        selectedBehavior = "";
     }
 
     public void setModel(Model m) {
@@ -53,9 +56,21 @@ public class Controller {
     }
 
     public void characterSelected(Character c) {
+        Behavior b = null;
+        if (selectedBehavior == "bomber")
+            b = new model.behaviors.Bomber(c.getBehavior());
+        else if (selectedBehavior == "blocker")
+            b = new model.behaviors.Blocker(c.getBehavior());
+
+        if (b != null)
+            c.setBehavior(b);
+
         /* TODO: do not change the behavior if it should not be
          * accepted (eg. faller -> blocker) */
-        c.setBehavior(new model.behaviors.Bomber(c.getBehavior()));
+    }
+
+    public void setSelectedBehavior(String behavior) {
+        selectedBehavior = behavior;
     }
 
     public void save()
