@@ -32,7 +32,6 @@ public class Model implements Serializable {
         view = null;
         characters = new ArrayList<Character>();
 
-        createTimer();
         reset();
     }
 
@@ -83,8 +82,12 @@ public class Model implements Serializable {
     /**
      * Set the view associated with this model
      */
-    public void setView(View v) {
-        view = v;
+    public void setView(View view) {
+        this.view = view;
+        if (map != null)
+            map.setView(view);
+        for (Character c : characters)
+            c.setView(view);
     }
 
     /**
@@ -194,6 +197,7 @@ public class Model implements Serializable {
      */
     public void start() {
         running = true;
+        createTimer();
     }
 
     /**
@@ -209,6 +213,7 @@ public class Model implements Serializable {
     public void stop() {
         running = false;
         clearCharacters();
+        timer = null;
     }
 
     /**

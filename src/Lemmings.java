@@ -12,6 +12,7 @@ public class Lemmings {
         view.setModel(model);
         view.setController(controller);
         controller.setModel(model);
+        controller.setView(view);
 
         view.start();
     }

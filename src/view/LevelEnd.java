@@ -17,12 +17,12 @@ public class LevelEnd extends BasicGameState {
 
     private static int MAX_NAME_LENGTH = 30;
 
-    private Model model;
+    private View view;
     private Font font;
     private String name;
 
-    public LevelEnd(Model model) {
-        this.model = model;
+    public LevelEnd(View view) {
+        this.view = view;
     }
 
     public int getID() {
@@ -53,9 +53,9 @@ public class LevelEnd extends BasicGameState {
 
     public void render(GameContainer gc, StateBasedGame game, Graphics g) {
         String[] text = {"Lemmings rescued: " +
-                         model.getLemmingsRescued() + "/" +
-                         model.getMap().getLemmingsToRescue(),
-                         model.hasWon() ? "Congratulations, you won!" : "Too bad, you lost.",
+                         view.getModel().getLemmingsRescued() + "/" +
+                         view.getModel().getMap().getLemmingsToRescue(),
+                         view.getModel().hasWon() ? "Congratulations, you won!" : "Too bad, you lost.",
                          "Type your name to register your score and then press Enter",
                          "or press escape to return to the main menu.",
                          "Your name: " + name};

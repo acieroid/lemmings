@@ -68,7 +68,6 @@ public class Character extends Entity implements Serializable {
 
     /*
      * Set the current behavior of this character
-     * @TODO: what to do if the behavior has a timer and will act on the character later ?
      */
     public void setBehavior(Behavior b) {
         behavior = b;

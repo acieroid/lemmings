@@ -208,6 +208,13 @@ public class View extends BasicGameState implements InputListener {
                 log.add(e.getMessage());
             }
         }
+        else if (key == Input.KEY_L) {
+            try {
+                controller.load();
+            } catch (LemmingsException e) {
+                log.add(e.getMessage());
+            }
+        }
         else if (key == Input.KEY_F2) {
             controller.decreaseSpeed();
         }

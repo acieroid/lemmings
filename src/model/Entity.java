@@ -2,10 +2,15 @@ package model;
 
 import view.View;
 
-public class Entity {
+import java.io.Serializable;
+
+public class Entity implements Serializable {
     private int x, y, width, height;
     private String name;
     private transient View view;
+
+    public Entity() {
+    }
 
     public Entity(int x, int y, int width, int height, String name) {
         this.x = x;
