@@ -31,12 +31,16 @@ public class GUI {
                                new SlowerBehavior(controller)));
         buttons.add(new Button("gui", "pause.png", w - 200, y,
                                new PauseBehavior(controller)));
+        buttons.add(new Button("gui", "save.png", w - 250, y,
+                               new SaveBehavior(controller)));
+        buttons.add(new Button("gui", "load.png", w - 300, y,
+                               new LoadBehavior(controller)));
 
         characters = new ArrayList<Button>();
-        characters.add(new Button("characters/bomber", "left.sprite", w - 250, y,
+        characters.add(new Button("characters/bomber", "left.sprite", w - 350, y,
                                   new CharacterBehavior(controller, this, "bomber"),
                                   true));
-        characters.add(new Button("characters/blocker", "left.sprite", w - 300, y,
+        characters.add(new Button("characters/blocker", "left.sprite", w - 400, y,
                                   new CharacterBehavior(controller, this, "blocker"),
                                   true));
     }

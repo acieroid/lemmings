@@ -75,14 +75,16 @@ public class Controller {
 
     public void save()
         throws LemmingsException {
-        try {
-            FileOutputStream file = new FileOutputStream("/tmp/save.lem");
-            ObjectOutputStream out = new ObjectOutputStream(file);
-            out.writeObject(model);
-            out.close();
-            file.close();
-        } catch (java.io.IOException e) {
-            throw new LemmingsException("controller", "Can't save game: " + e);
+        synchronized (model) {
+            try {
+                FileOutputStream file = new FileOutputStream("/tmp/save.lem");
+                ObjectOutputStream out = new ObjectOutputStream(file);
+                out.writeObject(model);
+                out.close();
+                file.close();
+            } catch (java.io.IOException e) {
+                throw new LemmingsException("controller", "Can't save game: " + e);
+            }
         }
     }
 
