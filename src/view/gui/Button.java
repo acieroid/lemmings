@@ -21,8 +21,8 @@ public class Button {
     Button(int x, int y, ButtonBehavior b)
         throws SlickException {
         if (disabledBackground == null || enabledBackground == null) {
-            disabledBackground = new Image(GUI.RESOURCE_DIR + "/hbuttonbgb.png");
-            enabledBackground = new Image(GUI.RESOURCE_DIR + "/hbuttonbg.png");
+            disabledBackground = new Image(GUI.RESOURCE_DIR + "/gui/hbuttonbgb.png");
+            enabledBackground = new Image(GUI.RESOURCE_DIR + "/gui/hbuttonbg.png");
         }
 
         this.x = x;
@@ -32,17 +32,17 @@ public class Button {
         enabled = false;
     }
 
-    public Button(String image, int x, int y, ButtonBehavior b, boolean animated)
+    public Button(String dir, String image, int x, int y, ButtonBehavior b, boolean animated)
         throws SlickException, LemmingsException {
         this(x, y, b);
         this.animated = animated;
         if (!animated) {
-            this.image = new Image(GUI.RESOURCE_DIR + "/" + image);
+            this.image = new Image(GUI.RESOURCE_DIR + "/" + dir + "/" + image);
         }
         else {
             /* TODO: isolate this code somewhere else ? In the resource manager ? */
-            sprite = new LispFile(GUI.RESOURCE_DIR + "/" + image);
-            sheet = new SpriteSheet(GUI.RESOURCE_DIR + "/" +
+            sprite = new LispFile(GUI.RESOURCE_DIR + "/" + dir + "/" + image);
+            sheet = new SpriteSheet(GUI.RESOURCE_DIR + "/" + dir + "/" +
                                     sprite.getStringProperty("image"),
                                     sprite.getNumberProperty("size", 0),
                                     sprite.getNumberProperty("size", 1));
@@ -59,9 +59,9 @@ public class Button {
         }
     }
 
-    public Button(String image, int x, int y, ButtonBehavior b)
+    public Button(String dir, String image, int x, int y, ButtonBehavior b)
         throws SlickException, LemmingsException {
-        this(image, x, y, b, false);
+        this(dir, image, x, y, b, false);
     }
 
     public void draw() {

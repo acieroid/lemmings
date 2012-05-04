@@ -65,9 +65,10 @@ public class View extends BasicGameState implements InputListener {
     }
 
     public void setModel(Model model) {
+        if (model != null)
+            modelReloaded = true;
         this.model = model;
         toAdd = new ArrayList<Character>(model.getCharacters());
-        modelReloaded = true;
     }
 
     public void setMapSelector(Selector mapSelector) {
@@ -138,7 +139,7 @@ public class View extends BasicGameState implements InputListener {
                             gc.getHeight()/2 - font.getLineHeight()/2,
                             text, Color.white);
         } catch (org.lwjgl.opengl.OpenGLException e) {
-            System.out.println("Warning: " + e);
+            log.add("Warning: " + e.getMessage());
         }
     }
 
@@ -148,7 +149,8 @@ public class View extends BasicGameState implements InputListener {
                             y - font.getLineHeight()/2,
                             text, Color.white);
         } catch (org.lwjgl.opengl.OpenGLException e) {
-            System.out.println("Warning: " + e);
+            log.add("Warning: " + e.getMessage());
+
         }
     }
         
@@ -254,15 +256,19 @@ public class View extends BasicGameState implements InputListener {
     }
 
     public void enter(GameContainer gc, StateBasedGame game) {
+        System.out.println("Starting game");
         String mapName = mapSelector.current();
         width = gc.getWidth();
         height = gc.getHeight();
         try {
-            log = new Log(width - 20, 200, font);
-            gui = new GUI(0, gc.getHeight()-100, gc.getWidth(), 100, controller);
             controller.start(mapName);
             map = GraphicsResourceManager.getMap(mapName);
-        } catch (Exception e) {
+            log = new Log(width - 20, 200, font);
+            gui = new GUI(0, gc.getHeight()-100, gc.getWidth(), 100, controller);
+        } catch (LemmingsException e) {
+            log.add(e.getMessage());
+            game.enterState(Menu.ID);
+        } catch (SlickException e) {
             log.add(e.getMessage());
             game.enterState(Menu.ID);
         }
@@ -325,6 +331,7 @@ public class View extends BasicGameState implements InputListener {
      * Called when a game is finished
      */
     public void finished() {
+        System.out.println("Game finished");
         game.enterState(LevelEnd.ID);
     }
 

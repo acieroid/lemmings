@@ -13,7 +13,7 @@ public class GUI {
     private int x, y;
     private int w, h;
 
-    public static String RESOURCE_DIR = "../data/gui";
+    public static String RESOURCE_DIR = "../data/";
 
     public GUI(int x, int y, int w, int h, Controller controller)
         throws SlickException, LemmingsException {
@@ -22,13 +22,19 @@ public class GUI {
         this.w = w;
         this.h = h;
         buttons = new ArrayList<Button>();
-        buttons.add(new Button("pause.png", w - 200, y,
-                               new PauseBehavior(controller)));
-        buttons.add(new Button("slower.png", w - 150, y,
-                               new SlowerBehavior(controller)));
-        buttons.add(new Button("faster.png", w - 100, y,
+        buttons.add(new Button("gui", "nuke.sprite", w - 50, y,
+                               new NukeBehavior(controller),
+                               true));
+        buttons.add(new Button("gui", "faster.png", w - 100, y,
                                new FasterBehavior(controller)));
-        buttons.add(new Button("nuke.sprite", w - 50, y,
+        buttons.add(new Button("gui", "slower.png", w - 150, y,
+                               new SlowerBehavior(controller)));
+        buttons.add(new Button("gui", "pause.png", w - 200, y,
+                               new PauseBehavior(controller)));
+        buttons.add(new Button("characters/bomber", "left.sprite", w - 250, y,
+                               new NukeBehavior(controller),
+                               true));
+        buttons.add(new Button("characters/blocker", "left.sprite", w - 300, y,
                                new NukeBehavior(controller),
                                true));
     }
