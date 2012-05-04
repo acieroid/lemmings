@@ -45,7 +45,7 @@ public class View extends BasicGameState implements InputListener {
     private ArrayList<CharacterAnimation> characters;
     private CharacterAnimation selected;
 
-    private boolean initialized;
+    private boolean initialized, modelReloaded;
     private ArrayList<Character> toAdd;
     private ArrayList<DestroyInfo> toDestroy;
 
@@ -57,6 +57,7 @@ public class View extends BasicGameState implements InputListener {
         initialized = false;
         toAdd = new ArrayList<Character>();
         toDestroy = new ArrayList<DestroyInfo>();
+        modelReloaded = false;
     }
 
     public int getID() {
@@ -66,6 +67,7 @@ public class View extends BasicGameState implements InputListener {
     public void setModel(Model model) {
         this.model = model;
         toAdd = new ArrayList<Character>(model.getCharacters());
+        modelReloaded = true;
     }
 
     public void setMapSelector(Selector mapSelector) {
@@ -105,6 +107,16 @@ public class View extends BasicGameState implements InputListener {
             for (int i = 0; i < 1; i++)
                 toDestroy.get(i).apply(map);
             toDestroy.clear();
+        }
+
+        if (modelReloaded) {
+            try {
+                map = GraphicsResourceManager.getMap(model.getMap().getName());
+                model.getMap().destroyChanges(map);
+            } catch (LemmingsException e) {
+                log.add(e.getMessage());
+            }
+            modelReloaded = false;
         }
 
         /* Handle scrolling */

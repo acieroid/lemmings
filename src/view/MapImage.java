@@ -96,7 +96,7 @@ public class MapImage {
     /**
      * Reload OpenGL texture
      */
-    private void reloadTexture() {
+    public void reloadTexture() {
         /* TODO: this don't work with some version of slick
          * (introduced in revision 1490) */
         /* texture.setTextureData(SGL.GL_RGBA, 4, SGL.GL_NEAREST, SGL.GL_NEAREST, buffer); */

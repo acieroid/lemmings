@@ -2,6 +2,7 @@ package model;
 
 import util.LemmingsException;
 import view.View;
+import view.MapImage;
 
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
@@ -13,6 +14,7 @@ public class Map extends Entity implements Serializable {
     private int entranceX, entranceY;
     private int exitX, exitY;
     int[] collisionData;
+    int[] changes;
 
     public Map(String name, String directory)
         throws LemmingsException {
@@ -28,6 +30,7 @@ public class Map extends Entity implements Serializable {
              * we should use getData */
             colImage.getRGB(0, 0, getWidth(), getHeight(),
                             collisionData, 0, getWidth());
+            changes  = new int[getWidth()*getHeight()];
 
             /* Load the entrance and exit position */
             BufferedImage objects = ImageIO.read(new File(directory + "/objects.png"));
@@ -96,9 +99,12 @@ public class Map extends Entity implements Serializable {
      * Delete a rectangle from the collision map
      */
     public void destroy(int x, int y, int w, int h) {
-        for (int i = 0; i < w; i++)
-            for (int j = 0; j < h; j++)
+        for (int i = 0; i < w; i++) {
+            for (int j = 0; j < h; j++) {
                 collisionData[(y+j)*getWidth() + x+i] = 0;
+                changes[(y+j)*getWidth() + x+i] = 1;
+            }
+        }
         getView().destroyed(x, y, w, h);
     }
 
@@ -106,10 +112,14 @@ public class Map extends Entity implements Serializable {
      * Destroy a zone from the collision map
      */
     public void destroy(int[] zone, int x, int y, int w, int h) {
-        for (int i = 0; i < h; i++)
-            for (int j = 0; j < h; j++)
-                if (zone[j*w + i] != 0xFFFFFF)
+        for (int i = 0; i < w; i++) {
+            for (int j = 0; j < h; j++) {
+                if (zone[j*w + i] != 0xFFFFFF) {
                     collisionData[(y+j)*getWidth() + x+i] = 0;
+                    changes[(y+j)*getWidth() + x+i] = 1;
+                }
+            }
+        }
         getView().destroyed(zone, x, y, w, h);
     }
 
@@ -145,4 +155,16 @@ public class Map extends Entity implements Serializable {
         return 10;
     }
 
+    /**
+     * Destroy what changed on this model on the map image since the
+     * load of the map
+     * @TODO: this should *not* be in the model !
+     */
+    public void destroyChanges(MapImage map) {
+        for (int x = 0; x < getWidth(); x++)
+            for (int y = 0; y < getHeight(); y++)
+                if (changes[y*getWidth() + x] == 1)
+                    map.destroyPixel(x, y);
+        map.reloadTexture();
+    }
 }
