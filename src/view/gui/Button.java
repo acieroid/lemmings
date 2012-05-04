@@ -53,7 +53,7 @@ public class Button {
                 animation.addFrame(sheet.getSprite(i, positionYoffset/sizeY),
                                    sprite.getNumberProperty("speed"));
 
-            animation.setLooping(sprite.getBooleanProperty("loop"));
+            animation.setLooping(true);
             animation.setAutoUpdate(true);
             animation.stop();
         }

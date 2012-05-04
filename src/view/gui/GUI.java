@@ -9,7 +9,7 @@ import org.newdawn.slick.GameContainer;
 import java.util.ArrayList;
 
 public class GUI {
-    private ArrayList<Button> buttons;
+    private ArrayList<Button> buttons, characters;
     private int x, y;
     private int w, h;
 
@@ -31,21 +31,30 @@ public class GUI {
                                new SlowerBehavior(controller)));
         buttons.add(new Button("gui", "pause.png", w - 200, y,
                                new PauseBehavior(controller)));
-        buttons.add(new Button("characters/bomber", "left.sprite", w - 250, y,
-                               new NukeBehavior(controller),
-                               true));
-        buttons.add(new Button("characters/blocker", "left.sprite", w - 300, y,
-                               new NukeBehavior(controller),
-                               true));
+
+        characters = new ArrayList<Button>();
+        characters.add(new Button("characters/bomber", "left.sprite", w - 250, y,
+                                  new CharacterBehavior(controller, this, "bomber"),
+                                  true));
+        characters.add(new Button("characters/blocker", "left.sprite", w - 300, y,
+                                  new CharacterBehavior(controller, this, "blocker"),
+                                  true));
     }
 
     public void draw(GameContainer gc) {
         for (Button b : buttons)
             b.draw();
+
+        for (Button b : characters)
+            b.draw();
     }
 
     public void mousePressed(int x, int y) {
         for (Button b : buttons)
+            if (b.contains(x, y))
+                b.pressed();
+
+        for (Button b : characters)
             if (b.contains(x, y))
                 b.pressed();
     }
@@ -54,5 +63,14 @@ public class GUI {
         for (Button b : buttons)
             if (b.contains(x, y))
                 b.released();
+
+        for (Button b : characters)
+            if (b.contains(x, y))
+                b.released();
+    }
+
+    public void disableAllCharactersButton() {
+        for (Button b : characters)
+            b.disable();
     }
 }
