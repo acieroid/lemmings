@@ -43,8 +43,10 @@ public class Bomber extends SimpleBehavior {
     }
 
     public void update(Map map, long delta) {
+        fall(map, delta, false);
+
         if (!destroyed) {
-            super.update(map, delta);
+            //super.update(map, delta); /* TODO: call fall */
             timer += delta;
 
             if (timer > TIMEOUT_EXPLODE)

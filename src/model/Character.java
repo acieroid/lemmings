@@ -30,7 +30,6 @@ public class Character extends Entity implements Serializable {
 
     public void setFalling(boolean falling) {
         this.falling = falling;
-        getView().characterChanged(this, CHANGE_FALLING);
     }
 
     public int getDirection() {
@@ -44,13 +43,6 @@ public class Character extends Entity implements Serializable {
     public void changeDirection() {
         setDirection(getDirection() * -1);
         getView().characterChanged(this, CHANGE_DIRECTION);
-    }
-
-    public String getName() {
-        if (falling)
-            return "faller";
-        else
-            return super.getName();
     }
 
     public void setName(String name) {

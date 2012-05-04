@@ -9,10 +9,6 @@ public class Walker extends SimpleBehavior {
         super(model, character);
     }
 
-    public Walker(Behavior b) {
-        super(b);
-    }
-
     public String getName() {
         return "walker";
     }

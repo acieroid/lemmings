@@ -7,7 +7,7 @@ import model.Map;
 
 import java.io.Serializable;
 
-abstract class SimpleBehavior implements Behavior, Serializable{
+abstract class SimpleBehavior implements Behavior, Serializable {
     private Model model;
     private Character character;
 
@@ -31,7 +31,7 @@ abstract class SimpleBehavior implements Behavior, Serializable{
         return model;
     }
 
-    public void update(Map map, long delta) {
+    public void fall(Map map, long delta, boolean changeName) {
         int x = character.getX();
         int y = character.getY();
         int width = character.getWidth();
@@ -40,12 +40,27 @@ abstract class SimpleBehavior implements Behavior, Serializable{
         /* Is the character falling */
         if (map.isCollisionFree(x, y+1, width, height)) {
             character.setY(y+1);
-            if (!character.isFalling() && map.isCollisionFree(x, y+2, width, height))
+            if (!character.isFalling() &&
+                map.isCollisionFree(x, y+2, width, height)) {
                 character.setFalling(true);
+                if (changeName)
+                    character.setName("faller");
+            }
         }
         else if (character.isFalling()) {
             character.setFalling(false);
+            if (changeName)
+                character.setName(getName());
         }
+    }
+
+    public void update(Map map, long delta) {
+        int x = character.getX();
+        int y = character.getY();
+        int width = character.getWidth();
+        int height = character.getHeight();
+
+        fall(map, delta, true);
 
         /* The character walks */
         if (character.getDirection() != Character.DONT_MOVE &&

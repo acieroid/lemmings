@@ -21,7 +21,7 @@ public class Model implements Serializable {
     private int lemmingReleaseTimer = 0;
 
     private int lemmingsReleased, lemmingsRescued;
-    private boolean running;
+    private boolean running, nuked;
     private int speed;
 
 
@@ -144,7 +144,7 @@ public class Model implements Serializable {
      * @return true if we should still release lemmings
      */
     public boolean shouldReleaseLemming() {
-        return lemmingsReleased < map.getLemmingsToRelease();
+        return !nuked && lemmingsReleased < map.getLemmingsToRelease();
     }
 
     /**
@@ -170,8 +170,9 @@ public class Model implements Serializable {
         c.setView(view);
         c.setX(map.getEntranceX() - c.getWidth()/2);
         c.setY(map.getEntranceY() - c.getHeight()/2);
-        c.setFalling(true);
         c.setBehavior(new model.behaviors.Walker(this, c));
+        c.setFalling(true);
+        c.setName("faller");
         lemmingsReleased++;
         characters.add(c);
         view.characterAdded(c);
@@ -197,6 +198,7 @@ public class Model implements Serializable {
      */
     public void start() {
         running = true;
+        nuked = false;
         createTimer();
     }
 
@@ -247,5 +249,17 @@ public class Model implements Serializable {
                         c.getBehavior().update(map, delta);
             }
         }
+    }
+
+    /**
+     * Nuke the game: kill all the characters and stop releasing them
+     * @TODO: have a little timeout to avoid closing harshly
+     */
+    public void nuke() {
+        for (int i = 0; i < characters.size(); i++) {
+            Character c = characters.get(i);
+            c.setBehavior(new model.behaviors.Bomber(c.getBehavior()));
+        }
+        nuked = true;
     }
 }

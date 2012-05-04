@@ -8,7 +8,7 @@ public class NukeBehavior extends ButtonBehavior {
     }
 
     public void pressed() {
-        //getController().nuke();
+        getController().nuke();
         getButton().enable();
     }
 

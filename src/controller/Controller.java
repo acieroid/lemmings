@@ -73,6 +73,10 @@ public class Controller {
         selectedBehavior = behavior;
     }
 
+    public void nuke() {
+        model.nuke();
+    }
+
     public void save()
         throws LemmingsException {
         if (!model.isPaused())
