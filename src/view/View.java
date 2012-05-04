@@ -65,6 +65,7 @@ public class View extends BasicGameState implements InputListener {
 
     public void setModel(Model model) {
         this.model = model;
+        toAdd = new ArrayList<Character>(model.getCharacters());
     }
 
     public void setMapSelector(Selector mapSelector) {
