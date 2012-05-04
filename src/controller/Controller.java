@@ -75,6 +75,8 @@ public class Controller {
 
     public void save()
         throws LemmingsException {
+        if (!model.isPaused())
+            model.pause();
         synchronized (model) {
             try {
                 FileOutputStream file = new FileOutputStream("/tmp/save.lem");
@@ -100,6 +102,7 @@ public class Controller {
             model.setView(view);
             view.setModel(model);
             model.start();
+            model.pause();
         } catch (java.io.IOException e) {
             throw new LemmingsException("controller", "Can't load game: " + e);
         } catch (ClassNotFoundException e) {
