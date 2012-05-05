@@ -177,8 +177,12 @@ public class Database {
         changeOption(name, Integer.toString(value));
     }
 
-    public String getOption(String name, String def)
+    public void changeOptionBoolean(String name, boolean value)
         throws LemmingsException {
+        changeOption(name, Boolean.toString(value));
+    }
+
+    public String getOption(String name, String def) {
         try {
             if (getOptionQuery == null) {
                 String query = "select value from options where name = ?";
@@ -194,14 +198,18 @@ public class Database {
             rs.close();
             return res;
         } catch (SQLException e) {
-            throw new LemmingsException("db",
-                                        "Cannot query database: " + e.getMessage());
+            System.out.println("Cannot query database: " + e.getMessage());
+            return def;
         }
     }
 
-    public int getOptiontInt(String name, int def)
-        throws LemmingsException {
+    public int getOptiontInt(String name, int def) {
         String value = getOption(name, Integer.toString(def));
         return Integer.parseInt(value);
+    }
+
+    public boolean getOptionBoolean(String name, boolean def) {
+        String value = getOption(name, Boolean.toString(def));
+        return Boolean.parseBoolean(value);
     }
 }

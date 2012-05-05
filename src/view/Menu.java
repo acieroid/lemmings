@@ -1,6 +1,8 @@
 package view;
 
 import util.Selector;
+import util.Database;
+import util.LemmingsException;
 
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -24,7 +26,7 @@ public class Menu extends BasicGameState {
 
     private Font font;
     private Selector maps, resolutions;
-    private boolean fullscreen = false;
+    private boolean fullscreen;
     private boolean shouldApplyResolution = false;
 
     private int itemSelected;
@@ -32,7 +34,7 @@ public class Menu extends BasicGameState {
 
     public Menu() {
         this.maps = new Selector(model.ResourceManager.getAllMaps());
-        this.font = font;
+        fullscreen = Database.get().getOptionBoolean("fullscreen", false);
     }
 
     public int getID() {
@@ -87,16 +89,23 @@ public class Menu extends BasicGameState {
         int height = Integer.parseInt(str[1]);
 
         try {
+            Database.get().changeOption("resolution", resolutions.current());
+            Database.get().changeOptionBoolean("fullscreen", fullscreen);
             gc.setDisplayMode(width, height, fullscreen);
         } catch (SlickException e) {
+            System.out.println("Can't apply resolution: " + e.getMessage());
+        } catch (LemmingsException e) {
+            System.out.println("Can't save resolution: " + e.getMessage());
         }
     }
 
     public void init(GameContainer gc, StateBasedGame game)
         throws SlickException {
         this.game = game;
-        this.resolutions = new Selector(getResolutions(gc));
+        resolutions = new Selector(getResolutions(gc));
+        resolutions.select(Database.get().getOption("resolution", "640x480"));
         font = gc.getGraphics().getFont();
+        applyResolution((AppGameContainer) gc);
     }
 
     public void render(GameContainer gc, StateBasedGame game, Graphics g) {

@@ -341,9 +341,9 @@ public class View extends BasicGameState implements InputListener {
         try {
             game = new LemmingsGame(this);
             AppGameContainer gc = new AppGameContainer(game);
-            width = gc.getScreenWidth();
-            height = gc.getScreenHeight();
-            gc.setDisplayMode(width, height, false);
+            //width = gc.getScreenWidth();
+            //height = gc.getScreenHeight();
+            //gc.setDisplayMode(width, height, false);
             gc.setShowFPS(true);
             gc.setTargetFrameRate(60);
             gc.start();

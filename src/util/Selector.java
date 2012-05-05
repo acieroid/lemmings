@@ -27,4 +27,20 @@ public class Selector {
         if (item.hasPrevious())
             item.previous();
     }
+
+    public void rewind() {
+        while (item.hasPrevious())
+            item.previous();
+    }
+
+    public void select(String value) {
+        rewind();
+
+        while (item.hasNext() && !current().equals(value))
+            next();
+
+        /* Item not found, rewind */
+        if (!current().equals(value))
+            rewind();
+    }
 }
