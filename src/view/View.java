@@ -133,28 +133,6 @@ public class View extends BasicGameState implements InputListener {
                                model.getMap().getHeight() - height);
     }
 
-    private void drawCenteredText(GameContainer gc, String text) {
-        try {
-            font.drawString(gc.getWidth()/2 - font.getWidth(text)/2,
-                            gc.getHeight()/2 - font.getLineHeight()/2,
-                            text, Color.white);
-        } catch (org.lwjgl.opengl.OpenGLException e) {
-            log.add("Warning: " + e.getMessage());
-        }
-    }
-
-    private void drawCenteredText(GameContainer gc, String text, int y) {
-        try {
-            font.drawString(gc.getWidth()/2 - font.getWidth(text)/2,
-                            y - font.getLineHeight()/2,
-                            text, Color.white);
-        } catch (org.lwjgl.opengl.OpenGLException e) {
-            log.add("Warning: " + e.getMessage());
-
-        }
-    }
-        
-
     public void render(GameContainer gc, StateBasedGame game, Graphics g) {
         Input input = gc.getInput();
         if (map == null)
@@ -395,4 +373,53 @@ public class View extends BasicGameState implements InputListener {
                 map.destroy(x, y, w, h);
         }
     }
+
+    
+    /**
+     * Draw centered text on a GameContainer
+     */
+    public static void drawCenteredText(GameContainer gc, String text) {
+        Font font = gc.getGraphics().getFont();
+        try {
+            font.drawString(gc.getWidth()/2 - font.getWidth(text)/2,
+                            gc.getHeight()/2 - font.getLineHeight()/2,
+                            text, Color.white);
+        } catch (org.lwjgl.opengl.OpenGLException e) {
+            System.out.println("Warning: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Draw centered text on a game container, at a certain position
+     */
+    public static void drawCenteredText(GameContainer gc, String text, int y) {
+        Font font = gc.getGraphics().getFont();
+        try {
+            font.drawString(gc.getWidth()/2 - font.getWidth(text)/2,
+                            y - font.getLineHeight()/2,
+                            text, Color.white);
+        } catch (org.lwjgl.opengl.OpenGLException e) {
+            System.out.println("Warning: " + e.getMessage());
+
+        }
+    }
+
+    /**
+     * Draw centered text on a certain line
+     */
+    public static void drawCenteredText(GameContainer gc, String text,
+                                        int line, int nLines, Color color) {
+        Font font = gc.getGraphics().getFont();
+        int spacing = font.getLineHeight()-5;
+        int start = gc.getHeight()/2 - (spacing+font.getLineHeight())*nLines/2;
+        int x = gc.getWidth()/2 - font.getWidth(text)/2;
+        int y = start + line*(spacing+font.getLineHeight());
+        try {
+            font.drawString(x, y, text, color);
+        } catch (org.lwjgl.opengl.OpenGLException e) {
+            System.out.println("Warning: " + e);
+        }
+    }
+
+
 }

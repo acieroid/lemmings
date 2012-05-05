@@ -36,8 +36,6 @@ public class Model implements Serializable {
     }
 
     private void createTimer() {
-        if (timer != null)
-            timer.cancel();
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
                 private long lastTime = new Date().getTime();
@@ -218,6 +216,7 @@ public class Model implements Serializable {
     public void stop() {
         running = false;
         clearCharacters();
+        timer.cancel();
         timer = null;
     }
 

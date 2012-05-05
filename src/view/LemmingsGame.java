@@ -15,11 +15,14 @@ public class LemmingsGame extends StateBasedGame {
 
     public void initStatesList(GameContainer container) {
         Menu menu = new Menu();
+        Highscores highscores = new Highscores();
         addState(menu);
         addState(view);
         addState(new LevelEnd(view));
+        addState(highscores);
 
         view.setMapSelector(menu.getMapSelector());
+        highscores.setMapSelector(menu.getMapSelector());
     }
 
     public View getView() {

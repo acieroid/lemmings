@@ -9,7 +9,6 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Font;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Input;
 
@@ -20,7 +19,6 @@ public class LevelEnd extends BasicGameState {
     private static int MAX_NAME_LENGTH = 30;
 
     private View view;
-    private Font font;
     private String name;
 
     public LevelEnd(View view) {
@@ -31,25 +29,9 @@ public class LevelEnd extends BasicGameState {
         return ID;
     }
 
-    /* TODO: put this method somewhere appropriated instead of
-     * copy-pasting it everywhere */
-    private void drawCenteredText(GameContainer gc, String text,
-                                  int line, int nLines, Color color) {
-        int spacing = font.getLineHeight()-5;
-        int start = gc.getHeight()/2 - (spacing+font.getLineHeight())*nLines/2;
-        int x = gc.getWidth()/2 - font.getWidth(text)/2;
-        int y = start + line*(spacing+font.getLineHeight());
-        try {
-            font.drawString(x, y, text, color);
-        } catch (org.lwjgl.opengl.OpenGLException e) {
-            System.out.println("Warning: " + e);
-        }
-    }
-
     public void init(GameContainer gc, StateBasedGame game)
         throws SlickException {
         this.game = game;
-        font = gc.getGraphics().getFont();
         name = "";
     }
 
@@ -62,7 +44,7 @@ public class LevelEnd extends BasicGameState {
                          "or press escape to return to the main menu.",
                          "Your name: " + name};
         for (int i = 0; i < text.length; i++)
-            drawCenteredText(gc, text[i], i, text.length, Color.white);
+            View.drawCenteredText(gc, text[i], i, text.length, Color.white);
     }
 
     public void update(GameContainer gc, StateBasedGame game, int delta) {

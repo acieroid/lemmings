@@ -13,7 +13,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Font;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Input;
 
@@ -24,13 +23,12 @@ public class Menu extends BasicGameState {
     public static final int ID = 1;
     private StateBasedGame game;
 
-    private Font font;
     private Selector maps, resolutions;
     private boolean fullscreen;
     private boolean shouldApplyResolution = false;
 
     private int itemSelected;
-    private String[] items = {"Play", "Map", "Resolution", "Fullscreen", "Apply resolution", "Quit"};
+    private String[] items = {"Play", "Map", "Highscores", "Resolution", "Fullscreen", "Apply resolution", "Quit"};
 
     public Menu() {
         this.maps = new Selector(model.ResourceManager.getAllMaps());
@@ -43,19 +41,6 @@ public class Menu extends BasicGameState {
 
     public Selector getMapSelector() {
         return maps;
-    }
-
-    private void drawCenteredText(GameContainer gc, String text,
-                                  int line, int nLines, Color color) {
-        int spacing = font.getLineHeight()-5;
-        int start = gc.getHeight()/2 - (spacing+font.getLineHeight())*nLines/2;
-        int x = gc.getWidth()/2 - font.getWidth(text)/2;
-        int y = start + line*(spacing+font.getLineHeight());
-        try {
-            font.drawString(x, y, text, color);
-        } catch (org.lwjgl.opengl.OpenGLException e) {
-            System.out.println("Warning: " + e);
-        }
     }
 
     private LinkedList<String> getResolutions(GameContainer gc) {
@@ -104,7 +89,6 @@ public class Menu extends BasicGameState {
         this.game = game;
         resolutions = new Selector(getResolutions(gc));
         resolutions.select(Database.get().getOption("resolution", "640x480"));
-        font = gc.getGraphics().getFont();
         applyResolution((AppGameContainer) gc);
     }
 
@@ -118,8 +102,8 @@ public class Menu extends BasicGameState {
                 text = "Resolution: < " + resolutions.current() + " >";
             if (text == "Fullscreen")
                 text = "Fullscreen: < " + fullscreen + " >";
-            drawCenteredText(gc, text, i, items.length,
-                             (i == itemSelected) ? Color.green : Color.white);
+            View.drawCenteredText(gc, text, i, items.length,
+                                  (i == itemSelected) ? Color.green : Color.white);
         }
     }
 
@@ -142,27 +126,31 @@ public class Menu extends BasicGameState {
         else if (key == Input.KEY_UP)
             itemSelected = Math.max(itemSelected-1, 0);
 
-        if (items[itemSelected] == "Play" && key == Input.KEY_ENTER)
+        if (items[itemSelected].equals("Play") && key == Input.KEY_ENTER)
             game.enterState(View.ID);
-        else if (items[itemSelected] == "Quit")
+        else if (items[itemSelected].equals("Quit"))
             ; /* handled in update */
-        else if (items[itemSelected] == "Map") {
+        else if (items[itemSelected].equals("Map")) {
             if (key == Input.KEY_LEFT)
                 maps.previous();
             else if (key == Input.KEY_RIGHT)
                 maps.next();
         }
-        else if (items[itemSelected] == "Resolution") {
+        else if (items[itemSelected].equals("Highscores")) {
+            if (key == Input.KEY_ENTER)
+                game.enterState(Highscores.ID);
+        }
+        else if (items[itemSelected].equals("Resolution")) {
             if (key == Input.KEY_LEFT)
                 resolutions.previous();
             else if (key == Input.KEY_RIGHT)
                 resolutions.next();
         }
-        else if (items[itemSelected] == "Fullscreen") {
+        else if (items[itemSelected].equals("Fullscreen")) {
             if (key == Input.KEY_LEFT || key == Input.KEY_RIGHT)
                 fullscreen = !fullscreen;
         }
-        else if (items[itemSelected] == "Apply resolution") {
+        else if (items[itemSelected].equals("Apply resolution")) {
             if (key == Input.KEY_ENTER)
                 shouldApplyResolution = true;
         }
