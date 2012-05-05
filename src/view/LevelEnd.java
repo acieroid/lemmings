@@ -1,6 +1,8 @@
 package view;
 
 import model.Model;
+import util.Database;
+import util.LemmingsException;
 
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -68,6 +70,12 @@ public class LevelEnd extends BasicGameState {
 
     public void keyPressed(int key, char c) {
         if (key == Input.KEY_ENTER) {
+            try {
+                Database.get().addScore(view.getModel().getMap().getName(),
+                                        name, view.getModel().getLemmingsRescued());
+            } catch (LemmingsException e) {
+                System.out.println("Error when saving score: " + e.getMessage());
+            }
             name = "";
             game.enterState(Menu.ID);
         }
@@ -77,7 +85,7 @@ public class LevelEnd extends BasicGameState {
         else if (key == Input.KEY_BACK && name.length() > 0) {
             name = name.substring(0, name.length() - 1);
         }
-        else if (name.length() < MAX_NAME_LENGTH) {
+        else if (name.length() < MAX_NAME_LENGTH && key != 42) {
             name += c;
         }
     }
