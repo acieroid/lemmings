@@ -81,6 +81,9 @@ public class Map extends Entity implements Serializable {
     public boolean isCollisionFree(int x, int y, int w, int h) {
         /* This is the bottleneck function */
         int pixel, i, j;
+
+        if (x < 0 || y < 0 || x >= getWidth() || y >= getHeight())
+            return false;
         /* Only check the border of the rectangle */
         for (i = 0; i < w; i++) {
             if (collisionData[y*getWidth() + x+i] != 0 ||
