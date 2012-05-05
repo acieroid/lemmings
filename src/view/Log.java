@@ -37,7 +37,7 @@ class Log implements Renderable {
             g.drawRect(x, y, width, height);
             int curY = (int) y + height - offset - font.getLineHeight();
             for (String str : lines) {
-                try {   
+                try {
                     font.drawString(x + 1, curY, str, Color.white);
                 } catch (org.lwjgl.opengl.OpenGLException e) {
                     System.out.println("Warning: " + e);

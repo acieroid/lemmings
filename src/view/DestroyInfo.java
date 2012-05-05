@@ -21,4 +21,4 @@ class DestroyInfo {
         this.zone = zone;
         this.hasZone = true;
     }
-}   
+}

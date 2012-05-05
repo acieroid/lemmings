@@ -1,4 +1,4 @@
-(pingus-sprite 
+(pingus-sprite
   (image "nuke.png")
   (speed 100)
   (loop #t)

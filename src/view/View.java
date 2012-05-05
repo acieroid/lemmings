@@ -179,7 +179,6 @@ public class View extends BasicGameState implements InputListener {
                          "Lemmings rescued: " + model.getLemmingsRescued() +
                          "/" + model.getMap().getLemmingsToRescue(),
                          gc.getHeight()-20);
-                         
 
         log.draw(10, height - 210);
     }
@@ -374,7 +373,6 @@ public class View extends BasicGameState implements InputListener {
         }
     }
 
-    
     /**
      * Draw centered text on a GameContainer
      */

@@ -77,7 +77,6 @@ public class Database {
         super.finalize();
     }
 
-    
     public void addScore(String map, String name, int score)
         throws LemmingsException {
         try {

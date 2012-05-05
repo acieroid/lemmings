@@ -22,4 +22,3 @@ public class CharacterBehavior extends ButtonBehavior {
         /* do nothing */
     }
 }
-            

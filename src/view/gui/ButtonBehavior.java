@@ -13,7 +13,7 @@ public class ButtonBehavior {
     public Controller getController() {
         return controller;
     }
-    
+
     public void setButton(Button button) {
         this.button = button;
     }
@@ -21,7 +21,7 @@ public class ButtonBehavior {
     public Button getButton() {
         return button;
     }
-        
+
     public void pressed() {
         button.enable();
     }

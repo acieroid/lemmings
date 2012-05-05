@@ -74,7 +74,6 @@ public class Map extends Entity implements Serializable {
         }
     }
 
-    
     /**
      * Check if a rectangle is collision free
      */
@@ -141,7 +140,7 @@ public class Map extends Entity implements Serializable {
     public int getExitY() {
         return exitY;
     }
-    
+
     /**
      * Return the number of lemmings to release for this map
      * @TODO: read this from the definition file

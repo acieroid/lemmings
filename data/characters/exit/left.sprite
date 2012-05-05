@@ -1,4 +1,4 @@
-(pingus-sprite 
+(pingus-sprite
   (image "exit.png")
   (offset -2 2)
   (origin "bottom_center")

@@ -27,7 +27,7 @@ public class MapImage {
     static private int GL_TEXTURE_MAG_FILTER = 0x2800;
     static private int GL_TEXTURE_MIN_FILTER = 0x2801;
     private static int GL_RGBA8 = 0x8058;
-    
+
     public MapImage(String directory)
         throws SlickException {
         this.background = new Image(directory + "/background.png");
