@@ -216,8 +216,10 @@ public class Model implements Serializable {
     public void stop() {
         running = false;
         clearCharacters();
-        timer.cancel();
-        timer = null;
+        if (timer != null) {
+          timer.cancel();
+          timer = null;
+        }
     }
 
     /**
