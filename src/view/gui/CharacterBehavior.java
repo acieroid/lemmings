@@ -15,7 +15,7 @@ public class CharacterBehavior extends ButtonBehavior {
     public void pressed() {
         gui.disableAllCharactersButton();
         getButton().enable();
-        getController().setSelectedBehavior(behavior);
+        getController().behaviorSelected(behavior);
     }
 
     public void released() {

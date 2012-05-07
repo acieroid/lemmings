@@ -70,7 +70,7 @@ public class Controller {
          * accepted (eg. faller -> blocker) */
     }
 
-    public void setSelectedBehavior(String behavior) {
+    public void behaviorSelected(String behavior) {
         selectedBehavior = behavior;
     }
 
