@@ -14,27 +14,29 @@ public class Bomber extends SimpleBehavior {
     private static int TIMEOUT_EXPLODE = 850;
     private static int TIMEOUT_DESTROY = 910;
     private int timer;
-    private boolean destroyed;
+    private boolean destroyed, exploded;
 
-    private int width, height;
-    private int[] collisionData;
+    private static int width, height;
+    private static int[] collisionData = null;
 
     public Bomber(Behavior b) {
         super(b);
         getCharacter().setDirection(Character.DONT_MOVE);
         timer = 0;
         destroyed = false;
-        /* TODO: only load it once ? And use the resource manager */
-        try {
-            BufferedImage image = ImageIO.read(new File("../data/characters/bomber/radius.png"));
-            width = image.getWidth();
-            height = image.getHeight();
-            collisionData = new int[width*height];
-            image.getRGB(0, 0, width, height, collisionData, 0, width);
-        } catch (java.io.IOException e) {
-            /* TODO */
-            /*throw new LemmingsException("model",
-              "Can't load radius for bomber");*/
+        exploded = false;
+        if (collisionData == null) {
+            try {
+                BufferedImage image = ImageIO.read(new File("../data/characters/bomber/radius.png"));
+                width = image.getWidth();
+                height = image.getHeight();
+                collisionData = new int[width*height];
+                image.getRGB(0, 0, width, height, collisionData, 0, width);
+            } catch (java.io.IOException e) {
+                /* TODO */
+                /*throw new LemmingsException("model",
+                  "Can't load radius for bomber");*/
+            }
         }
     }
 
@@ -46,10 +48,9 @@ public class Bomber extends SimpleBehavior {
         fall(map, delta, false);
 
         if (!destroyed) {
-            //super.update(map, delta); /* TODO: call fall */
             timer += delta;
 
-            if (timer > TIMEOUT_EXPLODE)
+            if (timer > TIMEOUT_EXPLODE && !exploded)
                 explode();
             if (timer > TIMEOUT_DESTROY)
                 destroy();
@@ -61,6 +62,7 @@ public class Bomber extends SimpleBehavior {
         int y = getCharacter().getY();
         int w = getCharacter().getWidth();
         int h = getCharacter().getHeight();
+        exploded = true;
         getModel().getMap().destroy(collisionData,
                                     x - (width/2 - w/2),
                                     y - (width/2 - w/2),
