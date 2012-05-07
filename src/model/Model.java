@@ -267,4 +267,23 @@ public class Model implements Serializable {
         }
         nuked = true;
     }
+
+    /**
+     * Change the behavior of a lemming
+     * @TODO: behavior manager + can't do something like faller -> blocker
+     */
+    public void changeBehavior(Character c, String behavior) {
+        Behavior b = null;
+        try {
+            if (behavior == "bomber")
+                b = new model.behaviors.Bomber(c.getBehavior());
+            else if (behavior == "blocker")
+                b = new model.behaviors.Blocker(c.getBehavior());
+
+            if (b != null)
+                c.setBehavior(b);
+        } catch (LemmingsException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

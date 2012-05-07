@@ -57,17 +57,7 @@ public class Controller {
 
     public void characterSelected(Character c)
         throws LemmingsException {
-        Behavior b = null;
-        if (selectedBehavior == "bomber")
-            b = new model.behaviors.Bomber(c.getBehavior());
-        else if (selectedBehavior == "blocker")
-            b = new model.behaviors.Blocker(c.getBehavior());
-
-        if (b != null)
-            c.setBehavior(b);
-
-        /* TODO: do not change the behavior if it should not be
-         * accepted (eg. faller -> blocker) */
+        model.changeBehavior(c, selectedBehavior);
     }
 
     public void behaviorSelected(String behavior) {
