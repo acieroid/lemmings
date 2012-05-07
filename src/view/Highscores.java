@@ -39,7 +39,7 @@ public class Highscores extends BasicGameState {
 
     public void render(GameContainer gc, StateBasedGame game, Graphics g) {
         try {
-            ArrayList<Score> scores = Database.get().getScores(maps.current());
+            ArrayList<Score> scores = Database.getScores(maps.current());
             int nLines = Math.min(scores.size() + 1, 6);
 
             View.drawCenteredText(gc,

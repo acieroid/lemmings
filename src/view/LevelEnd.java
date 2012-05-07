@@ -53,7 +53,7 @@ public class LevelEnd extends BasicGameState {
     public void keyPressed(int key, char c) {
         if (key == Input.KEY_ENTER) {
             try {
-                Database.get().addScore(view.getModel().getMap().getName(),
+                Database.addScore(view.getModel().getMap().getName(),
                                         name, view.getModel().getLemmingsRescued());
             } catch (LemmingsException e) {
                 System.out.println("Error when saving score: " + e.getMessage());

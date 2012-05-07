@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class Database {
     private Connection connection;
     private SQLite.Database db;
-    private PreparedStatement addScoreQuery, changeOptionQuery,
+    private static PreparedStatement addScoreQuery, changeOptionQuery,
         addOptionQuery, optionExistsQuery, getOptionQuery, getScoresQuery;
 
     private static Database instance;
@@ -31,13 +31,13 @@ public class Database {
         }
     }
 
-    public static Database get() {
+    private static Database get() {
         if (instance == null)
             instance = new Database("database.sqlite");
         return instance;
     }
 
-    public void createTables() {
+    private void createTables() {
         try {
             Statement st = connection.createStatement();
             String options =
@@ -77,31 +77,31 @@ public class Database {
         super.finalize();
     }
 
-    public void addScore(String map, String name, int score)
+    public static void addScore(String map, String name, int score)
         throws LemmingsException {
         try {
             if (addScoreQuery == null) {
                 String query = "insert into scores values (?, ?, ?)";
-                addScoreQuery = connection.prepareStatement(query);
+                addScoreQuery = get().connection.prepareStatement(query);
             }
             addScoreQuery.setString(1, map);
             addScoreQuery.setString(2, name);
             addScoreQuery.setInt(3, score);
             addScoreQuery.executeUpdate();
-            connection.commit();
+            get().connection.commit();
         } catch (SQLException e) {
             throw new LemmingsException("db",
                                         "Cannot alter database: " + e.getMessage());
         }
     }
 
-    public ArrayList<Score> getScores(String map)
+    public static ArrayList<Score> getScores(String map)
         throws LemmingsException {
         ArrayList<Score> res = new ArrayList<Score>();
         try {
             if (getScoresQuery == null) {
                 String query = "select name, score from scores where map = ?";
-                getScoresQuery = connection.prepareStatement(query);
+                getScoresQuery = get().connection.prepareStatement(query);
             }
             getScoresQuery.setString(1, map);
             ResultSet rs = getScoresQuery.executeQuery();
@@ -119,12 +119,12 @@ public class Database {
         }
     }
 
-    public boolean optionExists(String name)
+    private static boolean optionExists(String name)
         throws LemmingsException {
         try {
             if (optionExistsQuery == null) {
                 String query = "select 1 from options where name = ?";
-                optionExistsQuery = connection.prepareStatement(query);
+                optionExistsQuery = get().connection.prepareStatement(query);
             }
             optionExistsQuery.setString(1, name);
             ResultSet rs = optionExistsQuery.executeQuery();
@@ -142,13 +142,13 @@ public class Database {
         }
     }
 
-    public void changeOption(String name, String value)
+    public static void changeOption(String name, String value)
         throws LemmingsException {
         try {
             if (optionExists(name)) {
                 if (changeOptionQuery == null) {
                     String query = "update options set value = ? where name = ?";
-                    changeOptionQuery = connection.prepareStatement(query);
+                    changeOptionQuery = get().connection.prepareStatement(query);
                 }
                 changeOptionQuery.setString(1, value);
                 changeOptionQuery.setString(2, name);
@@ -157,35 +157,35 @@ public class Database {
             else {
                 if (addOptionQuery == null) {
                     String query = "insert into options values (?, ?)";
-                    addOptionQuery = connection.prepareStatement(query);
+                    addOptionQuery = get().connection.prepareStatement(query);
                 }
 
                 addOptionQuery.setString(1, name);
                 addOptionQuery.setString(2, value);
                 addOptionQuery.executeUpdate();
             }
-            connection.commit();
+            get().connection.commit();
         } catch (SQLException e) {
             throw new LemmingsException("db",
                                         "Cannot alter database: " + e.getMessage());
         }
     }
 
-    public void changeOptionInt(String name, int value)
+    public static void changeOptionInt(String name, int value)
         throws LemmingsException {
         changeOption(name, Integer.toString(value));
     }
 
-    public void changeOptionBoolean(String name, boolean value)
+    public static void changeOptionBoolean(String name, boolean value)
         throws LemmingsException {
         changeOption(name, Boolean.toString(value));
     }
 
-    public String getOption(String name, String def) {
+    public static String getOption(String name, String def) {
         try {
             if (getOptionQuery == null) {
                 String query = "select value from options where name = ?";
-                getOptionQuery = connection.prepareStatement(query);
+                getOptionQuery = get().connection.prepareStatement(query);
             }
             getOptionQuery.setString(1, name);
             ResultSet rs = getOptionQuery.executeQuery();
@@ -202,12 +202,12 @@ public class Database {
         }
     }
 
-    public int getOptiontInt(String name, int def) {
+    public static int getOptiontInt(String name, int def) {
         String value = getOption(name, Integer.toString(def));
         return Integer.parseInt(value);
     }
 
-    public boolean getOptionBoolean(String name, boolean def) {
+    public static boolean getOptionBoolean(String name, boolean def) {
         String value = getOption(name, Boolean.toString(def));
         return Boolean.parseBoolean(value);
     }

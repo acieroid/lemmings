@@ -32,7 +32,7 @@ public class Menu extends BasicGameState {
 
     public Menu() {
         this.maps = new Selector(model.ResourceManager.getAllMaps());
-        fullscreen = Database.get().getOptionBoolean("fullscreen", false);
+        fullscreen = Database.getOptionBoolean("fullscreen", false);
     }
 
     public int getID() {
@@ -74,8 +74,8 @@ public class Menu extends BasicGameState {
         int height = Integer.parseInt(str[1]);
 
         try {
-            Database.get().changeOption("resolution", resolutions.current());
-            Database.get().changeOptionBoolean("fullscreen", fullscreen);
+            Database.changeOption("resolution", resolutions.current());
+            Database.changeOptionBoolean("fullscreen", fullscreen);
             gc.setDisplayMode(width, height, fullscreen);
         } catch (SlickException e) {
             System.out.println("Can't apply resolution: " + e.getMessage());
@@ -88,7 +88,7 @@ public class Menu extends BasicGameState {
         throws SlickException {
         this.game = game;
         resolutions = new Selector(getResolutions(gc));
-        resolutions.select(Database.get().getOption("resolution", "640x480"));
+        resolutions.select(Database.getOption("resolution", "640x480"));
         applyResolution((AppGameContainer) gc);
     }
 
