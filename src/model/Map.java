@@ -14,7 +14,7 @@ public class Map extends Entity implements Serializable {
     private int entranceX, entranceY;
     private int exitX, exitY;
     int[] collisionData;
-    int[] changes;
+    boolean[] changes;
 
     public Map(String name, String directory)
         throws LemmingsException {
@@ -30,7 +30,8 @@ public class Map extends Entity implements Serializable {
              * we should use getData */
             colImage.getRGB(0, 0, getWidth(), getHeight(),
                             collisionData, 0, getWidth());
-            changes  = new int[getWidth()*getHeight()];
+            changes  = new boolean[getWidth()*getHeight()];
+            System.out.println(changes[0]);
 
             /* Load the entrance and exit position */
             BufferedImage objects = ImageIO.read(new File(directory + "/objects.png"));
@@ -104,7 +105,7 @@ public class Map extends Entity implements Serializable {
         for (int i = 0; i < w; i++) {
             for (int j = 0; j < h; j++) {
                 collisionData[(y+j)*getWidth() + x+i] = 0;
-                changes[(y+j)*getWidth() + x+i] = 1;
+                changes[(y+j)*getWidth() + x+i] = true;
             }
         }
         getView().destroyed(x, y, w, h);
@@ -118,7 +119,7 @@ public class Map extends Entity implements Serializable {
             for (int j = 0; j < h; j++) {
                 if (zone[j*w + i] != 0xFFFFFF) {
                     collisionData[(y+j)*getWidth() + x+i] = 0;
-                    changes[(y+j)*getWidth() + x+i] = 1;
+                    changes[(y+j)*getWidth() + x+i] = true;
                 }
             }
         }
@@ -158,15 +159,9 @@ public class Map extends Entity implements Serializable {
     }
 
     /**
-     * Destroy what changed on this model on the map image since the
-     * load of the map
-     * @TODO: this should *not* be in the model !
+     * Return the changes since the model started
      */
-    public void destroyChanges(MapImage map) {
-        for (int x = 0; x < getWidth(); x++)
-            for (int y = 0; y < getHeight(); y++)
-                if (changes[y*getWidth() + x] == 1)
-                    map.destroyPixel(x, y);
-        map.reloadTexture();
+    public boolean[] getChanges() {
+        return changes;
     }
 }

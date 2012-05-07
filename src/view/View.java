@@ -113,7 +113,7 @@ public class View extends BasicGameState implements InputListener {
         if (modelReloaded) {
             try {
                 map = GraphicsResourceManager.getMap(model.getMap().getName());
-                model.getMap().destroyChanges(map);
+                map.applyChanges(model.getMap().getChanges());
             } catch (LemmingsException e) {
                 log.add(e.getMessage());
             }

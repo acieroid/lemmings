@@ -83,6 +83,19 @@ public class MapImage {
     }
 
     /**
+     * Apply some changes on the map
+     */
+    public void applyChanges(boolean[] changes) {
+        int w = getWidth();
+        int h = getHeight();
+        for (int x = 0; x < w; x++)
+            for (int y = 0; y < h; y++)
+                if (changes[y*w + x])
+                    destroyPixel(x, y);
+        reloadTexture();
+    }
+
+    /**
      * Destroy a pixel on the map
      */
     public void destroyPixel(int x, int y) {
