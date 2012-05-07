@@ -259,7 +259,8 @@ public class Model implements Serializable {
      * Nuke the game: kill all the characters and stop releasing them
      * @TODO: have a little timeout to avoid closing harshly
      */
-    public void nuke() {
+    public void nuke()
+        throws LemmingsException {
         for (int i = 0; i < characters.size(); i++) {
             Character c = characters.get(i);
             c.setBehavior(new model.behaviors.Bomber(c.getBehavior()));

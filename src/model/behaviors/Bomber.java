@@ -4,6 +4,7 @@ import model.Model;
 import model.Character;
 import model.Behavior;
 import model.Map;
+import util.LemmingsException;
 
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
@@ -19,7 +20,8 @@ public class Bomber extends SimpleBehavior {
     private static int width, height;
     private static int[] collisionData = null;
 
-    public Bomber(Behavior b) {
+    public Bomber(Behavior b)
+        throws LemmingsException {
         super(b);
         getCharacter().setDirection(Character.DONT_MOVE);
         timer = 0;
@@ -34,8 +36,8 @@ public class Bomber extends SimpleBehavior {
                 image.getRGB(0, 0, width, height, collisionData, 0, width);
             } catch (java.io.IOException e) {
                 /* TODO */
-                /*throw new LemmingsException("model",
-                  "Can't load radius for bomber");*/
+                throw new LemmingsException("model",
+                                            "Can't load radius for bomber");
             }
         }
     }

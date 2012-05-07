@@ -1,6 +1,7 @@
 package view.gui;
 
 import controller.Controller;
+import util.LemmingsException;
 
 public class NukeBehavior extends ButtonBehavior {
     public NukeBehavior(Controller controller) {
@@ -8,8 +9,12 @@ public class NukeBehavior extends ButtonBehavior {
     }
 
     public void pressed() {
-        getController().nuke();
-        getButton().enable();
+        try {
+            getController().nuke();
+            getButton().enable();
+        } catch (LemmingsException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void released() {

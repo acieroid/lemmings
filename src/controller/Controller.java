@@ -55,7 +55,8 @@ public class Controller {
         model.setSpeed(model.getSpeed() - 1);
     }
 
-    public void characterSelected(Character c) {
+    public void characterSelected(Character c)
+        throws LemmingsException {
         Behavior b = null;
         if (selectedBehavior == "bomber")
             b = new model.behaviors.Bomber(c.getBehavior());
@@ -73,7 +74,8 @@ public class Controller {
         selectedBehavior = behavior;
     }
 
-    public void nuke() {
+    public void nuke()
+        throws LemmingsException {
         model.nuke();
     }
 
