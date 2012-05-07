@@ -66,13 +66,18 @@ public class Database {
 
     protected void finalize()
         throws Throwable {
-        /* TODO: close the prepared statements */
         if (connection != null) {
             try {
                 connection.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            addScoreQuery.close();
+            changeOptionQuery.close();
+            addOptionQuery.close();
+            optionExistsQuery.close();
+            getOptionQuery.close();
+            getScoresQuery.close();
         }
         super.finalize();
     }
