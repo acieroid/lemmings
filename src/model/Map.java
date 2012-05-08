@@ -113,16 +113,21 @@ public class Map extends Entity implements Serializable {
     /**
      * Destroy a zone from the collision map
      */
-    public void destroy(int[] zone, int x, int y, int w, int h) {
+    public boolean destroy(int[] zone, int x, int y, int w, int h) {
+        boolean destroyed = false;
         for (int i = 0; i < w; i++) {
             for (int j = 0; j < h; j++) {
                 if (zone[j*w + i] != 0xFFFFFF) {
+                    if (collisionData[(y+j)*getWidth() + x+i] != 0)
+                        destroyed = true;
                     collisionData[(y+j)*getWidth() + x+i] = 0;
                     changes[(y+j)*getWidth() + x+i] = true;
                 }
             }
         }
-        getView().destroyed(zone, x, y, w, h);
+        if (destroyed)
+            getView().destroyed(zone, x, y, w, h);
+        return destroyed;
     }
 
     public int getEntranceX() {

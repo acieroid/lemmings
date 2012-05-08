@@ -279,21 +279,24 @@ public class Model implements Serializable {
     public void changeBehavior(Character c, String behavior) {
         Behavior b = null;
         try {
+            Class types[] = { Class.forName("model.Behavior") };
             b = (Behavior)
                 Class.forName("model.behaviors." +
                               behavior.substring(0, 1).toUpperCase() +
                               behavior.substring(1))
-                .getDeclaredConstructors()[0]
+                .getConstructor(types)
                 .newInstance(c.getBehavior());
             c.setBehavior(b);
         } catch (ClassNotFoundException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         } catch (InstantiationException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         } catch (IllegalAccessException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
         } catch (java.lang.reflect.InvocationTargetException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -301,7 +304,7 @@ public class Model implements Serializable {
      * Return the list of available character behaviors
      */
     public String[] getCharacterBehaviors() {
-        String[] res = { "bomber", "blocker" };
+        String[] res = { "bomber", "blocker", "digger" };
         return res;
     }
 }

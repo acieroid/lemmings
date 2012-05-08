@@ -27,6 +27,7 @@ public class Bomber extends SimpleBehavior {
         timer = 0;
         destroyed = false;
         exploded = false;
+        /* TODO: isolate this in the resource manager, or in a parent class ? */
         if (collisionData == null) {
             try {
                 BufferedImage image = ImageIO.read(new File("../data/characters/bomber/radius.png"));
@@ -66,7 +67,7 @@ public class Bomber extends SimpleBehavior {
         exploded = true;
         getModel().getMap().destroy(collisionData,
                                     x - (width/2 - w/2),
-                                    y - (width/2 - w/2),
+                                    y - (height/2 - h/2),
                                     width,
                                     height);
     }
