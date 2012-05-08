@@ -191,6 +191,7 @@ public class Model implements Serializable {
 
     public void setSpeed(int speed) {
         this.speed = Math.max(1, Math.min(MAXSPEED, speed));
+        getView().speedChanged(speed);
     }
 
     /**

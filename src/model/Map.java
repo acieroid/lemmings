@@ -31,7 +31,6 @@ public class Map extends Entity implements Serializable {
             colImage.getRGB(0, 0, getWidth(), getHeight(),
                             collisionData, 0, getWidth());
             changes  = new boolean[getWidth()*getHeight()];
-            System.out.println(changes[0]);
 
             /* Load the entrance and exit position */
             BufferedImage objects = ImageIO.read(new File(directory + "/objects.png"));

@@ -35,7 +35,6 @@ public class Bomber extends SimpleBehavior {
                 collisionData = new int[width*height];
                 image.getRGB(0, 0, width, height, collisionData, 0, width);
             } catch (java.io.IOException e) {
-                /* TODO */
                 throw new LemmingsException("model",
                                             "Can't load radius for bomber");
             }

@@ -105,6 +105,7 @@ public class View extends BasicGameState implements InputListener {
         }
 
         if (toDestroy.size() != 0) {
+            /* TODO */
             for (int i = 0; i < 1; i++)
                 toDestroy.get(i).apply(map);
             toDestroy.clear();
@@ -297,6 +298,14 @@ public class View extends BasicGameState implements InputListener {
     }
 
     /**
+     * Called when the model speed changed
+     */
+    public void speedChanged(int speed) {
+        for (int i = 0; i < characters.size(); i++)
+            characters.get(i).setSpeed(speed);
+    }
+
+    /**
      * Called when all the characters are deleted
      */
     public void charactersCleared() {
@@ -418,6 +427,4 @@ public class View extends BasicGameState implements InputListener {
             System.out.println("Warning: " + e);
         }
     }
-
-
 }

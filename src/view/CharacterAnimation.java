@@ -15,6 +15,7 @@ public class CharacterAnimation {
     private SpriteSheet sheet;
     private String resourceDirectory, directory;
     private boolean changed;
+    private int speed = 1;
 
     private String anim;
 
@@ -74,6 +75,7 @@ public class CharacterAnimation {
         }
         animation.setLooping(sprite.getBooleanProperty("loop"));
         animation.setAutoUpdate(true);
+        animation.setSpeed(speed);
         changed = false;
     }
 
@@ -117,5 +119,10 @@ public class CharacterAnimation {
 
     public boolean isStopped() {
         return animation.isStopped();
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+        animation.setSpeed(speed);
     }
 }
