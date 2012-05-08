@@ -172,15 +172,7 @@ public class View extends BasicGameState implements InputListener {
         if (model.isPaused())
             drawCenteredText(gc, "Pause");
 
-        gui.draw(gc);
-        /* TODO: put this in the GUI */
-        drawCenteredText(gc,
-                         "Lemmings released: " + model.getLemmingsReleased() +
-                         "/" + model.getMap().getLemmingsToRelease() + " | " +
-                         "Lemmings rescued: " + model.getLemmingsRescued() +
-                         "/" + model.getMap().getLemmingsToRescue(),
-                         gc.getHeight()-20);
-
+        gui.draw(gc, model);
         log.draw(10, height - 210);
     }
 

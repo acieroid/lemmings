@@ -1,7 +1,9 @@
 package view.gui;
 
-import util.LemmingsException;
+import view.View;
+import model.Model;
 import controller.Controller;
+import util.LemmingsException;
 
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.GameContainer;
@@ -45,12 +47,19 @@ public class GUI {
                                   true));
     }
 
-    public void draw(GameContainer gc) {
+    public void draw(GameContainer gc, Model model) {
         for (Button b : buttons)
             b.draw();
 
         for (Button b : characters)
             b.draw();
+
+        View.drawCenteredText(gc,
+                              "Lemmings released: " + model.getLemmingsReleased() +
+                              "/" + model.getMap().getLemmingsToRelease() + " | " +
+                              "Lemmings rescued: " + model.getLemmingsRescued() +
+                              "/" + model.getMap().getLemmingsToRescue(),
+                              gc.getHeight()-20);
     }
 
     public void mousePressed(int x, int y) {
