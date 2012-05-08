@@ -13,12 +13,13 @@ import java.io.Serializable;
 public class Model implements Serializable {
     private static int MAXSPEED = 5;
     private static int LEMMING_RELEASE_TIMEOUT = 1000;
+    private static int END_OF_GAME_TIMEOUT = 1000;
 
     private transient View view;
     private Map map;
     private ArrayList<Character> characters;
     private transient Timer timer;
-    private int lemmingReleaseTimer = 0;
+    private int lemmingReleaseTimer = 0, endTimer = 0;
 
     private int lemmingsReleased, lemmingsRescued;
     private boolean running, nuked;
@@ -241,6 +242,9 @@ public class Model implements Serializable {
             }
 
             if (!shouldReleaseLemming() && characters.size() == 0) {
+                endTimer += delta;
+            }
+            if (endTimer > END_OF_GAME_TIMEOUT) {
                 /* Won or lost */
                 stop();
                 view.finished();
@@ -258,7 +262,6 @@ public class Model implements Serializable {
 
     /**
      * Nuke the game: kill all the characters and stop releasing them
-     * @TODO: have a little timeout to avoid closing harshly
      */
     public void nuke()
         throws LemmingsException {
@@ -271,7 +274,7 @@ public class Model implements Serializable {
 
     /**
      * Change the behavior of a lemming
-     * @TODO: behavior manager + can't do something like faller -> blocker
+     * @TODO: can't do something like faller -> blocker
      */
     public void changeBehavior(Character c, String behavior) {
         Behavior b = null;
