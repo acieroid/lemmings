@@ -287,4 +287,12 @@ public class Model implements Serializable {
             System.out.println(e.getMessage());
         }
     }
+
+    /**
+     * Return the list of available character behaviors
+     */
+    public String[] getCharacterBehaviors() {
+        String[] res = { "bomber", "blocker" };
+        return res;
+    }
 }

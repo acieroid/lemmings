@@ -14,37 +14,40 @@ public class GUI {
     private ArrayList<Button> buttons, characters;
     private int x, y;
     private int w, h;
+    private Model model;
 
     public static String RESOURCE_DIR = "../data/";
 
-    public GUI(int x, int y, int w, int h, Controller controller)
+    public GUI(int x, int y, int w, int h, Controller controller, Model model)
         throws SlickException, LemmingsException {
+        this.model = model;
         this.x = x;
         this.y = y;
         this.w = w;
         this.h = h;
         String[] images = { "nuke.sprite", "faster.png", "slower.png",
                           "pause.png", "save.png", "load.png" };
-        ButtonBehavior[] behaviors = { new NukeBehavior(controller),
-                                       new FasterBehavior(controller),
-                                       new SlowerBehavior(controller),
-                                       new PauseBehavior(controller),
-                                       new SaveBehavior(controller),
-                                       new LoadBehavior(controller) };
+        ButtonBehavior[] buttonBehaviors = { new NukeBehavior(controller),
+                                             new FasterBehavior(controller),
+                                             new SlowerBehavior(controller),
+                                             new PauseBehavior(controller),
+                                             new SaveBehavior(controller),
+                                             new LoadBehavior(controller) };
         buttons = new ArrayList<Button>();
         for (int i = 0; i < images.length; i++)
             buttons.add(new Button("gui", images[i], w - 50 * (i+1), y,
-                                   behaviors[i]));
+                                   buttonBehaviors[i]));
 
         characters = new ArrayList<Button>();
-        characters.add(new Button("characters/bomber", "left.sprite", w - 350, y,
-                                  new CharacterBehavior(controller, this, "bomber")));
-
-        characters.add(new Button("characters/blocker", "left.sprite", w - 400, y,
-                                  new CharacterBehavior(controller, this, "blocker")));
+        String[] behaviors = model.getCharacterBehaviors();
+        for (int i = 0; i < behaviors.length; i++)
+            characters.add(new Button("characters/" + behaviors[i], "right.sprite",
+                                      w - 50*(i+1+images.length), y,
+                                      new CharacterBehavior(controller, this,
+                                                            behaviors[i])));
     }
 
-    public void draw(GameContainer gc, Model model) {
+    public void draw(GameContainer gc) {
         for (Button b : buttons)
             b.draw();
 

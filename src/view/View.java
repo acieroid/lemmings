@@ -172,7 +172,7 @@ public class View extends BasicGameState implements InputListener {
         if (model.isPaused())
             drawCenteredText(gc, "Pause");
 
-        gui.draw(gc, model);
+        gui.draw(gc);
         log.draw(10, height - 210);
     }
 
@@ -233,7 +233,8 @@ public class View extends BasicGameState implements InputListener {
             controller.start(mapName);
             map = GraphicsResourceManager.getMap(mapName);
             log = new Log(width - 20, 200, font);
-            gui = new GUI(0, gc.getHeight()-100, gc.getWidth(), 100, controller);
+            gui = new GUI(0, gc.getHeight()-100, gc.getWidth(), 100,
+                          controller, model);
         } catch (LemmingsException e) {
             log.add(e.getMessage());
             game.enterState(Menu.ID);
