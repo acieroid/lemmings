@@ -105,8 +105,7 @@ public class View extends BasicGameState implements InputListener {
         }
 
         if (toDestroy.size() != 0) {
-            /* TODO */
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < toDestroy.size(); i++)
                 toDestroy.get(i).apply(map);
             toDestroy.clear();
         }
@@ -303,7 +302,6 @@ public class View extends BasicGameState implements InputListener {
      * Called when a game is finished
      */
     public void finished() {
-        System.out.println("Game finished");
         game.enterState(LevelEnd.ID);
     }
 
