@@ -32,10 +32,10 @@ public class Button {
         enabled = false;
     }
 
-    public Button(String dir, String image, int x, int y, ButtonBehavior b, boolean animated)
+    public Button(String dir, String image, int x, int y, ButtonBehavior b)
         throws SlickException, LemmingsException {
         this(x, y, b);
-        this.animated = animated;
+        this.animated = image.substring(image.lastIndexOf('.')).equals(".sprite");
         if (!animated) {
             this.image = new Image(GUI.RESOURCE_DIR + "/" + dir + "/" + image);
         }
@@ -57,11 +57,6 @@ public class Button {
             animation.setAutoUpdate(true);
             animation.stop();
         }
-    }
-
-    public Button(String dir, String image, int x, int y, ButtonBehavior b)
-        throws SlickException, LemmingsException {
-        this(dir, image, x, y, b, false);
     }
 
     public void draw() {

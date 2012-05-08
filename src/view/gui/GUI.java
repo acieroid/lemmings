@@ -23,28 +23,25 @@ public class GUI {
         this.y = y;
         this.w = w;
         this.h = h;
+        String[] images = { "nuke.sprite", "faster.png", "slower.png",
+                          "pause.png", "save.png", "load.png" };
+        ButtonBehavior[] behaviors = { new NukeBehavior(controller),
+                                       new FasterBehavior(controller),
+                                       new SlowerBehavior(controller),
+                                       new PauseBehavior(controller),
+                                       new SaveBehavior(controller),
+                                       new LoadBehavior(controller) };
         buttons = new ArrayList<Button>();
-        buttons.add(new Button("gui", "nuke.sprite", w - 50, y,
-                               new NukeBehavior(controller),
-                               true));
-        buttons.add(new Button("gui", "faster.png", w - 100, y,
-                               new FasterBehavior(controller)));
-        buttons.add(new Button("gui", "slower.png", w - 150, y,
-                               new SlowerBehavior(controller)));
-        buttons.add(new Button("gui", "pause.png", w - 200, y,
-                               new PauseBehavior(controller)));
-        buttons.add(new Button("gui", "save.png", w - 250, y,
-                               new SaveBehavior(controller)));
-        buttons.add(new Button("gui", "load.png", w - 300, y,
-                               new LoadBehavior(controller)));
+        for (int i = 0; i < images.length; i++)
+            buttons.add(new Button("gui", images[i], w - 50 * (i+1), y,
+                                   behaviors[i]));
 
         characters = new ArrayList<Button>();
         characters.add(new Button("characters/bomber", "left.sprite", w - 350, y,
-                                  new CharacterBehavior(controller, this, "bomber"),
-                                  true));
+                                  new CharacterBehavior(controller, this, "bomber")));
+
         characters.add(new Button("characters/blocker", "left.sprite", w - 400, y,
-                                  new CharacterBehavior(controller, this, "blocker"),
-                                  true));
+                                  new CharacterBehavior(controller, this, "blocker")));
     }
 
     public void draw(GameContainer gc, Model model) {
