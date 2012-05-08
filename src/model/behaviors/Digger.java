@@ -43,10 +43,8 @@ public class Digger extends SimpleBehavior {
         int w = getCharacter().getWidth();
         int h = getCharacter().getHeight();
 
-                    getCharacter().setY(y+1);
-
         /* Can we dig ? */
-        if (map.destroy(collisionData, x - (width/2 - w/2), y - (height - h) + 2,
+        if (map.destroy(collisionData, x - (width/2 - w/2), y - (height - h) + 1,
                         width, height)) {
             getCharacter().setY(y+1);
         }

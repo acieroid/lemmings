@@ -11,6 +11,8 @@ public class Walker extends SimpleBehavior {
 
     public Walker(Behavior b) {
         super(b);
+        if (getCharacter().isFalling())
+            getCharacter().setName("faller");
     }
 
     public String getName() {
