@@ -46,6 +46,8 @@ public class Model implements Serializable {
                     lastTime = now;
                 }
             }, 20, 20);
+        endTimer = 0;
+        lemmingReleaseTimer = 0;
     }
 
     /**
