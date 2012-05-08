@@ -29,10 +29,8 @@ public class Model implements Serializable {
     public Model() {
         speed = 1;
         running = false;
-
         view = null;
         characters = new ArrayList<Character>();
-
         reset();
     }
 
@@ -231,7 +229,6 @@ public class Model implements Serializable {
      */
     public void update(long delta) {
         if (!isPaused()) {
-            long now = new Date().getTime();
             lemmingReleaseTimer += delta;
             if (lemmingReleaseTimer > LEMMING_RELEASE_TIMEOUT &&
                 shouldReleaseLemming()) {
