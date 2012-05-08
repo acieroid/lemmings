@@ -276,14 +276,20 @@ public class Model implements Serializable {
     public void changeBehavior(Character c, String behavior) {
         Behavior b = null;
         try {
-            if (behavior == "bomber")
-                b = new model.behaviors.Bomber(c.getBehavior());
-            else if (behavior == "blocker")
-                b = new model.behaviors.Blocker(c.getBehavior());
-
-            if (b != null)
-                c.setBehavior(b);
-        } catch (LemmingsException e) {
+            b = (Behavior)
+                Class.forName("model.behaviors." +
+                              behavior.substring(0, 1).toUpperCase() +
+                              behavior.substring(1))
+                .getDeclaredConstructors()[0]
+                .newInstance(c.getBehavior());
+            c.setBehavior(b);
+        } catch (ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+        } catch (InstantiationException e) {
+            System.out.println(e.getMessage());
+        } catch (IllegalAccessException e) {
+            System.out.println(e.getMessage());
+        } catch (java.lang.reflect.InvocationTargetException e) {
             System.out.println(e.getMessage());
         }
     }
