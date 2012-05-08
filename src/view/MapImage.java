@@ -67,7 +67,7 @@ public class MapImage {
         for (int i = 0; i < w; i++)
             for (int j = 0; j < h; j++)
                 destroyPixel(x+i, y+j);
-        reloadTexture();
+        reloadTexture(x, y, w, h);
     }
 
     /**
@@ -79,7 +79,7 @@ public class MapImage {
                 /* In pingus, the radius images are colored on a white background */
                 if (zone[j*w + i] != 0xFFFFFF)
                     destroyPixel(x+i, y+j);
-        reloadTexture();
+        reloadTexture(x, y, w, h);
     }
 
     /**
@@ -114,6 +114,30 @@ public class MapImage {
         GL11.glTexImage2D(SGL.GL_TEXTURE_2D, 0, GL_RGBA8,
                           get2Fold(getWidth()), get2Fold(getHeight()),
                           0, SGL.GL_RGBA, SGL.GL_UNSIGNED_BYTE, buffer);
+        background.setTexture(texture);
+    }
+
+    /**
+     * Reload a zone of the OpenGL texture
+     */
+    public void reloadTexture(int x, int y, int w, int h) {
+        ByteBuffer buf = ByteBuffer.allocateDirect(4*w*h);
+        for (int i = 0; i < w; i++) {
+            /* TODO: get a subset of the byte buffer, put it */
+            for (int j = 0; j < h; j++) {
+                int bufferOffset = 4*((y+j)*get2Fold(getWidth()) + x+i);
+                int bufOffset = 4*(j*w + i);
+                buf.put(bufOffset, buffer.get(bufferOffset));
+                buf.put(bufOffset+1, buffer.get(bufferOffset+1));
+                buf.put(bufOffset+2, buffer.get(bufferOffset+2));
+                buf.put(bufOffset+3, buffer.get(bufferOffset+3));
+            }
+        }
+        texture.bind();
+        GL11.glTexSubImage2D(SGL.GL_TEXTURE_2D, 0,
+                             x, y, w, h,
+                             SGL.GL_RGBA, SGL.GL_UNSIGNED_BYTE,
+                             buf);
         background.setTexture(texture);
     }
 
