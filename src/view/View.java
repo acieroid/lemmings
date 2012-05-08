@@ -268,7 +268,6 @@ public class View extends BasicGameState implements InputListener {
      * (direction, or behavior)
      * @param character: the character
      * @param change: the change (@see Character.CHANGE*)
-     * @TODO: this should be implemented in CharacterAnimation
      */
     public void characterChanged(Character character, int change) {
         if (change == Character.CHANGE_DELETED) {
@@ -285,12 +284,7 @@ public class View extends BasicGameState implements InputListener {
         else {
             for (CharacterAnimation a : characters) {
                 if (a.getCharacter() == character) {
-                    if (change == Character.CHANGE_FALLING ||
-                        change == Character.CHANGE_BEHAVIOR)
-                        a.setAnimation(character.getName());
-                    else if (change == Character.CHANGE_DIRECTION)
-                        a.changeDirection();
-
+                    a.change(change);
                     break;
                 }
             }

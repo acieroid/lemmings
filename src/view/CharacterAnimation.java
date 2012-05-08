@@ -125,4 +125,12 @@ public class CharacterAnimation {
         this.speed = speed;
         animation.setSpeed(speed);
     }
+
+    public void change(int change) {
+        if (change == Character.CHANGE_FALLING ||
+            change == Character.CHANGE_BEHAVIOR)
+            setAnimation(character.getName());
+        else if (change == Character.CHANGE_DIRECTION)
+            changeDirection();
+    }
 }
