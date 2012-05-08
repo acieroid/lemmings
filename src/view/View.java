@@ -68,6 +68,8 @@ public class View extends BasicGameState implements InputListener {
         if (model != null)
             modelReloaded = true;
         this.model = model;
+        if (gui != null)
+            gui.setModel(model);
         toAdd = new ArrayList<Character>(model.getCharacters());
     }
 

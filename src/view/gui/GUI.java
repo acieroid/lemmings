@@ -47,6 +47,10 @@ public class GUI {
                                                             behaviors[i])));
     }
 
+    public void setModel(Model model) {
+        this.model = model;
+    }
+
     public void draw(GameContainer gc) {
         for (Button b : buttons)
             b.draw();
