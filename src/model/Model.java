@@ -1,6 +1,5 @@
 package model;
 
-import view.View;
 import util.LemmingsException;
 
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ public class Model implements Serializable {
     private static int LEMMING_RELEASE_TIMEOUT = 1000;
     private static int END_OF_GAME_TIMEOUT = 1000;
 
-    private transient View view;
+    private transient ArrayList<ModelObserver> observers;
     private Map map;
     private ArrayList<Character> characters;
     private transient Timer timer;
@@ -29,7 +28,7 @@ public class Model implements Serializable {
     public Model() {
         speed = 1;
         running = false;
-        view = null;
+        observers = new ArrayList<ModelObserver>();
         characters = new ArrayList<Character>();
         reset();
     }
@@ -62,7 +61,7 @@ public class Model implements Serializable {
         throws LemmingsException {
         reset();
         this.map = map;
-        map.setView(view);
+        map.setModel(this);
     }
 
     /**
@@ -81,21 +80,13 @@ public class Model implements Serializable {
     }
 
     /**
-     * Set the view associated with this model
+     * Add an observer to this model
      */
-    public void setView(View view) {
-        this.view = view;
-        if (map != null)
-            map.setView(view);
-        for (Character c : characters)
-            c.setView(view);
-    }
-
-    /**
-     * @return the view associated with this model
-     */
-    public View getView() {
-        return view;
+    public void addObserver(ModelObserver obs) {
+        if (observers == null)
+            observers = new ArrayList<ModelObserver>();
+        observers.add(obs);
+        obs.setModel(this);
     }
 
     /**
@@ -105,7 +96,7 @@ public class Model implements Serializable {
         int index = characters.indexOf(c);
         if (index != -1) {
             characters.remove(index);
-            view.characterChanged(c, Character.CHANGE_DELETED);
+            notifyCharacterChanged(c, Character.CHANGE_DELETED);
         }
     }
 
@@ -114,8 +105,8 @@ public class Model implements Serializable {
      */
     public void clearCharacters() {
         characters.clear();
-        if (view != null)
-            view.charactersCleared();
+        for (ModelObserver obs : observers)
+            obs.charactersCleared();
     }
 
     /**
@@ -168,7 +159,7 @@ public class Model implements Serializable {
     public void releaseLemming()
         throws LemmingsException {
         Character c = new Character(0, 0, 32, 32, "walker");
-        c.setView(view);
+        c.setModel(this);
         c.setX(map.getEntranceX() - c.getWidth()/2);
         c.setY(map.getEntranceY() - c.getHeight()/2);
         c.setBehavior(new model.behaviors.Walker(this, c));
@@ -176,7 +167,8 @@ public class Model implements Serializable {
         c.setName("faller");
         lemmingsReleased++;
         characters.add(c);
-        view.characterAdded(c);
+        for (ModelObserver obs : observers)
+            obs.characterAdded(c);
     }
 
     /**
@@ -192,7 +184,8 @@ public class Model implements Serializable {
 
     public void setSpeed(int speed) {
         this.speed = Math.max(1, Math.min(MAXSPEED, speed));
-        getView().speedChanged(speed);
+        for (ModelObserver obs : observers)
+            obs.speedChanged();
     }
 
     /**
@@ -246,7 +239,8 @@ public class Model implements Serializable {
             if (endTimer > END_OF_GAME_TIMEOUT) {
                 /* Won or lost */
                 stop();
-                view.finished();
+                for (ModelObserver obs : observers)
+                    obs.finished();
             }
 
             for (int i = 0; i < characters.size(); i++) {
@@ -305,5 +299,26 @@ public class Model implements Serializable {
     public String[] getCharacterBehaviors() {
         String[] res = { "bomber", "blocker", "digger" };
         return res;
+    }
+
+    /**
+     * Notify the observers of changes in a character
+     */
+    public void notifyCharacterChanged(Character character, int change) {
+        for (ModelObserver obs : observers)
+            obs.characterChanged(character, change);
+    }
+
+    /**
+     * Notify the observers a zone is destroyed
+     */
+    public void notifyDestroyed(int x, int y, int w, int h) {
+        for (ModelObserver obs : observers)
+            obs.destroyed(x, y, w, h);
+    }
+
+    public void notifyDestroyed(int zone[], int x, int y, int w, int h) {
+        for (ModelObserver obs : observers)
+            obs.destroyed(zone, x, y, w, h);
     }
 }

@@ -8,8 +8,7 @@ public class Lemmings {
         View view = new View();
         Controller controller = new Controller();
 
-        model.setView(view);
-        view.setModel(model);
+        model.addObserver(view);
         view.setController(controller);
         controller.setModel(model);
         controller.setView(view);

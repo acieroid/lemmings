@@ -95,7 +95,7 @@ public class Controller {
             model = (Model) in.readObject();
             in.close();
             file.close();
-            model.setView(view);
+            model.addObserver(view);
             view.setModel(model);
             model.start();
             model.pause();

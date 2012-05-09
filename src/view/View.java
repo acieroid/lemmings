@@ -1,6 +1,7 @@
 package view;
 
 import model.Model;
+import model.ModelObserver;
 import model.Character;
 import model.ResourceManager;
 import controller.Controller;
@@ -23,7 +24,7 @@ import org.newdawn.slick.Font;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Animation;
 
-public class View extends BasicGameState implements InputListener {
+public class View extends BasicGameState implements InputListener, ModelObserver {
     public static final int ID = 2;
     private StateBasedGame game;
 
@@ -288,7 +289,8 @@ public class View extends BasicGameState implements InputListener {
     /**
      * Called when the model speed changed
      */
-    public void speedChanged(int speed) {
+    public void speedChanged() {
+        int speed = model.getSpeed();
         for (int i = 0; i < characters.size(); i++)
             characters.get(i).setSpeed(speed);
     }

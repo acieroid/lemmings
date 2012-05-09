@@ -1,8 +1,6 @@
 package model;
 
 import util.LemmingsException;
-import view.View;
-import view.MapImage;
 
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
@@ -107,7 +105,7 @@ public class Map extends Entity implements Serializable {
                 changes[(y+j)*getWidth() + x+i] = true;
             }
         }
-        getView().destroyed(x, y, w, h);
+        getModel().notifyDestroyed(x, y, w, h);
     }
 
     /**
@@ -126,7 +124,7 @@ public class Map extends Entity implements Serializable {
             }
         }
         if (destroyed)
-            getView().destroyed(zone, x, y, w, h);
+            getModel().notifyDestroyed(zone, x, y, w, h);
         return destroyed;
     }
 

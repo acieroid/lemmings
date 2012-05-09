@@ -1,13 +1,11 @@
 package model;
 
-import view.View;
-
 import java.io.Serializable;
 
 public class Entity implements Serializable {
     private int x, y, width, height;
     private String name;
-    private transient View view;
+    private Model model;
 
     public Entity() {
     }
@@ -60,11 +58,11 @@ public class Entity implements Serializable {
         this.name = name;
     }
 
-    public View getView() {
-        return view;
+    public Model getModel() {
+        return model;
     }
 
-    public void setView(View view) {
-        this.view = view;
+    public void setModel(Model model) {
+        this.model = model;
     }
 }

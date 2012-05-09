@@ -42,16 +42,16 @@ public class Character extends Entity implements Serializable {
 
     public void changeDirection() {
         setDirection(getDirection() * -1);
-        getView().characterChanged(this, CHANGE_DIRECTION);
+        getModel().notifyCharacterChanged(this, CHANGE_DIRECTION);
     }
 
     public void setName(String name) {
         super.setName(name);
-        getView().characterChanged(this, CHANGE_BEHAVIOR);
+        getModel().notifyCharacterChanged(this, CHANGE_BEHAVIOR);
     }
 
     public void destroy() {
-        getView().characterChanged(this, CHANGE_DELETED);
+        getModel().notifyCharacterChanged(this, CHANGE_DELETED);
     }
 
     public Behavior getBehavior() {
