@@ -1,0 +1,170 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{a4wide}
+\usepackage{subfig}
+\usepackage{wrapfig}
+\usepackage{url}
+\usepackage{latexsym} % \Join
+\usepackage[pdftex]{hyperref}
+\hypersetup{
+  colorlinks,
+  citecolor=black,
+  filecolor=black,
+  linkcolor=black,
+  urlcolor=black
+}
+\usepackage[top=2.5cm, bottom=2.5cm, left=2cm, right=2cm]{geometry}
+%\renewcommand{\baselinestretch}{1.05}
+
+\usepackage{listings}
+
+\title{INFO-H-301: Lemmings}
+
+\author{Quentin \textsc{Stiévenart}}
+\date{\today}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\begin{document}
+
+\maketitle
+
+\HRule
+
+\section{Fonctionnalités}
+
+Le programme réalisé consiste en un clone du jeu
+\emph{Lemmings} et tire ses données graphiques de deux jeux
+libres: \emph{Pingus}\footnote{http://pingus.seul.org} et
+\emph{Teeworlds}\footnote{http://teeworlds.com}.
+
+Au lancement du jeu, un menu est présenté à l'utilisateur (voir figure
+\ref{fig:Menu}) et permet de:
+\begin{list}{-}{}
+  \item lancer le jeu~;
+  \item choisir la carte sur laquelle jouer~;
+  \item voir les meilleurs scores pour une carte~;
+  \item changer les options graphiques (résolution, plein
+écran) et appliquer ces changements~;
+  \item quitter.
+\end{list}
+
+Les meilleurs scores ainsi que les options graphiques sont
+sauvegardés dans une base de donnée, et sont donc gardés
+entre deux lancements du jeu.
+
+Lorsque le jeu est lancé, les lemmings sortent un par un
+depuis l'entrée. Le but du jeu est de les conduire jusqu'à
+la sortie (les cartes contiennent exactement une entrée et
+une sortie). Pour arriver à cette fin, l'utilisateur peut
+donner différents \emph{comportements} aux lemmings
+(creuser, bloquer les lemmings, exploser, \dots).
+
+Le joueur a aussi la possibilité de mettre la partie en
+pause, d'augmenter ou diminuer la vitesse du jeu,
+d'abandonner une partie (en faisant exploser tous les
+lemmings) et de sauver ou charger une partie.
+
+À la fin du jeu (lorsque tous les lemmings sont soit sortis,
+soit morts), l'utilisateur est invité à entrer son nom pour
+sauver son score dans la base de donnée.
+
+\section{Diagramme de classes et architecture orientée objet}
+
+Le programme est réalisé selon le patron de conception
+\emph{Modèle vue controlleur}.
+
+\subsection{Modèle}
+
+Le modèle est implémenté dans le package \texttt{model}. Il
+contient les classes \texttt{Map} et \texttt{Character} qui
+héritent de la classe \textsc{Entity} (une entité est un
+objet avec une position et une taille).
+
+La carte contient les données relatives aux collisions (un
+tableau d'entier permettant de savoir si une position est
+accessible ou pas) ainsi que la position de l'entrée et de
+la sortie. Une carte est stockée sur le disque dur sous
+forme d'un dossier contenant les images suivantes:
+\begin{list}{-}{}
+  \item \texttt{background.png}: l'image qui sera affichée
+par la vue en arrière plan~;
+  \item \texttt{foreground.png}: l'image qui sera affichée
+par la vue en avant plan~;
+  \item \texttt{collision.png}: une image contenant les
+informations relative aux collisions: les pixels
+transparents sont traversables par le joueur, tandis que les
+autres pixels sont des obstacles~;
+  \item \texttt{objects.png}: une image contenant les
+différents objets contenu sur la map: l'entrée et la sortie.
+Chaque objet est représenté par un pixel d'une certaine
+couleur dans cette image.
+\end{list}
+
+Le personnage sont associés à un \emph{comportement}
+(\texttt{Behavior}), selon le patron de conception d'état.
+Chaque comportement possède une méthode update, dans
+laquelle il effectue les actions du personnage.
+
+%La classe \texttt{Model} possède une liste d'observeurs,
+%selon le patron de conception d'observateur/observé. Les
+%observateurs du modèle doivent implémenter l'interface
+%\texttt{ModelObserver}, pour permettre 
+
+\subsection{Vue}
+
+\subsection{Contrôleur}
+Le contrôleur est implémenté dans l'unique classe
+(\texttt{Controller}) du package \texttt{controller}. Cette
+classe se contente de recevoir les événements de la vue
+(bouton cliqué, personnage sélectionné, \dots) et d'appeler
+les méthodes correspondantes du modèle.
+
+\subsection{Parser}
+
+Les animations sont reprises du jeu \emph{Pingus}. Ces
+animations sont stockées sous la forme de \emph{sprites}
+(une image contenant les différentes étapes de cette
+animation). Le format de ces fichiers sont décrits dans des
+fichiers \texttt{.sprite}, qui sont des fichiers avec une
+syntaxe à base de \emph{s-expression}. La classe
+\texttt{LispFile} permet de parser ces fichiers, qui sont
+représentés par un ensemble de valeurs (classe
+\texttt{Value}). Cette classe est utilisée par la vue pour
+charger les animations. Cela permet d'importer les images
+depuis \emph{Pingus} sans devoir rajouter de code pour les
+charger dans le programme.
+
+\subsection{Outils}
+Le package \texttt{utils} contient quelques outils utilisés
+par le reste du programme.\\
+
+La classe \texttt{Selector} implémente un \emph{zipper}: une
+structure de donnée qui contient un ensemble ordonné
+d'éléments, avec un pointeur vers un élément, qui peut
+se déplacer vers la droite ou vers la gauche. Cette classe
+est utilisée par le menu pour permettre à l'utilisateur de
+sélectionner la carte et la résolution.\\
+
+La classe \texttt{LemmingsException} représente simplement
+une exception qui s'est produite durant le jeu et est
+utilisée dans le modèle et dans la vue.\\
+
+La classe \texttt{Database} représente une connexion à la
+base de donnée et permet de stocker les scores ainsi que
+différentes options. Cette classe est implémentée selon le
+patron de conception \emph{singleton}: toutes ses méthodes
+sont statiques, et lors du premier appel à une de ses
+méthodes, la connexion à la base de donnée est crée. Cette
+connexion est fermée dans le destructeur de cette classe.
+
+La classe \texttt{Score} représente une paire (nom, score)
+et est utilisée par la classe \texttt{Database} pour
+retourner une liste de score pour une certaine carte, afin
+d'être affiché dans la classe \texttt{Highscore}.
+
+\end{document}
