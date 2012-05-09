@@ -39,8 +39,8 @@
 
 Le programme réalisé consiste en un clone du jeu \emph{Lemmings} et
 tire ses données graphiques de deux jeux libres:
-\emph{Pingus}\footnote{http://pingus.seul.org} et
-\emph{Teeworlds}\footnote{http://teeworlds.com}.
+\emph{Pingus}\footnote{\url{http://pingus.seul.org}} et
+\emph{Teeworlds}\footnote{\url{http://teeworlds.com}}.
 
 Au lancement du jeu, un menu est présenté à l'utilisateur (voir figure
 \ref{fig:Menu}) et permet de:
@@ -55,31 +55,31 @@ Au lancement du jeu, un menu est présenté à l'utilisateur (voir figure
 
 
 \begin{figure}[ht!]
-  \centering
-  \subfloat[Le menu du jeu]{\label{fig:Menu}\includegraphics[width=0.45\textwidth]{menu.png}}
+  \centerline{
+  \subfloat[Le menu du jeu]{\label{fig:Menu}\includegraphics[width=0.55\textwidth]{menu.png}}
   ~~~~~~
-  \subfloat[Le jeu]{\label{fig:Jeu}\includegraphics[width=0.45\textwidth]{jeu.png}}
+  \subfloat[Le jeu]{\label{fig:Jeu}\includegraphics[width=0.55\textwidth]{jeu.png}}}
   \caption{Captures d'écran}
 \end{figure}
 
-Les meilleurs scores ainsi que les options graphiques sont sauvegardés
-dans une base de donnée, et sont donc gardés entre deux lancements du
-jeu.
+Les meilleurs scores ainsi que les paramètres graphiques sont sauvegardés
+dans une base de donnée, et sont donc conservés entre deux lancements du
+jeu.\\
 
 Lorsque le jeu est lancé, les lemmings sortent un par un depuis
 l'entrée. Le but du jeu est de les conduire jusqu'à la sortie (les
 cartes contiennent exactement une entrée et une sortie). Pour arriver
 à cette fin, l'utilisateur peut donner différents \emph{comportements}
-aux lemmings (creuser, bloquer les lemmings, exploser, \dots).
+aux lemmings (creuser, exploser, \dots).\\
 
 Le joueur a aussi la possibilité de mettre la partie en pause,
 d'augmenter ou diminuer la vitesse du jeu, d'abandonner une partie (en
 faisant exploser tous les lemmings) et de sauver ou charger une
-partie.
+partie.\\
 
 À la fin du jeu (lorsque tous les lemmings sont soit sortis, soit
 morts), l'utilisateur est invité à entrer son nom pour sauver son
-score dans la base de donnée.
+score dans la base de donnée.\\
 
 Le jeu a été réalisé avec les bibliothèques graphiques
 \emph{Slick}\footnote{\url{http://slick.cokeandcode.com/}} et
@@ -89,48 +89,97 @@ modifier, ce qui est nécessaire pour que les lemmings puissent creuser
 dans la carte.
 
 \section{Diagramme de classes et architecture orientée objet}
-
-Le programme est réalisé selon le patron de conception
-\emph{Modèle vue controlleur}.
+Le programme est réalisé selon le patron de conception \emph{modèle
+  vue contrôleur}.
 
 \subsection{Modèle}
+Le modèle est implémenté dans le package \texttt{model}. Il contient
+les classes \texttt{Map} et \texttt{Character} qui héritent de la
+classe \texttt{Entity} (une entité est un objet avec une position et
+une taille).
 
-Le modèle est implémenté dans le package \texttt{model}. Il
-contient les classes \texttt{Map} et \texttt{Character} qui
-héritent de la classe \textsc{Entity} (une entité est un
-objet avec une position et une taille).
+\begin{figure}[ht!]
+  \centerline{
+  \includegraphics[width=\textwidth]{model.png}}
+  \caption{Diagramme de classe du package \texttt{model}}
+\end{figure}
 
-La carte contient les données relatives aux collisions (un
-tableau d'entier permettant de savoir si une position est
-accessible ou pas) ainsi que la position de l'entrée et de
-la sortie. Une carte est stockée sur le disque dur sous
-forme d'un dossier contenant les images suivantes:
+La carte contient les données relatives aux collisions (un tableau
+d'entier permettant de savoir si une position est accessible ou pas)
+ainsi que la position de l'entrée et de la sortie. Une carte est
+stockée sur le disque dur sous forme d'un dossier contenant les images
+suivantes:
 \begin{list}{-}{}
-  \item \texttt{background.png}: l'image qui sera affichée
-par la vue en arrière plan~;
-  \item \texttt{foreground.png}: l'image qui sera affichée
-par la vue en avant plan~;
-  \item \texttt{collision.png}: une image contenant les
-informations relative aux collisions: les pixels
-transparents sont traversables par le joueur, tandis que les
-autres pixels sont des obstacles~;
-  \item \texttt{objects.png}: une image contenant les
-différents objets contenu sur la map: l'entrée et la sortie.
-Chaque objet est représenté par un pixel d'une certaine
-couleur dans cette image.
+  \item \texttt{background.png}: l'image qui sera affichée par la vue
+    en arrière plan~;
+  \item \texttt{foreground.png}: l'image qui sera affichée par la vue
+    en avant plan~;
+  \item \texttt{collision.png}: une image contenant les informations
+    relative aux collisions: les pixels transparents sont traversables
+    par le joueur, tandis que les autres pixels sont des obstacles~;
+  \item \texttt{objects.png}: une image contenant les différents
+    objets contenu sur la map: l'entrée et la sortie.  Chaque objet
+    est représenté par un pixel d'une certaine couleur dans cette
+    image.
 \end{list}
 
 Le personnage sont associés à un \emph{comportement}
-(\texttt{Behavior}), selon le patron de conception d'état.
-Chaque comportement possède une méthode update, dans
-laquelle il effectue les actions du personnage.
+(\texttt{Behavior}), selon le patron de conception d'état.  Chaque
+comportement possède une méthode update, dans laquelle il effectue les
+actions du personnage.\\
 
-%La classe \texttt{Model} possède une liste d'observeurs,
-%selon le patron de conception d'observateur/observé. Les
-%observateurs du modèle doivent implémenter l'interface
-%\texttt{ModelObserver}, pour permettre 
+La classe \texttt{Model} possède une liste d'observateurs (qui
+implémentent l'interface \texttt{ModelObserver}, selon le patron de
+conception \emph{observateur/observé}. Lorsqu'une modification à lieu
+au sein du modèle, ses observateurs seront notifiés.
 
 \subsection{Vue}
+Le package \texttt{view} contient tout ce qui se rapporte à
+l'interface graphique du jeu. Le système de menu utilise le patron de
+conception d'état, déjà présent dans la librairie graphique utilisée:
+la classe \texttt{LemmingsGame} représente la classe principale du jeu
+et hérite de \texttt{StateBasedGame}, tandis que les différents états
+du jeux héritent de \texttt{BasicGameState}. Les transitions entre les
+différents états sont représentées dans le diagramme états-transitions
+de la figure \ref{fig:Etats}.
+
+\begin{figure}[ht!]
+  \centerline{
+  \includegraphics[width=\textwidth]{view.png}}
+  \caption{Diagramme de classe du package \texttt{view}}
+\end{figure}
+
+\begin{figure}[ht!]
+  \centerline{
+  \includegraphics[width=0.6\textwidth]{state.png}}
+  \caption{Diagramme état-transitions de l'interface graphique}
+  \label{fig:Etats}
+\end{figure}
+
+L'état \texttt{View} est l'état principal du jeu: c'est cette classe
+qui observe le modèle et l'affiche à l'écran. Elle contient un objet
+de type \texttt{MapImage} qui représente les images de la carte
+actuelle. Lorsque le terrain est creusé par un lemming, la vue en est
+notifiée et la classe \texttt{MapImage} modifie la texture du terrain
+pour tenir compte de ces modifications. La classe \texttt{View}
+contient aussi une liste de \texttt{CharacterAnimation}, classe qui
+permet d'afficher l'animation d'un personnage du modèle à l'écran.\\
+
+Dernièrement, la classe \texttt{View} contient aussi un objet de type
+\texttt{GUI}, qui implémente l'interface du jeu, composée de
+différents boutons (classe \texttt{Button}) avec chacun un certain
+comportement (\texttt{ButtonBehavior}). Lorsqu'un bouton est cliqué,
+le controleur en est notifié et effectue les opérations nécessaires.\\
+
+Les relations entre la vue et le modèle non représentées sur les
+diagrammes de classes sont donc:
+\begin{list}{-}{}
+  \item la classe \texttt{CharacterAnimation} contient une référence
+    vers le \texttt{Character} à laquelle elle correspond (relation
+    un-à-un)~;
+  \item la classe \texttt{View} implémente l'interface
+    \texttt{ModelObserver}.
+\end{list}
 
 \subsection{Contrôleur}
 Le contrôleur est implémenté dans l'unique classe
@@ -139,47 +188,74 @@ classe se contente de recevoir les événements de la vue
 (bouton cliqué, personnage sélectionné, \dots) et d'appeler
 les méthodes correspondantes du modèle.
 
-\subsection{Parser}
+\begin{figure}[ht!]
+  \centerline{
+  \includegraphics[width=0.55\textwidth]{controller.png}}
+  \caption{Diagramme de classe du package \texttt{controller}}
+\end{figure}
 
-Les animations sont reprises du jeu \emph{Pingus}. Ces
-animations sont stockées sous la forme de \emph{sprites}
-(une image contenant les différentes étapes de cette
-animation). Le format de ces fichiers sont décrits dans des
-fichiers \texttt{.sprite}, qui sont des fichiers avec une
-syntaxe à base de \emph{s-expression}. La classe
-\texttt{LispFile} permet de parser ces fichiers, qui sont
-représentés par un ensemble de valeurs (classe
-\texttt{Value}). Cette classe est utilisée par la vue pour
-charger les animations. Cela permet d'importer les images
-depuis \emph{Pingus} sans devoir rajouter de code pour les
-charger dans le programme.
+\subsection{Parser}
+Les animations sont reprises du jeu \emph{Pingus}. Ces animations sont
+stockées sous la forme de \emph{sprites} (une image contenant les
+différentes étapes de cette animation). Le format de ces fichiers sont
+décrits dans des fichiers \texttt{.sprite}, qui sont des fichiers avec
+une syntaxe à base de \emph{s-expression}. La classe \texttt{LispFile}
+permet de parser ces fichiers, qui sont représentés par un ensemble de
+valeurs (classe \texttt{Value}). Cette classe est utilisée par la vue
+pour charger les animations. Cela permet d'importer les images depuis
+\emph{Pingus} sans devoir rajouter de code pour les charger dans le
+programme.
+
+\begin{figure}[ht!]
+  \centerline{
+  \includegraphics[width=\textwidth]{parser.png}}
+  \caption{Diagramme de classe du package \texttt{parser}}
+\end{figure}
 
 \subsection{Outils}
-Le package \texttt{utils} contient quelques outils utilisés
-par le reste du programme.\\
+Le package \texttt{util} contient quelques outils utilisés par le
+reste du programme.\\
 
-La classe \texttt{Selector} implémente un \emph{zipper}: une
-structure de donnée qui contient un ensemble ordonné
-d'éléments, avec un pointeur vers un élément, qui peut
-se déplacer vers la droite ou vers la gauche. Cette classe
-est utilisée par le menu pour permettre à l'utilisateur de
-sélectionner la carte et la résolution.\\
+La classe \texttt{Selector} est une structure de donnée qui contient
+un ensemble ordonné d'éléments, avec un pointeur vers un élément, qui
+peut se déplacer vers la gauche ou vers la droite, d'une façon
+similaire aux \texttt{ListIterator} de Java, mais en plus
+convivial. Cette classe est utilisée par le menu pour permettre à
+l'utilisateur de sélectionner la carte et la résolution.\\
 
-La classe \texttt{LemmingsException} représente simplement
-une exception qui s'est produite durant le jeu et est
-utilisée dans le modèle et dans la vue.\\
+La classe \texttt{LemmingsException} représente simplement une
+exception qui s'est produite durant le jeu et est utilisée dans le
+modèle et dans la vue.\\
 
-La classe \texttt{Database} représente une connexion à la
-base de donnée et permet de stocker les scores ainsi que
-différentes options. Cette classe est implémentée selon le
-patron de conception \emph{singleton}: toutes ses méthodes
-sont statiques, et lors du premier appel à une de ses
-méthodes, la connexion à la base de donnée est crée. Cette
-connexion est fermée dans le destructeur de cette classe.
+La classe \texttt{Database} représente une connexion à la base de
+donnée et permet de stocker les scores ainsi que différentes
+options. Cette classe est implémentée selon le patron de conception
+\emph{singleton}: toutes ses méthodes sont statiques, et lors du
+premier appel à une de ses méthodes, la connexion à la base de donnée
+est crée. Cette connexion est fermée dans le destructeur de cette
+classe.\\
 
-La classe \texttt{Score} représente une paire (nom, score)
-et est utilisée par la classe \texttt{Database} pour
-retourner une liste de score pour une certaine carte, afin
-d'être affiché dans la classe \texttt{Highscore}.
+La classe \texttt{Score} représente une paire (nom, score) et est
+utilisée par la classe \texttt{Database} pour retourner une liste de
+score pour une certaine carte, afin d'être affiché dans la classe
+\texttt{Highscore}.
+
+\begin{figure}[ht!]
+  \centerline{
+  \includegraphics[width=\textwidth]{util.png}}
+  \caption{Diagramme de classe du package \texttt{util}}
+\end{figure}
+
+\subsection{Relations entre packages}
+Les relations entre les packages \texttt{model}, \texttt{view} et
+\texttt{util} sont reprises dans le diagramme de classe à la figure
+\ref{fig:Relations}.
+
+\begin{figure}[ht!]
+  \centerline{
+  \includegraphics[width=0.9\textwidth]{relations.png}}
+  \caption{Relations entre les différents packages}
+  \label{fig:Relations}
+\end{figure}
 
 \end{document}
