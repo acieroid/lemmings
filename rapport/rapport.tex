@@ -37,9 +37,9 @@
 
 \section{Fonctionnalités}
 
-Le programme réalisé consiste en un clone du jeu
-\emph{Lemmings} et tire ses données graphiques de deux jeux
-libres: \emph{Pingus}\footnote{http://pingus.seul.org} et
+Le programme réalisé consiste en un clone du jeu \emph{Lemmings} et
+tire ses données graphiques de deux jeux libres:
+\emph{Pingus}\footnote{http://pingus.seul.org} et
 \emph{Teeworlds}\footnote{http://teeworlds.com}.
 
 Au lancement du jeu, un menu est présenté à l'utilisateur (voir figure
@@ -48,30 +48,45 @@ Au lancement du jeu, un menu est présenté à l'utilisateur (voir figure
   \item lancer le jeu~;
   \item choisir la carte sur laquelle jouer~;
   \item voir les meilleurs scores pour une carte~;
-  \item changer les options graphiques (résolution, plein
-écran) et appliquer ces changements~;
+  \item changer les options graphiques (résolution, plein écran) et
+    appliquer ces changements~;
   \item quitter.
 \end{list}
 
-Les meilleurs scores ainsi que les options graphiques sont
-sauvegardés dans une base de donnée, et sont donc gardés
-entre deux lancements du jeu.
 
-Lorsque le jeu est lancé, les lemmings sortent un par un
-depuis l'entrée. Le but du jeu est de les conduire jusqu'à
-la sortie (les cartes contiennent exactement une entrée et
-une sortie). Pour arriver à cette fin, l'utilisateur peut
-donner différents \emph{comportements} aux lemmings
-(creuser, bloquer les lemmings, exploser, \dots).
+\begin{figure}[ht!]
+  \centering
+  \subfloat[Le menu du jeu]{\label{fig:Menu}\includegraphics[width=0.45\textwidth]{menu.png}}
+  ~~~~~~
+  \subfloat[Le jeu]{\label{fig:Jeu}\includegraphics[width=0.45\textwidth]{jeu.png}}
+  \caption{Captures d'écran}
+\end{figure}
 
-Le joueur a aussi la possibilité de mettre la partie en
-pause, d'augmenter ou diminuer la vitesse du jeu,
-d'abandonner une partie (en faisant exploser tous les
-lemmings) et de sauver ou charger une partie.
+Les meilleurs scores ainsi que les options graphiques sont sauvegardés
+dans une base de donnée, et sont donc gardés entre deux lancements du
+jeu.
 
-À la fin du jeu (lorsque tous les lemmings sont soit sortis,
-soit morts), l'utilisateur est invité à entrer son nom pour
-sauver son score dans la base de donnée.
+Lorsque le jeu est lancé, les lemmings sortent un par un depuis
+l'entrée. Le but du jeu est de les conduire jusqu'à la sortie (les
+cartes contiennent exactement une entrée et une sortie). Pour arriver
+à cette fin, l'utilisateur peut donner différents \emph{comportements}
+aux lemmings (creuser, bloquer les lemmings, exploser, \dots).
+
+Le joueur a aussi la possibilité de mettre la partie en pause,
+d'augmenter ou diminuer la vitesse du jeu, d'abandonner une partie (en
+faisant exploser tous les lemmings) et de sauver ou charger une
+partie.
+
+À la fin du jeu (lorsque tous les lemmings sont soit sortis, soit
+morts), l'utilisateur est invité à entrer son nom pour sauver son
+score dans la base de donnée.
+
+Le jeu a été réalisé avec les bibliothèques graphiques
+\emph{Slick}\footnote{\url{http://slick.cokeandcode.com/}} et
+\emph{LWJGL}\footnote{\url{http://www.lwjgl.org/}} afin de pouvoir
+manipuler directement les textures OpenGL des images pour pouvoir les
+modifier, ce qui est nécessaire pour que les lemmings puissent creuser
+dans la carte.
 
 \section{Diagramme de classes et architecture orientée objet}
 
