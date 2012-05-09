@@ -297,7 +297,7 @@ public class Model implements Serializable {
      * Return the list of available character behaviors
      */
     public String[] getCharacterBehaviors() {
-        String[] res = { "bomber", "blocker", "digger" };
+        String[] res = { "bomber", "digger" };
         return res;
     }
 

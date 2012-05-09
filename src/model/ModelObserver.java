@@ -10,3 +10,4 @@ public interface ModelObserver {
     public void speedChanged();
     public void finished();
 }
+
