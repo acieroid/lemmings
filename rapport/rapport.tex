@@ -66,33 +66,35 @@ Les meilleurs scores ainsi que les paramètres graphiques sont sauvegardés
 dans une base de donnée, et sont donc conservés entre deux lancements du
 jeu.\\
 
-Lorsque le jeu est lancé, les lemmings sortent un par un depuis
-l'entrée. Le but du jeu est de les conduire jusqu'à la sortie (les
-cartes contiennent exactement une entrée et une sortie). Pour arriver
-à cette fin, l'utilisateur peut donner différents \emph{comportements}
-aux lemmings (creuser, exploser, \dots).\\
+Lorsque le jeu est lancé (figure \ref{fig:Jeu}), les lemmings (ou
+plutôt les manchots) sortent un par un depuis l'entrée. Le but du jeu est
+de les conduire jusqu'à la sortie (les cartes contiennent exactement
+une entrée et une sortie). Pour arriver à cette fin, l'utilisateur
+peut donner différents \emph{comportements} aux lemmings (creuser,
+exploser, \dots).\\
 
 Le joueur a aussi la possibilité de mettre la partie en pause,
 d'augmenter ou diminuer la vitesse du jeu, d'abandonner une partie (en
 faisant exploser tous les lemmings) et de sauver ou charger une
 partie.\\
 
-À la fin du jeu (lorsque tous les lemmings sont soit sortis, soit
-morts), l'utilisateur est invité à entrer son nom pour sauver son
-score dans la base de donnée.\\
+À la fin du jeu (lorsque tous les lemmings sont soit arrivés à la
+sortie, soit morts), l'utilisateur est invité à entrer son nom pour
+sauver son score dans la base de donnée, et se retrouve ensuite de
+nouveau sur le menu.\\
 
 Le jeu a été réalisé avec les bibliothèques graphiques
 \emph{Slick}\footnote{\url{http://slick.cokeandcode.com/}} et
 \emph{LWJGL}\footnote{\url{http://www.lwjgl.org/}} afin de pouvoir
 manipuler directement les textures OpenGL des images pour pouvoir les
-modifier, ce qui est nécessaire pour que les lemmings puissent creuser
-dans la carte.
+modifier de façon performante, ce qui est nécessaire pour que les
+lemmings puissent creuser dans la carte.
 
 \section{Diagramme de classes et architecture orientée objet}
 Le programme est réalisé selon le patron de conception \emph{modèle
   vue contrôleur}.
 
-\subsection{Modèle}
+\subsection{Modèle\label{sec:model}}
 Le modèle est implémenté dans le package \texttt{model}. Il contient
 les classes \texttt{Map} et \texttt{Character} qui héritent de la
 classe \texttt{Entity} (une entité est un objet avec une position et
@@ -125,21 +127,26 @@ suivantes:
 
 Le personnage sont associés à un \emph{comportement}
 (\texttt{Behavior}), selon le patron de conception d'état.  Chaque
-comportement possède une méthode update, dans laquelle il effectue les
-actions du personnage.\\
+comportement possède une méthode \texttt{update} dans laquelle il
+effectue les actions du personnage.\\
 
 La classe \texttt{Model} possède une liste d'observateurs (qui
 implémentent l'interface \texttt{ModelObserver}, selon le patron de
-conception \emph{observateur/observé}. Lorsqu'une modification à lieu
-au sein du modèle, ses observateurs seront notifiés.
+conception \emph{observateur/observé}). Lorsqu'une modification a lieu
+au sein du modèle, ses observateurs seront notifiés.\\
 
+Toutes les classes du modèle implémentent l'interface
+\texttt{Serializable} de Java, ce qui permet de sauvegarder le jeu sur
+le disque dur et de le charger plus tard.
 \subsection{Vue}
 Le package \texttt{view} contient tout ce qui se rapporte à
-l'interface graphique du jeu. Le système de menu utilise le patron de
-conception d'état, déjà présent dans la librairie graphique utilisée:
-la classe \texttt{LemmingsGame} représente la classe principale du jeu
-et hérite de \texttt{StateBasedGame}, tandis que les différents états
-du jeux héritent de \texttt{BasicGameState}. Les transitions entre les
+l'interface graphique du jeu (la vue). Le système de menu utilise le
+patron de conception d'état, déjà présent dans la librairie graphique
+utilisée: la classe \texttt{LemmingsGame} représente la classe
+principale du jeu et hérite de \texttt{StateBasedGame}, tandis que les
+différents états héritent de \texttt{BasicGameState}. Les
+classes \texttt{StateBasedGame} et \texttt{BasicGameState} sont
+fournies par la bibliothèque \emph{Slick}. Les transitions entre les
 différents états sont représentées dans le diagramme états-transitions
 de la figure \ref{fig:Etats}.
 
@@ -165,11 +172,11 @@ pour tenir compte de ces modifications. La classe \texttt{View}
 contient aussi une liste de \texttt{CharacterAnimation}, classe qui
 permet d'afficher l'animation d'un personnage du modèle à l'écran.\\
 
-Dernièrement, la classe \texttt{View} contient aussi un objet de type
-\texttt{GUI}, qui implémente l'interface du jeu, composée de
-différents boutons (classe \texttt{Button}) avec chacun un certain
-comportement (\texttt{ButtonBehavior}). Lorsqu'un bouton est cliqué,
-le controleur en est notifié et effectue les opérations nécessaires.\\
+La classe \texttt{View} contient aussi un objet de type \texttt{GUI},
+qui implémente l'interface du jeu, composée de différents boutons
+(classe \texttt{Button}) chacun avec un certain comportement
+(\texttt{ButtonBehavior}). Lorsqu'un bouton est cliqué, le contrôleur
+en est notifié et effectue les opérations nécessaires.\\
 
 Les relations entre la vue et le modèle non représentées sur les
 diagrammes de classes sont donc:
@@ -203,8 +210,8 @@ une syntaxe à base de \emph{s-expression}. La classe \texttt{LispFile}
 permet de parser ces fichiers, qui sont représentés par un ensemble de
 valeurs (classe \texttt{Value}). Cette classe est utilisée par la vue
 pour charger les animations. Cela permet d'importer les images depuis
-\emph{Pingus} sans devoir rajouter de code pour les charger dans le
-programme.
+\emph{Pingus} sans devoir rajouter de code spécifique à chaque image
+pour les charger dans le programme.
 
 \begin{figure}[ht!]
   \centerline{
@@ -218,8 +225,8 @@ reste du programme.\\
 
 La classe \texttt{Selector} est une structure de donnée qui contient
 un ensemble ordonné d'éléments, avec un pointeur vers un élément, qui
-peut se déplacer vers la gauche ou vers la droite, d'une façon
-similaire aux \texttt{ListIterator} de Java, mais en plus
+peut se déplacer vers la gauche ou vers la droite d'une façon
+similaire aux \texttt{ListIterator} de Java mais en plus
 convivial. Cette classe est utilisée par le menu pour permettre à
 l'utilisateur de sélectionner la carte et la résolution.\\
 
@@ -235,7 +242,7 @@ premier appel à une de ses méthodes, la connexion à la base de donnée
 est crée. Cette connexion est fermée dans le destructeur de cette
 classe.\\
 
-La classe \texttt{Score} représente une paire (nom, score) et est
+La classe \texttt{Score} représente une paire $(nom, score)$ et est
 utilisée par la classe \texttt{Database} pour retourner une liste de
 score pour une certaine carte, afin d'être affiché dans la classe
 \texttt{Highscore}.
@@ -253,9 +260,32 @@ Les relations entre les packages \texttt{model}, \texttt{view} et
 
 \begin{figure}[ht!]
   \centerline{
-  \includegraphics[width=0.9\textwidth]{relations.png}}
+  \includegraphics[width=1.2\textwidth]{relations.png}}
   \caption{Relations entre les différents packages}
   \label{fig:Relations}
 \end{figure}
+
+\section{Extensibilité}
+L'architecture du jeu permet de facilement ajouter des comportements
+ou des cartes.\\
+
+Comme décrit en \ref{sec:model}, les cartes sont simplement
+représentées par un dossier contenant images. Pour ajouter une
+carte, il suffit donc de créer ces 4 images avec n'importe quel
+logiciel graphique et de les ajouter dans un sous-dossier dans
+\texttt{data/maps}, portant le nom de la carte. Les cartes déjà
+réalisées ont été crées à l'aide de l'éditeur de carte libre
+\emph{tiled}\footnote{\url{http://www.mapeditor.org/}}.\\
+
+Pour ajouter un comportement de lemming, il faut ajouter ses
+animations dans un sous dossier dans \texttt{data/characters} portant
+le nom du comportement. Le format de ces animations est décrit dans un
+fichier \texttt{.sprite}, dont le format et le même que dans le jeu
+\emph{Pingus}. Il suffira donc dans la plupart des cas de récupérer
+les images et le fichier \texttt{.sprite} de ce jeu. Il faut ensuite
+ajouter une classe implémentant l'interface \texttt{Behavior}, qui
+définira précisément le comportement, et ajouter le nom de ce
+comportement à la liste de comportement du modèle (dans la fonction
+\texttt{getCharacterBehaviors()} de \texttt{Model}).\\
 
 \end{document}
