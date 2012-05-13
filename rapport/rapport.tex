@@ -81,7 +81,7 @@ partie.\\
 À la fin du jeu (lorsque tous les lemmings sont soit arrivés à la
 sortie, soit morts), l'utilisateur est invité à entrer son nom pour
 sauver son score dans la base de donnée, et se retrouve ensuite de
-nouveau sur le menu.\\
+nouveau sur le menu principal.\\
 
 Le jeu a été réalisé avec les bibliothèques graphiques
 \emph{Slick}\footnote{\url{http://slick.cokeandcode.com/}} et
@@ -125,15 +125,15 @@ suivantes:
     image.
 \end{list}
 
-Le personnage sont associés à un \emph{comportement}
-(\texttt{Behavior}), selon le patron de conception d'état.  Chaque
+Les personnages sont associés à un \emph{comportement}
+(\texttt{Behavior}), selon le patron de conception d'état. Chaque
 comportement possède une méthode \texttt{update} dans laquelle il
 effectue les actions du personnage.\\
 
 La classe \texttt{Model} possède une liste d'observateurs (qui
 implémentent l'interface \texttt{ModelObserver}, selon le patron de
 conception \emph{observateur/observé}). Lorsqu'une modification a lieu
-au sein du modèle, ses observateurs seront notifiés.\\
+au sein du modèle, ses observateurs sont notifiés.\\
 
 Toutes les classes du modèle implémentent l'interface
 \texttt{Serializable} de Java, ce qui permet de sauvegarder le jeu sur
@@ -270,17 +270,17 @@ L'architecture du jeu permet de facilement ajouter des comportements
 ou des cartes.\\
 
 Comme décrit en \ref{sec:model}, les cartes sont simplement
-représentées par un dossier contenant images. Pour ajouter une
-carte, il suffit donc de créer ces 4 images avec n'importe quel
-logiciel graphique et de les ajouter dans un sous-dossier dans
-\texttt{data/maps}, portant le nom de la carte. Les cartes déjà
-réalisées ont été crées à l'aide de l'éditeur de carte libre
+représentées par un dossier contenant quatre images. Pour ajouter une
+carte, il suffit donc de créer ces images avec n'importe quel logiciel
+graphique et de les ajouter dans un sous-dossier portant le nom de la
+carte, dans \texttt{data/maps}. Les cartes déjà réalisées ont été
+crées à l'aide de l'éditeur de carte libre
 \emph{tiled}\footnote{\url{http://www.mapeditor.org/}}.\\
 
 Pour ajouter un comportement de lemming, il faut ajouter ses
-animations dans un sous dossier dans \texttt{data/characters} portant
-le nom du comportement. Le format de ces animations est décrit dans un
-fichier \texttt{.sprite}, dont le format et le même que dans le jeu
+animations dans un sous dossier portant le nom du comportement, dans
+\texttt{data/characters}. Le format de ces animations est décrit dans
+un fichier \texttt{.sprite}, dont le format et le même que dans le jeu
 \emph{Pingus}. Il suffira donc dans la plupart des cas de récupérer
 les images et le fichier \texttt{.sprite} de ce jeu. Il faut ensuite
 ajouter une classe implémentant l'interface \texttt{Behavior}, qui
