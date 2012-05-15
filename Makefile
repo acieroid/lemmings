@@ -12,7 +12,7 @@ all :
 	@echo Done.
 
 clean :
-	@rm $(shell find . -name "*.class")
+	@find . -name "*.class" -exec rm {} \;
 
 launch :
 	@echo Launching $(TARGET)
